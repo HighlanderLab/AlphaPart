@@ -26,7 +26,7 @@ SEXP AlphaPartDrop(SEXP c1_, SEXP c2_, SEXP nI_, SEXP nP_, SEXP nT_, SEXP y_, SE
   Rcpp::NumericMatrix pa(nI+1, nT);    // parent average
   Rcpp::NumericMatrix  w(nI+1, nT);    // Mendelian sampling
   Rcpp::NumericMatrix xa(nI+1, nP*nT); // Parts
-  
+
   // --- Compute ---
       
   for(i = 1; i < nI+1; i++) {

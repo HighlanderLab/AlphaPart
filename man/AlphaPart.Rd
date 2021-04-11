@@ -4,121 +4,139 @@
 \alias{AlphaPart}
 \title{AlphaPart.R}
 \usage{
-AlphaPart(
-  x,
-  pathNA = FALSE,
-  recode = TRUE,
-  unknown = NA,
-  sort = TRUE,
-  verbose = 1,
-  profile = FALSE,
-  printProfile = "end",
-  pedType = "IPP",
-  colId = 1,
-  colFid = 2,
-  colMid = 3,
-  colPath = 4,
-  colBV = 5:ncol(x),
-  colBy = NULL
-)
+AlphaPart(x, pathNA, recode, unknown, sort, verbose, profile,
+  printProfile, pedType, colId, colFid, colMid, colPath, colBV,
+  colBy, center)
 }
 \arguments{
-\item{x}{data.frame , with (at least) the following columns: individual, father, and mother identif ication,
-and year of birth; see arguments \code{colId},
-\code{colFid}, \code{colMid}, \code{colPath}, and \code{colBV}; see also details about the validity of pedigree.}
+\item{x}{data.frame , with (at least) the following columns:
+individual, father, and mother identif ication, and year of birth;
+see arguments \code{colId}, \code{colFid}, \code{colMid},
+\code{colPath}, and \code{colBV}; see also details about the
+validity of pedigree.}
 
-\item{pathNA}{Logical, set dummy path (to "XXX") where path information is unknown (missing).}
+\item{pathNA}{Logical, set dummy path (to "XXX") where path
+information is unknown (missing).}
 
-\item{recode}{Logical, internally recode individual, father and, mother identification to
-\code{1:n} codes, while missing parents are defined with \code{0}; this option
-must be used if  identif ications in \code{x} are not already given as \code{1:n}
-codes, see also argument \code{sort}.}
+\item{recode}{Logical, internally recode individual, father and,
+mother identification to \code{1:n} codes, while missing parents
+are defined with \code{0}; this option must be used if identif
+ications in \code{x} are not already given as \code{1:n} codes, see
+also argument \code{sort}.}
 
-\item{unknown}{Value(s) used for representing unknown (missing) parent in \code{x}; this options
-has an effect only when \code{recode=FALSE} as it is only needed in that situation.}
+\item{unknown}{Value(s) used for representing unknown (missing)
+parent in \code{x}; this options has an effect only when
+\code{recode=FALSE} as it is only needed in that situation.}
 
-\item{sort}{Logical, initially sort \code{x} using \code{orderPed()} so that children follow
-parents in order to make imputation as optimal as possible (imputation is performed
-within a loop from the first to the last unknown birth year); at the end original
-order is restored.}
+\item{sort}{Logical, initially sort \code{x} using \code{orderPed()}
+so that children follow parents in order to make imputation as
+optimal as possible (imputation is performed within a loop from the
+first to the last unknown birth year); at the end original order is
+restored.}
 
-\item{verbose}{Numeric, print additional information: \code{0} - print nothing, \code{1} - print
-some summaries about the data.}
+\item{verbose}{Numeric, print additional information: \code{0} -
+print nothing, \code{1} - print some summaries about the data.}
 
 \item{profile}{Logical, collect timings and size of objects.}
 
-\item{printProfile}{Character, print profile info on the fly (\code{"fly"}) or at the end (\code{"end"}).}
+\item{printProfile}{Character, print profile info on the fly
+(\code{"fly"}) or at the end (\code{"end"}).}
 
-\item{pedType}{Character, pedigree type: the most common form is \code{"IPP"} for Individual, Parent
-1 (say father), and Parent 2 (say mother) data; the second form is \code{"IPG"} for
-Individual, Parent 1 (say father), and one of Grandparents of Parent 2 (say maternal
-grandfather).}
+\item{pedType}{Character, pedigree type: the most common form is
+\code{"IPP"} for Individual, Parent 1 (say father), and Parent 2
+(say mother) data; the second form is \code{"IPG"} for Individual,
+Parent 1 (say father), and one of Grandparents of Parent 2 (say
+maternal grandfather).}
 
-\item{colId}{Numeric or character, position or name of a column holding individual identif ication.}
+\item{colId}{Numeric or character, position or name of a column
+holding individual identif ication.}
 
-\item{colFid}{Numeric or character, position or name of a column holding father identif ication.}
+\item{colFid}{Numeric or character, position or name of a column
+holding father identif ication.}
 
-\item{colMid}{Numeric or character, position or name of a column holding mother identif ication or
-maternal grandparent identif ication if  \code{pedType="IPG"} .}
+\item{colMid}{Numeric or character, position or name of a column
+holding mother identif ication or maternal grandparent identif
+ication if \code{pedType="IPG"} .}
 
-\item{colPath}{Numeric or character, position or name of a column holding path information.}
+\item{colPath}{Numeric or character, position or name of a column
+holding path information.}
 
-\item{colBV}{Numeric or character, position(s) or name(s) of column(s) holding breeding Values.}
+\item{colBV}{Numeric or character, position(s) or name(s) of
+column(s) holding breeding Values.}
 
-\item{colBy}{Numeric or character, position or name of a column holding group information (see details).}
+\item{colBy}{Numeric or character, position or name of a column
+holding group information (see details).}
+
+\item{center}{Logical, if \code{center=TRUE} detect a shift in base
+population mean and attributes it as parent average effect rather
+than mendelian sampling effect, otherwise if center=FALSE, the base
+population values are only accounted as mendelian sampling
+effect. The Default is \code{center = TRUE}.}
 }
 \value{
-An object of class \code{AlphaPart}, which can be used in further analyses - there is a handy summary
-method (\code{\link[AlphaPart]{summary.AlphaPart}} works on objects of \code{AlphaPart} class) and a plot method
-for its output (\code{\link[AlphaPart]{plot.summaryAlphaPart}} works on objects of \code{summaryAlphaPart} class).
-Class \code{AlphaPart} is a list. The first \code{length(colBV)} components (one for each trait and named with
-trait label, say trt) are data frames. Each data.frame contains:
-  \item{\code{x}}{columns from initial data \code{x}}
-  \item{trt_pa}{parent average}
-  \item{trt_w}{Mendelian sampling term}
-  \item{trt_path1, trt_path2, ...}{breeding value partitions}
+An object of class \code{AlphaPart}, which can be used in
+  further analyses - there is a handy summary method
+  (\code{\link[AlphaPart]{summary.AlphaPart}} works on objects of
+  \code{AlphaPart} class) and a plot method for its output
+  (\code{\link[AlphaPart]{plot.summaryAlphaPart}} works on objects of
+  \code{summaryAlphaPart} class).  Class \code{AlphaPart} is a
+  list. The first \code{length(colBV)} components (one for each trait
+  and named with trait label, say trt) are data frames. Each
+  data.frame contains: \item{\code{x}}{columns from initial data
+  \code{x}} \item{trt_pa}{parent average} \item{trt_w}{Mendelian
+  sampling term} \item{trt_path1, trt_path2, ...}{breeding value
+  partitions}
 
-The last component of returned object is also a list named \code{info} with the following components holding
-meta information about the analysis:
-  \item{path}{column name holding path information}
-  \item{nP}{number of paths}
-  \item{lP}{path labels}
-  \item{nT}{number of traits}
-  \item{lT}{trait labels}
-  \item{warn}{potential warning messages associated with this object}
+The last component of returned object is also a list named
+\code{info} with the following components holding meta information
+about the analysis: \item{path}{column name holding path information}
+\item{nP}{number of paths} \item{lP}{path labels} \item{nT}{number of
+traits} \item{lT}{trait labels} \item{warn}{potential warning
+messages associated with this object}
 
-If  \code{colBy!=NULL} the resulting object is of a class \code{summaryAlphaPart},
-see \code{\link[AlphaPart]{summary.AlphaPart}} for details.
+If \code{colBy!=NULL} the resulting object is of a class
+\code{summaryAlphaPart}, see
+\code{\link[AlphaPart]{summary.AlphaPart}} for details.
 
-If  \code{profile=TRUE}, profiling info is printed on screen to spot any computational bottlenecks.
+If \code{profile=TRUE}, profiling info is printed on screen to spot
+any computational bottlenecks.
 }
 \description{
-A function to partition breeding values by a path variable. The partition method is
-described in García-Cortés et al., 2008: Partition of the genetic trend to validate multiple selection decisions.
-Animal : an international journal of animal bioscience. DOI: 10.1017/S175173110800205X
+A function to partition breeding values by a path variable. The
+partition method is described in García-Cortés et al., 2008:
+Partition of the genetic trend to validate multiple selection
+decisions.  Animal : an international journal of animal
+bioscience. DOI: 10.1017/S175173110800205X
 }
 \details{
-Pedigree in \code{x} must be valid in a sense that there are:\itemize{
-\item{no directed loops (the simplest example is that the individual identification is equal to the identification of a father or mother)}
-\item{no bisexuality, e.g., fathers most not appear as mothers}
-\item{father and/or mother can be unknown (missing) - defined with any "code" that is dif ferent from existing identif ications}
-}
+Pedigree in \code{x} must be valid in a sense that there
+  are:\itemize{ \item{no directed loops (the simplest example is that
+  the individual identification is equal to the identification of a
+  father or mother)} \item{no bisexuality, e.g., fathers most not
+  appear as mothers} \item{father and/or mother can be unknown
+  (missing) - defined with any "code" that is dif ferent from
+  existing identif ications} }
 
-Unknown (missing) values for breeding values are propagated down the pedigree
-to provide all available values from genetic evaluation. Another option is
-to cut pedigree links - set parents to unknown and remove them from pedigree
-prior to using this function - see \code{\link[AlphaPart]{pedSetBase}} function.
-Warning is issued in the case of unknown (missing) values.
+Unknown (missing) values for breeding values are propagated down the
+pedigree to provide all available values from genetic
+evaluation. Another option is to cut pedigree links - set parents to
+unknown and remove them from pedigree prior to using this function -
+see \code{\link[AlphaPart]{pedSetBase}} function.  Warning is issued
+in the case of unknown (missing) values.
 
-In animal breeding/genetics literature the model with the underlying pedigree type
-\code{"IPP"} is often called animal model, while the model for pedigree type \code{"IPG"}
-is often called sire - maternal grandsire model. With a combination of \code{colFid}
-and \code{colMid} mother - paternal grandsire model can be accomodated as well.
+In animal breeding/genetics literature the model with the underlying
+pedigree type \code{"IPP"} is often called animal model, while the
+model for pedigree type \code{"IPG"} is often called sire - maternal
+grandsire model. With a combination of \code{colFid} and
+\code{colMid} mother - paternal grandsire model can be accomodated as
+well.
 
-Argument \code{colBy} can be used to directly perform a summary analysis by
-group, i.e., \code{summary(AlphaPart(...), by="group")}. See \code{\link[AlphaPart]{summary.AlphaPart}}
-for more. This can save some CPU time by skipping intermediate steps. However,
-only means can be obtained, while \code{summary} method gives more flexibility.
+Argument \code{colBy} can be used to directly perform a summary
+analysis by group, i.e., \code{summary(AlphaPart(...),
+by="group")}. See \code{\link[AlphaPart]{summary.AlphaPart}} for
+more. This can save some CPU time by skipping intermediate
+steps. However, only means can be obtained, while \code{summary}
+method gives more flexibility.
 }
 \examples{
 ## Small pedigree with additive genetic (=breeding) values
@@ -139,17 +157,22 @@ summary(tmp, by="gen")
 
 \donttest{
 ## There are also two demos
-demo(topic="AlphaPart_deterministic", package="AlphaPart", ask=interactive())
-demo(topic="AlphaPart_stochastic",     package="AlphaPart", ask=interactive())
+  demo(topic="AlphaPart_deterministic", package="AlphaPart",
+       ask=interactive())
+  demo(topic="AlphaPart_stochastic",     package="AlphaPart",
+       ask=interactive())
 }
 }
 \references{
-Garcia-Cortes, L. A. et al. (2008) Partition of the genetic trend to validate multiple selection
-decisions. Animal, 2(6):821-824. \url{http://dx.doi.org/10.1017/S175173110800205X}
+Garcia-Cortes, L. A. et al. (2008) Partition of the
+  genetic trend to validate multiple selection decisions. Animal,
+  2(6):821-824. \url{http://dx.doi.org/10.1017/S175173110800205X}
 }
 \seealso{
-\code{\link[AlphaPart]{summary.AlphaPart}} for summary method that works on output of \code{AlphaPart},
-\code{\link[AlphaPart]{pedSetBase}} for setting base population,
-\code{\link[AlphaPart]{pedFixBirthYear}} for imputing unknown (missing) birth years,
-\code{\link[pedigree]{orderPed}} in \pkg{pedigree} package for sorting pedigree
+\code{\link[AlphaPart]{summary.AlphaPart}} for summary
+  method that works on output of \code{AlphaPart},
+  \code{\link[AlphaPart]{pedSetBase}} for setting base population,
+  \code{\link[AlphaPart]{pedFixBirthYear}} for imputing unknown
+  (missing) birth years, \code{\link[pedigree]{orderPed}} in
+  \pkg{pedigree} package for sorting pedigree
 }

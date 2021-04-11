@@ -144,7 +144,8 @@ test_that("Test computation", {
       trt2=c(0.10,  0.24, -0.30,  0.17, -0.21,  0.13,     0,     0,     0,     0,  0.20,     0,  0.00))
 
 
-  ret   <- AlphaPart(x=ped[, c("id", "fid", "mid", "pat", "trt1", "trt2")],  pathNA=TRUE, verbose=0)
+  ret   <- AlphaPart(x=ped[, c("id", "fid", "mid", "pat", "trt1", "trt2")],  pathNA=TRUE, verbose=0,
+                     center=FALSE)
 
   ## --- Check computations ---
 
