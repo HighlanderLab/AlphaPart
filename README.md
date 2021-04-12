@@ -13,7 +13,7 @@ A software that implements a method for **partitioning genetic trends** to quant
 ## Installed from CRAN
 
 ```
-install.packages("lcc")
+install.packages("AlphaPart")
 ```
 
 ## Installed the development version from Github:
