@@ -16,7 +16,7 @@ A software that implements a method for **partitioning genetic trends** to quant
 install.packages("AlphaPart")
 ```
 
-## Installed the development version from Github:
+## Installed the development version from Github
 
 ```
 install.packages("devtools")
