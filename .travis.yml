@@ -7,15 +7,18 @@ matrix:
     - name: "Roxygen check"
       cache: packages
       r_packages:
-        - devtools
-        - covr
-        - ggplot2
-        - nlme
+        - directlabels
         - gdata
-        - hnp
-        - utils
-        - grid
-    - r: 3.4
+        - ggplot2
+        - pedigree
+        - Rcpp
+        - reshape
+        - dplyr
+        - RColorBrewer
+        - truncnorm
+        - knitr
+        - rmarkdown
+        - testthat
     - r: 3.5
     - r: release
     - r: devel
@@ -31,7 +34,3 @@ notifications:
   email:
     on_success: change
     on_failure: change
-
-branches:
-  only:
-    - master
