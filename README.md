@@ -2,7 +2,7 @@
 
 [![Development](https://img.shields.io/badge/development-active-blue.svg)](https://img.shields.io/badge/development-active-blue.svg)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/AlphaPart)](https://cran.r-project.org/package=AlphaPart)
-[![Build Status](https://travis-ci.com/AlphaGenes/AlphaPart.svg?branch=main)](https://travis-ci.com/github/AlphaGenes/AlphaPart)
+[![Build Status](https://travis-ci.com/AlphaGenes/AlphaPart.svg?branch=main)](https://travis-ci.com/github/AlphaGenes/AlphaPart/builds/222967145)
 [![downloads](https://cranlogs.r-pkg.org/badges/AlphaPart)](https://cranlogs.r-pkg.org/badges/AlphaPart)
 [![total downloads](https://cranlogs.r-pkg.org/badges/grand-total/AlphaPart)](https://cranlogs.r-pkg.org/badges/grand-total/AlphaPart)
 
