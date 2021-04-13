@@ -208,16 +208,6 @@ AlphaPart <- function (x, pathNA=FALSE, recode=TRUE, unknown= NA,
     }
   }
 
-  #===================================================================
-  # Centering  to make founders has mean zero
-  #===================================================================
-  # Selecting founders and missing pedigree animals
-  xF <- dplyr::filter(x, x[,colFid] == 0 &  x[,colMid] == 0)
-  if(length(colBV)==1){
-    EBVMean <- mean(xF[, colBV[1]],  na.rm = TRUE)
-  }else{
-    EBVMean <- apply(xF[, colBV],2, mean,  na.rm = TRUE)
-  }
   #=====================================================================
   ## --- Sort and recode pedigree ---
   #=====================================================================
@@ -238,6 +228,19 @@ AlphaPart <- function (x, pathNA=FALSE, recode=TRUE, unknown= NA,
   if (sort) {
     recode <- TRUE
     x <- x[order(orderPed(ped=x[, c(colId, colFid, colMid)])), ]
+  }
+  #===================================================================
+  # Centering  to make founders has mean zero
+  #===================================================================
+  # Selecting founders and missing pedigree animals
+  xF <-
+    dplyr::filter(
+      x, (x[,colFid] == 0 | x[,colFid] == "" | is.na(x[,colFid]) == TRUE) &
+           (x[,colMid] == 0 | x[,colMid] == "" |  is.na(x[,colMid]) == TRUE))
+  if(length(colBV)==1){
+    EBVMean <- mean(xF[, colBV[1]],  na.rm = TRUE)
+  }else{
+    EBVMean <- apply(xF[, colBV],2, mean,  na.rm = TRUE)
   }
   #---------------------------------------------------------------------
   ## Recode all ids to 1:n
@@ -403,7 +406,7 @@ AlphaPart <- function (x, pathNA=FALSE, recode=TRUE, unknown= NA,
   # Original Values
   #===================================================================
   # Original pa value
-  if (center == TRUE && EBVMean > 1E-4){
+  if (center == TRUE && all(EBVMean > 1E-4) == TRUE){
     basePop <- apply(x[,c(colFid,colMid)]==0,1,all)
     for (i in 1:length(colBV)) {
       tmp$w[-1,i] <- tmp$w[-1,i] - basePop * EBVMean[i]
