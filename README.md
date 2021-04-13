@@ -5,7 +5,7 @@
 [![Build Status](https://travis-ci.com/AlphaGenes/AlphaPart.svg?branch=main)](https://travis-ci.com/github/AlphaGenes/AlphaPart/builds/222967145)
 [![AppVeyor Build
 Status](https://ci.appveyor.com/api/projects/status/9gjgy9ff2i15fa4q?svg=true)](https://ci.appveyor.com/project/Prof-ThiagoOliveira/alphapart)
-[![codecov](https://codecov.io/gh/AlphaGenes/AlphaPart/branch/main/graph/badge.svg?token=WS7YGNSOVL)](https://codecov.io/gh/AlphaGenes/AlphaPart)
+[![codecov](https://codecov.io/gh/AlphaGenes/AlphaPart/branch/version-0.8.2/graph/badge.svg?token=WS7YGNSOVL)](https://codecov.io/gh/AlphaGenes/AlphaPart)
 [![downloads](https://cranlogs.r-pkg.org/badges/AlphaPart)](https://cranlogs.r-pkg.org/badges/AlphaPart)
 [![total downloads](https://cranlogs.r-pkg.org/badges/grand-total/AlphaPart)](https://cranlogs.r-pkg.org/badges/grand-total/AlphaPart)
 
