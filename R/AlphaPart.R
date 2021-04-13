@@ -458,9 +458,14 @@ AlphaPart <- function (x, pathNA=FALSE, recode=TRUE, unknown= NA,
     timeRet <- .profilePrint(x=timeRet, task="Finalizing returned object + adding initial data", printProfile=printProfile,
                              time=Sys.time(), mem=object.size(ret), update=TRUE)
   }
-
-  if  (profile & printProfile == "end") {
-    print(timeRet)
+  #---------------------------------------------------------------------
+  # Profile
+  #---------------------------------------------------------------------
+  if (profile){
+    ret$info$profile <- timeRet
+    if (printProfile == "end") {
+      print(timeRet)
+    }
   }
   #=====================================================================
   ## --- Return ---
@@ -473,6 +478,4 @@ AlphaPart <- function (x, pathNA=FALSE, recode=TRUE, unknown= NA,
   } else {
     ret
   }
-
-
 }
