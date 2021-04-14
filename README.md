@@ -31,6 +31,6 @@ devtools::install_github("AlphaGenes/AlphaPart")
 
 -----
 
-## Contributing to `AlphaPart`
+## Contributing to AlphaPart
 
-Please, follow the contribution guide at [Contribution file](CONTRIBUTION.md) to know how to start contributing to `AlphaPart`.
+Please, follow the contribution guide at [Contributing file](CONTRIBUTING.md) to know how to start contributing to `AlphaPart`.
