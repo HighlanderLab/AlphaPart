@@ -82,7 +82,7 @@ When we merge those changes, they should be deployed to the CRAN repository as s
 
 You can use the GitHub user interface for minor changes, such as fixing a typo or updating a readme or function. You can also fork the repo and then clone it locally to view changes and run tests in your machine.
 
-### Submit your pull request and get it reviewed for our team
+### Submit your pull request and get it reviewed by our team
 
 - Once you submit your PR, others from the AlphaPart team will review it. 
 - After that, we may have questions about your PR, and we may ask you to solve them.
