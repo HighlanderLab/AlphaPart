@@ -12,6 +12,7 @@ Authors@R: c(
            email = "gregor.gorjanc@roslin.ed.ac.uk",
            comment = c(ORCID = "0000-0001-8008-2787")), 
     person("Jana","Obsteter", role="aut",
+           email = "jana.obsteter@kis.si",
            comment = c(ORCID = "0000-0003-1511-3916")), 
     person("Thiago", "de Paula Oliveira", role=c("aut"), 
            email = "thiago.oliveira@ed.ac.uk",

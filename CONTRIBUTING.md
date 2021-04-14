@@ -74,7 +74,21 @@ What we are looking for when accepting a pull request:
 - Fix problems that are important to end-users
 - Engage the community in working toward the best possible AlphaPart
 
-More details on the Pull Request will be described soon.
+A [pull request](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/about-pull-requests) is a way to suggest changes in our repository.
+
+When we merge those changes, they should be deployed to the CRAN repository as soon as we have enough tests and changes in the development version. To learn more about opening a pull request in this repository, see [Opening a pull request](#opening-a-pull-request) below.
+
+### Opening a pull request
+
+You can use the GitHub user interface for minor changes, such as fixing a typo or updating a readme or function. You can also fork the repo and then clone it locally to view changes and run tests in your machine.
+
+### Submit your pull request and get it reviewed for our team
+
+- Once you submit your PR, others from the AlphaPart team will review it. 
+- After that, we may have questions about your PR, and we may ask you to solve them.
+- Did you have an issue, such as a merge conflict? Check out our [git tutorial](https://lab.github.com/githubtraining/managing-merge-conflicts) on resolving merge conflicts and other issues.
+
+Once your PR is successfully merged, you will be proudly listed as a contributor in the [contributor chart](https://github.com/AlphaGenes/AlphaPart/graphs/contributors).
 
 -----
 
