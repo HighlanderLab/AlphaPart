@@ -12,7 +12,7 @@
 \item{n}{Integer, number of the first and last rows in \code{x} to print out
 using \code{\link{head}} and \code{\link{tail}}.}
 
-\item{...}{Arguments passed to other functions (not used at the moment).}
+\item{...}{Arguments passed to \code{print} function.}
 }
 \description{
 Print method for the output of AlphaPart function.

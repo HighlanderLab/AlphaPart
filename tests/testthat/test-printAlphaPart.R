@@ -12,7 +12,8 @@ test_that("Test print.AlphaPart", {
   
   ## Partition additive genetic values
   tmp <- AlphaPart(x=ped, colBV=c("trt1", "trt2"), center = FALSE)
-  expect_equal(print(tmp$trt1),tmp$trt1)
+  expect_equal(print(tmp$trt1[,"trt1_w"], digits=1), c(100,120,5,130,2.5,125))
   expect_equal(print(tmp$trt2),tmp$trt2)
   expect_equal(print(tmp$info),tmp$info)
 })
+

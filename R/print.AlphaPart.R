@@ -13,7 +13,7 @@
 #' @param x AlphaPart, output object from \code{\link[AlphaPart]{AlphaPart}} function.
 #' @param n Integer, number of the first and last rows in \code{x} to print out
 #' using \code{\link{head}} and \code{\link{tail}}.
-#' @param ...  Arguments passed to other functions (not used at the moment).
+#' @param ...  Arguments passed to \code{print} function.
 #'
 #' @example inst/examples/examples_AlphaPart.R
 #'
@@ -37,16 +37,14 @@ print.AlphaPart <- function (x, n=6, ...) {
   for (trt in x$info$lT) {
     cat("\n Trait:", trt, "\n\n")
     if (nI > n*2) {
-      print(head(x[[trt]]))
+      print(head(x[[trt]]), ...)
       cat("...\n")
-      print(tail(x[[trt]]))
+      print(tail(x[[trt]]), ...)
     } else {
-      print(x[[trt]])
+      print(x[[trt]], ...)
     }
   }
   cat("\n")
-
-
 }
 
 
