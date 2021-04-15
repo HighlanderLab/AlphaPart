@@ -84,7 +84,8 @@ summary.AlphaPart <- function(object, by=NULL, FUN=mean, labelSum="Sum", subset=
     object[1:nT] <- lapply(object[1:nT], FUN=function(z) z[subset, ])
   }
 
-  ret$info <- list(path=object$info$path, nP=nP, lP=lP, nT=nT, lT=lT, by=by, warn=object$info$warn, labelSum=labelSum)
+  ret$info <- list(path=object$info$path, nP=nP, lP=lP, nT=nT, lT=lT,
+                   by=by, warn=object$info$warn, labelSum=labelSum)
 
   ## --- Compute ---
 
@@ -126,6 +127,4 @@ summary.AlphaPart <- function(object, by=NULL, FUN=mean, labelSum="Sum", subset=
 
   class(ret) <- c("summaryAlphaPart", class(ret))
   ret
-
-
 }

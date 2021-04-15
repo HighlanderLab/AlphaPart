@@ -6,6 +6,7 @@
 \usage{
 \method{plot}{summaryAlphaPart}(
   x,
+  by = NULL,
   sortValue = TRUE,
   sortValueFUN = sum,
   sortValueDec = TRUE,
@@ -26,64 +27,82 @@
 )
 }
 \arguments{
-\item{x}{summaryAlphaPart, object from the \code{AlphaPart(...)} or \code{summary(AlphaPart(...), ...)} call.}
+\item{x}{summaryAlphaPart, object from the \code{AlphaPart(...)} or
+\code{summary(AlphaPart(...), ...)} call.}
 
-\item{sortValue}{Logical, affect legend attributes via sort of paths according to
-\code{sortValueFUN} function; if not logical, then ordered paths are given as a character vector.}
+\item{by}{Character, the name of a column by which summary function
+FUN should be applied; if \code{NULL} (default) summary is given
+for the whole table.}
 
-\item{sortValueFUN}{Function, that produces single value for one vector, say \code{mean} or \code{sum}.}
+\item{sortValue}{Logical, affect legend attributes via sort of paths
+according to \code{sortValueFUN} function; if not logical, then
+ordered paths are given as a character vector.}
+
+\item{sortValueFUN}{Function, that produces single value for one
+vector, say \code{mean} or \code{sum}.}
 
 \item{sortValueDec}{Logical, sort decreasing.}
 
 \item{addSum}{Logical, plot the overall trend.}
 
-\item{paths}{Character or list or characters, name of paths to plot; if \code{NULL} plot all paths; see examples.}
+\item{paths}{Character or list or characters, name of paths to plot;
+if \code{NULL} plot all paths; see examples.}
 
 \item{xlab}{Character, x-axis label.}
 
-\item{ylab}{Character, y-axis label; can be a vector of several labels if there are more traits in \code{x} (recycled!).}
+\item{ylab}{Character, y-axis label; can be a vector of several
+labels if there are more traits in \code{x} (recycled!).}
 
-\item{xlim}{Numeric, a vector of two values with x-axis limits; use a list of vectors for more traits.}
+\item{xlim}{Numeric, a vector of two values with x-axis limits; use a
+list of vectors for more traits.}
 
-\item{ylim}{Numeric, a vector of two values with y-axis limits; use a list of vectors for more traits.}
+\item{ylim}{Numeric, a vector of two values with y-axis limits; use a
+list of vectors for more traits.}
 
-\item{color}{Character, color names; by default a set of 54 colors is predefined from the \pkg{RColorBrewer} package;
-in addition a black colour is attached at the begining for the overall trend; if there are more paths than
-colors then recycling occours.}
+\item{color}{Character, color names; by default a set of 54 colors is
+predefined from the \pkg{RColorBrewer} package; in addition a black
+colour is attached at the begining for the overall trend; if there
+are more paths than colors then recycling occours.}
 
 \item{lineSize}{Numeric, line width.}
 
-\item{lineType}{Numeric, line type (recycled); can be used only if lineTypeList=NULL.}
+\item{lineType}{Numeric, line type (recycled); can be used only if
+lineTypeList=NULL.}
 
-\item{lineTypeList}{List, named list of numeric values that help to point out a set of paths
-(distinguished with line type) within upper level of paths (distinguished by,
-color), e.g., lineTypeList=list("-1"=1, "-2"=2, def=1) will lead to use
-of line type 1 for paths having "-1" at the end of path name and line type 2,
-for paths having "-2" at the end of path name, while line type 1 (default) will,
-be used for other paths; specification of this argument also causes recycling
-of colors for the upper level of paths; if NULL all lines have a standard line type,
-otherwise \code{lineType} does not have any effect.}
+\item{lineTypeList}{List, named list of numeric values that help to
+point out a set of paths (distinguished with line type) within
+upper level of paths (distinguished by, color), e.g.,
+lineTypeList=list("-1"=1, "-2"=2, def=1) will lead to use of line
+type 1 for paths having "-1" at the end of path name and line type
+2, for paths having "-2" at the end of path name, while line type 1
+(default) will, be used for other paths; specification of this
+argument also causes recycling of colors for the upper level of
+paths; if NULL all lines have a standard line type, otherwise
+\code{lineType} does not have any effect.}
 
 \item{useDirectLabels}{Logical, use directlabels package for legend.}
 
 \item{method}{List, method for direct.label.}
 
-\item{labelPath}{Character, legend title; used only if \code{useDirectLabels=FALSE}.}
+\item{labelPath}{Character, legend title; used only if
+\code{useDirectLabels=FALSE}.}
 
-\item{...}{Arguments passed to other functions (not used at the moment).}
+\item{...}{Arguments passed to other functions (not used at the
+moment).}
 }
 \value{
-A list of ggplot objects that can be further modified or displayed.
-For each trait in \code{x} there is one plot visualising summarized values.
+A list of ggplot objects that can be further modified or
+  displayed.  For each trait in \code{x} there is one plot
+  visualising summarized values.
 }
 \description{
 A function to plot summary of partitioned breeding values.
 }
 \details{
-Information in summaries of partitions of breeding values can be
-overhelming due to a large volume of numbers. Plot method can be used to
-visualise this data in eye pleasing way using ggplot2
-graphics.
+Information in summaries of partitions of breeding values
+  can be overhelming due to a large volume of numbers. Plot method
+  can be used to visualise this data in eye pleasing way using
+  ggplot2 graphics.
 }
 \examples{
 \donttest{
