@@ -38,6 +38,7 @@ Please, follow the contribution guide at [Contributing file](CONTRIBUTING.md) to
 # Usage
 
 ```r
+library(AlphaPart)
 ## Small pedigree with additive genetic (=breeding) values
 ped <- data.frame(  id=c(  1,   2,   3,   4,   5,   6),
                    fid=c(  0,   0,   2,   0,   4,   0),
