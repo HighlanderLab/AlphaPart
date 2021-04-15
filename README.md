@@ -100,10 +100,14 @@ print(tmp)
 
 # Plot summary output
 (tmp_p <- plot(tmp_s))
+```
+![](man/figures/README-example1.png)<!-- -->
 
+```r
 # Changing plot layout
 tmp_p$trt1 +
  ylab("Treatment 1") +
  theme_bw() 
 ```
+![](man/figures/README-example2.png)<!-- -->
 
