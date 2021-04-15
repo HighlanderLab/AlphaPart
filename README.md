@@ -77,7 +77,7 @@ print(tmp)
 
 
 ## Summarize by generation
-summary(tmp, by="gen")
+(tmp_s <- summary(tmp, by="gen"))
 
 #>  Summary of partitions of breeding values 
 #>    - paths: 2 (A, B)
@@ -96,5 +96,13 @@ summary(tmp, by="gen")
 #> 1   1 2 105.0 50 55.0
 #> 2   2 2 102.5 25 77.5
 #> 3   3 2  97.5 45 52.5
+
+# Plot summary output
+(tmp_p <- plot(tmp_s))
+
+# Changing plot layout
+tmp_p$trt1 +
+ ylab("Treatment 1") +
+ theme_bw() 
 ```
 
