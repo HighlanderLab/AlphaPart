@@ -102,12 +102,10 @@ If \code{profile=TRUE}, profiling info is printed on screen to spot
 any computational bottlenecks.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
-
-A function to partition breeding values by a path variable. The
-partition method is described in García-Cortés et al., 2008:
-Partition of the genetic trend to validate multiple selection
-decisions.  Animal : an international journal of animal
+A function to partition breeding values by a path
+variable. The partition method is described in García-Cortés et
+al., 2008: Partition of the genetic trend to validate multiple
+selection decisions.  Animal : an international journal of animal
 bioscience. DOI: 10.1017/S175173110800205X
 }
 \details{

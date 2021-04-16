@@ -1,10 +1,10 @@
 #' @title AlphaPart.R
 #'
-#' @description A function to partition breeding values by a path variable. The
-#' partition method is described in García-Cortés et al., 2008:
-#' Partition of the genetic trend to validate multiple selection
-#' decisions.  Animal : an international journal of animal
-#' bioscience. DOI: 10.1017/S175173110800205X
+#' @description A function to partition breeding values by a path
+#'   variable. The partition method is described in García-Cortés et
+#'   al., 2008: Partition of the genetic trend to validate multiple
+#'   selection decisions.  Animal : an international journal of animal
+#'   bioscience. DOI: 10.1017/S175173110800205X
 #'
 #' @usage
 #' AlphaPart(x, pathNA, recode, unknown, sort, verbose, profile,
@@ -131,7 +131,6 @@
 #' @useDynLib AlphaPart, .registration = TRUE
 #' @importFrom Rcpp sourceCpp
 #'
-#' @export
 #' @importFrom utils str
 #' @importFrom pedigree orderPed
 #' @importFrom gdata NAToUnknown
@@ -140,6 +139,8 @@
 #' @importFrom gdata object.size
 #' @importFrom stats aggregate
 #' @importFrom dplyr filter
+#'
+#' @export
 
 AlphaPart <- function (x, pathNA=FALSE, recode=TRUE, unknown= NA,
                        sort=TRUE, verbose=1, profile=FALSE,
