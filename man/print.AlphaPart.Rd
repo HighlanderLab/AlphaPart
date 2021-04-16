@@ -17,10 +17,10 @@ print out using \code{\link{head}} and \code{\link{tail}}.}
 }
 \description{
 Partitioning of breeding values if often performed on
-  quite large datasets, which quickly fills in the whole
-  screen. Print method therefore prints out paths, number of
-  individuals and the first and the last few lines for each trait to
-  quickly see what kind of data is in \code{x}.
+quite large datasets, which quickly fills in the whole
+screen. Print method therefore prints out paths, number of
+individuals and the first and the last few lines for each trait to
+quickly see what kind of data is in \code{x}.
 }
 \examples{
 ## Small pedigree with additive genetic (=breeding) values
@@ -49,5 +49,5 @@ summary(tmp, by="gen")
 }
 \seealso{
 \code{\link[AlphaPart]{AlphaPart}}, \code{\link{head}},
-  \code{\link{tail}}.
+\code{\link{tail}}.
 }

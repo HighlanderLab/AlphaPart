@@ -141,9 +141,6 @@
 #' @importFrom stats aggregate
 #' @importFrom dplyr filter
 
-
-
-
 AlphaPart <- function (x, pathNA=FALSE, recode=TRUE, unknown= NA,
                        sort=TRUE, verbose=1, profile=FALSE,
                        printProfile="end", pedType="IPP", colId=1,

@@ -4,10 +4,10 @@
 \alias{savePlot.plotSummaryAlphaPart}
 \alias{savePlot.default}
 \title{Save plot objects on the disk for permanent storage. Function
-  \code{\link[grDevices]{savePlot}} from the \pkg{grDevices} package
-  works for current page on graphical device. This is an attempt to
-  make this function generic so that one can define \code{savePlot}
-  methods for particular needs.}
+\code{\link[grDevices]{savePlot}} from the \pkg{grDevices} package
+works for current page on graphical device. This is an attempt to
+make this function generic so that one can define \code{savePlot}
+methods for particular needs.}
 \usage{
 \method{savePlot}{plotSummaryAlphaPart}(x, filename, type,
   device, pre.hook, traitsAsDir, ...)
@@ -38,7 +38,7 @@ screen during the process and at the end invisibly returned.
 }
 \description{
 Save plot objects of class
-  \code{plotSummaryAlphaPart} on the disk for permanent storage.
+\code{plotSummaryAlphaPart} on the disk for permanent storage.
 }
 \examples{
 ## Partition additive genetic values

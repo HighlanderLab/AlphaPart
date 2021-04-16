@@ -75,17 +75,17 @@ moment).}
 }
 \value{
 A list of ggplot objects that can be further modified or
-  displayed.  For each trait in \code{x} there is one plot
-  visualising summarized values.
+displayed.  For each trait in \code{x} there is one plot
+visualising summarized values.
 }
 \description{
 A function to plot summary of partitioned breeding values.
 }
 \details{
 Information in summaries of partitions of breeding values
-  can be overhelming due to a large volume of numbers. Plot method
-  can be used to visualise this data in eye pleasing way using
-  ggplot2 graphics.
+can be overhelming due to a large volume of numbers. Plot method
+can be used to visualise this data in eye pleasing way using
+ggplot2 graphics.
 }
 \examples{
 \donttest{

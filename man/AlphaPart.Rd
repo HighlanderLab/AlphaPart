@@ -75,17 +75,17 @@ effect. The Default is \code{center = TRUE}.}
 }
 \value{
 An object of class \code{AlphaPart}, which can be used in
-  further analyses - there is a handy summary method
-  (\code{\link[AlphaPart]{summary.AlphaPart}} works on objects of
-  \code{AlphaPart} class) and a plot method for its output
-  (\code{\link[AlphaPart]{plot.summaryAlphaPart}} works on objects of
-  \code{summaryAlphaPart} class).  Class \code{AlphaPart} is a
-  list. The first \code{length(colBV)} components (one for each trait
-  and named with trait label, say trt) are data frames. Each
-  data.frame contains: \item{\code{x}}{columns from initial data
-  \code{x}} \item{trt_pa}{parent average} \item{trt_w}{Mendelian
-  sampling term} \item{trt_path1, trt_path2, ...}{breeding value
-  partitions}
+further analyses - there is a handy summary method
+(\code{\link[AlphaPart]{summary.AlphaPart}} works on objects of
+\code{AlphaPart} class) and a plot method for its output
+(\code{\link[AlphaPart]{plot.summaryAlphaPart}} works on objects of
+\code{summaryAlphaPart} class).  Class \code{AlphaPart} is a
+list. The first \code{length(colBV)} components (one for each trait
+and named with trait label, say trt) are data frames. Each
+data.frame contains: \item{\code{x}}{columns from initial data
+\code{x}} \item{trt_pa}{parent average} \item{trt_w}{Mendelian
+sampling term} \item{trt_path1, trt_path2, ...}{breeding value
+partitions}
 
 The last component of returned object is also a list named
 \code{info} with the following components holding meta information
@@ -102,6 +102,8 @@ If \code{profile=TRUE}, profiling info is printed on screen to spot
 any computational bottlenecks.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 A function to partition breeding values by a path variable. The
 partition method is described in García-Cortés et al., 2008:
 Partition of the genetic trend to validate multiple selection
@@ -110,12 +112,12 @@ bioscience. DOI: 10.1017/S175173110800205X
 }
 \details{
 Pedigree in \code{x} must be valid in a sense that there
-  are:\itemize{ \item{no directed loops (the simplest example is that
-  the individual identification is equal to the identification of a
-  father or mother)} \item{no bisexuality, e.g., fathers most not
-  appear as mothers} \item{father and/or mother can be unknown
-  (missing) - defined with any "code" that is dif ferent from
-  existing identif ications} }
+are:\itemize{ \item{no directed loops (the simplest example is that
+the individual identification is equal to the identification of a
+father or mother)} \item{no bisexuality, e.g., fathers most not
+appear as mothers} \item{father and/or mother can be unknown
+(missing) - defined with any "code" that is dif ferent from
+existing identif ications} }
 
 Unknown (missing) values for breeding values are propagated down the
 pedigree to provide all available values from genetic
@@ -165,14 +167,14 @@ summary(tmp, by="gen")
 }
 \references{
 Garcia-Cortes, L. A. et al. (2008) Partition of the
-  genetic trend to validate multiple selection decisions. Animal,
-  2(6):821-824. \url{http://dx.doi.org/10.1017/S175173110800205X}
+genetic trend to validate multiple selection decisions. Animal,
+2(6):821-824. \url{http://dx.doi.org/10.1017/S175173110800205X}
 }
 \seealso{
 \code{\link[AlphaPart]{summary.AlphaPart}} for summary
-  method that works on output of \code{AlphaPart},
-  \code{\link[AlphaPart]{pedSetBase}} for setting base population,
-  \code{\link[AlphaPart]{pedFixBirthYear}} for imputing unknown
-  (missing) birth years, \code{\link[pedigree]{orderPed}} in
-  \pkg{pedigree} package for sorting pedigree
+method that works on output of \code{AlphaPart},
+\code{\link[AlphaPart]{pedSetBase}} for setting base population,
+\code{\link[AlphaPart]{pedFixBirthYear}} for imputing unknown
+(missing) birth years, \code{\link[pedigree]{orderPed}} in
+\pkg{pedigree} package for sorting pedigree
 }

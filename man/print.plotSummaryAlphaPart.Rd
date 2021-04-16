@@ -3,7 +3,7 @@
 \name{print.plotSummaryAlphaPart}
 \alias{print.plotSummaryAlphaPart}
 \title{Print a plot generate by the function
-  \code{plotSummaryAlphaPart}}
+\code{plotSummaryAlphaPart}}
 \usage{
 \method{print}{plotSummaryAlphaPart}(x, ask, ...)
 }
@@ -18,7 +18,7 @@ moment).}
 }
 \description{
 Plot output object from
-  \code{\link[AlphaPart]{plot.summaryAlphaPart}}.
+\code{\link[AlphaPart]{plot.summaryAlphaPart}}.
 }
 \examples{
 ## Partition additive genetic values

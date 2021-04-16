@@ -15,7 +15,7 @@ moment).}
 }
 \description{
 Print method for objects of the class
-  \code{summaryAlphaPart} (result of \code{summary(AlphaPart(...))}).
+\code{summaryAlphaPart} (result of \code{summary(AlphaPart(...))}).
 }
 \examples{
 ## --- Partition additive genetic values by loc ---

@@ -31,25 +31,25 @@ moment).}
 }
 \value{
 An object of class \code{summaryAlphaPart}, which is a list
-  of data frames with summary statistics on breeding value
-  partitions. For each trait there a dataframe holds summary for the
-  "whole/original" breeding value and its partitions.  In addition
-  another list is added (named \code{info}) with the following
-  components holdinfg meta info: \item{path}{column name holding path
-  information} \item{nP}{number of paths} \item{lP}{path labels}
-  \item{nT}{number of traits} \item{lT}{trait labels}
-  \item{by}{column name of variable by which summary was performed}
-  \item{warn}{potential warning messages associated with this object}
-  \item{labelSum}{column name of summary for "whole/original"
-  breeding values}
+of data frames with summary statistics on breeding value
+partitions. For each trait there a dataframe holds summary for the
+"whole/original" breeding value and its partitions.  In addition
+another list is added (named \code{info}) with the following
+components holdinfg meta info: \item{path}{column name holding path
+information} \item{nP}{number of paths} \item{lP}{path labels}
+\item{nT}{number of traits} \item{lT}{trait labels}
+\item{by}{column name of variable by which summary was performed}
+\item{warn}{potential warning messages associated with this object}
+\item{labelSum}{column name of summary for "whole/original"
+breeding values}
 
 There is a handy plot method (\code{\link[AlphaPart]{plot.summaryAlphaPart}}) for output.
 }
 \description{
 Breedng values of individuals are often summarized,
-  either by year of birth or some other classification. Function
-  \code{summary.AlphaPart} provides a way to ease the computation of
-  such summaries on partitions of breeding values.
+either by year of birth or some other classification. Function
+\code{summary.AlphaPart} provides a way to ease the computation of
+such summaries on partitions of breeding values.
 }
 \examples{
 ## --- Partition additive genetic values by loc ---
@@ -77,6 +77,6 @@ ret <- summary(res, by="gen", subset=res[[1]]$country == "domestic")
 }
 \seealso{
 \code{\link[AlphaPart]{AlphaPart}} for partitioning breeding
-  values, \code{\link[AlphaPart]{plot.summaryAlphaPart}} for plotting
-  output of summary method
+values, \code{\link[AlphaPart]{plot.summaryAlphaPart}} for plotting
+output of summary method
 }
