@@ -6,7 +6,7 @@
 \usage{
 AlphaPart(x, pathNA, recode, unknown, sort, verbose, profile,
   printProfile, pedType, colId, colFid, colMid, colPath, colBV,
-  colBy, center)
+  colBy, center, centerEBV)
 }
 \arguments{
 \item{x}{data.frame , with (at least) the following columns:
@@ -71,7 +71,11 @@ holding group information (see details).}
 population mean and attributes it as parent average effect rather
 than mendelian sampling effect, otherwise if center=FALSE, the base
 population values are only accounted as mendelian sampling
-effect. The Default is \code{center = TRUE}.}
+effect. Default is \code{center = TRUE}.}
+
+\item{centerEBV}{Logical, if \code{centerEBV=TRUE} center the EBVs in
+order to the base population has mean of zero. Default is
+\code{center = FALSE}.}
 }
 \value{
 An object of class \code{AlphaPart}, which can be used in

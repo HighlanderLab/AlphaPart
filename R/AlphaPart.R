@@ -9,7 +9,7 @@
 #' @usage
 #' AlphaPart(x, pathNA, recode, unknown, sort, verbose, profile,
 #'   printProfile, pedType, colId, colFid, colMid, colPath, colBV,
-#'   colBy, center)
+#'   colBy, center, centerEBV)
 #'
 #' @details Pedigree in \code{x} must be valid in a sense that there
 #'   are:\itemize{ \item{no directed loops (the simplest example is that
@@ -98,7 +98,10 @@
 #'   population mean and attributes it as parent average effect rather
 #'   than mendelian sampling effect, otherwise if center=FALSE, the base
 #'   population values are only accounted as mendelian sampling
-#'   effect. The Default is \code{center = TRUE}.
+#'   effect. Default is \code{center = TRUE}.
+#' @param centerEBV Logical, if \code{centerEBV=TRUE} center the EBVs in
+#'   order to the base population has mean of zero. Default is
+#'   \code{center = FALSE}.
 #'
 #' @example inst/examples/examples_AlphaPart.R
 #' @return An object of class \code{AlphaPart}, which can be used in
@@ -146,7 +149,7 @@ AlphaPart <- function (x, pathNA=FALSE, recode=TRUE, unknown= NA,
                        sort=TRUE, verbose=1, profile=FALSE,
                        printProfile="end", pedType="IPP", colId=1,
                        colFid=2, colMid=3, colPath=4, colBV=5:ncol(x),
-                       colBy=NULL, center = TRUE) {
+                       colBy=NULL, center = TRUE, centerEBV = FALSE) {
 
   # TODO: move BV to another object (to simplif y work with McMC or some
   # other TODO: sortPedigree: A rabimo tole nujno za to funkcijo ali
@@ -235,10 +238,24 @@ AlphaPart <- function (x, pathNA=FALSE, recode=TRUE, unknown= NA,
     dplyr::filter(
       x, (x[,colFid] == 0 | x[,colFid] == "" | is.na(x[,colFid]) == TRUE) &
            (x[,colMid] == 0 | x[,colMid] == "" |  is.na(x[,colMid]) == TRUE))
-  if(length(colBV)==1){
-    EBVMean <- mean(xF[, colBV[1]],  na.rm = TRUE)
-  }else{
-    EBVMean <- apply(xF[, colBV],2, mean,  na.rm = TRUE)
+  if (centerEBV == TRUE) {
+    if(length(colBV)==1){
+      EBVMean <- mean(xF[, colBV[1]],  na.rm = TRUE)
+      x[,colBV[1]] <- x[, colBV[1]] - EBVMean
+      EBVMean <- 0
+    }else{
+      EBVMean <- apply(xF[, colBV],2, mean,  na.rm = TRUE)
+      for (i in 1:length(colBV)) {
+        x[, colBV[i]] <- x[, colBV[i]] - EBVMean[i]
+      }
+      EBVMean <- 0
+    }
+  }else {
+    if(length(colBV)==1){
+      EBVMean <- mean(xF[, colBV[1]],  na.rm = TRUE)
+    }else{
+      EBVMean <- apply(xF[, colBV],2, mean,  na.rm = TRUE)
+    }
   }
   #---------------------------------------------------------------------
   ## Recode all ids to 1:n
