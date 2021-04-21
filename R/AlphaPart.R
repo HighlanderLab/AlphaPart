@@ -141,7 +141,6 @@
 #' @importFrom gdata unknownToNA
 #' @importFrom gdata object.size
 #' @importFrom stats aggregate
-#' @importFrom dplyr filter
 #'
 #' @export
 
