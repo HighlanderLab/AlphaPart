@@ -77,7 +77,7 @@ test_that("Test the output of AlphaPart function", {
   ped3$fidI <- match(ped3$fid, ped3$id)
   ped3$midI <- match(ped3$mid, ped3$id)
     ## ... to test recode and unknown argument
-
+  
   ret   <- AlphaPart(x=ped[, c("id", "fid", "mid", "pat", "trt1", "trt2")],  pathNA=TRUE, verbose=0)
   ret2  <- AlphaPart(x=ped,                                                  pathNA=TRUE, verbose=0, colId=1,     colFid=2,      colMid=3,      colPath=6,     colBV=c(7, 9))
   ret3  <- AlphaPart(x=ped,                                                  pathNA=TRUE, verbose=0, colId="id",  colFid="fid",  colMid="mid",  colPath="pat", colBV=c("trt1", "trt2"))
@@ -384,3 +384,4 @@ test_that("Test profile", {
   tmp2 <- AlphaPart(x=ped, colBV=c("trt1", "trt2"), profile=TRUE,printProfile = "fly")
   expect_equal(tmp1$info$profile,  tmp2$info$profile)
 })
+

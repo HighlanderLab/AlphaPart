@@ -230,33 +230,6 @@ AlphaPart <- function (x, pathNA=FALSE, recode=TRUE, unknown= NA,
     recode <- TRUE
     x <- x[order(orderPed(ped=x[, c(colId, colFid, colMid)])), ]
   }
-  #===================================================================
-  # Centering  to make founders has mean zero
-  #===================================================================
-  # Selecting founders and missing pedigree animals
-  xF <-
-    dplyr::filter(
-      x, (x[,colFid] == 0 | x[,colFid] == "" | is.na(x[,colFid]) == TRUE) &
-           (x[,colMid] == 0 | x[,colMid] == "" |  is.na(x[,colMid]) == TRUE))
-  if (centerEBV == TRUE) {
-    if(length(colBV)==1){
-      EBVMean <- mean(xF[, colBV[1]],  na.rm = TRUE)
-      x[,colBV[1]] <- x[, colBV[1]] - EBVMean
-      EBVMean <- 0
-    }else{
-      EBVMean <- apply(xF[, colBV],2, mean,  na.rm = TRUE)
-      for (i in 1:length(colBV)) {
-        x[, colBV[i]] <- x[, colBV[i]] - EBVMean[i]
-      }
-      EBVMean <- 0
-    }
-  }else {
-    if(length(colBV)==1){
-      EBVMean <- mean(xF[, colBV[1]],  na.rm = TRUE)
-    }else{
-      EBVMean <- apply(xF[, colBV],2, mean,  na.rm = TRUE)
-    }
-  }
   #---------------------------------------------------------------------
   ## Recode all ids to 1:n
   if (recode) {
@@ -377,6 +350,33 @@ AlphaPart <- function (x, pathNA=FALSE, recode=TRUE, unknown= NA,
   y[1, ] <- 0
   P <- c(0, P)
   if (groupSummary) g <- c(0, g)
+  #===================================================================
+  # Centering  to make founders has mean zero
+  #===================================================================
+  # Selecting founders and missing pedigree animals
+  xF <- y[c(y[,"fid"]==0 & y[,"mid"]==0),]
+  colBVy <- (ncol(y)-length(colBV)+1):ncol(y)
+  if (centerEBV == TRUE) {
+    if(length(colBV)==1){
+      EBVMean <- mean(xF[-1, colBVy[1]],  na.rm = TRUE)
+      y[-1,colBVy[1]] <- y[-1, colBVy[1]] - EBVMean
+      x[,colBV[1]] <- x[,colBV[1]] - EBVMean
+      EBVMean <- 0
+    }else{
+      EBVMean <- apply(xF[-1, colBVy],2, mean,  na.rm = TRUE)
+      for (i in 1:length(colBV)) {
+        y[-1, colBVy[i]] <- y[-1, colBVy[i]] - EBVMean[i]
+        x[,colBV[i]] <- x[,colBV[i]] - EBVMean
+      }
+      EBVMean <- 0
+    }
+  }else {
+    if(length(colBV)==1){
+      EBVMean <- mean(xF[-1, colBVy[1]],  na.rm = TRUE)
+    }else{
+      EBVMean <- apply(xF[-1, colBVy],2, mean,  na.rm = TRUE)
+    }
+  }
   #---------------------------------------------------------------------
   ## Compute
   if (!groupSummary) {
@@ -422,10 +422,10 @@ AlphaPart <- function (x, pathNA=FALSE, recode=TRUE, unknown= NA,
   #===================================================================
   # Original pa value
   if (center == TRUE && all(EBVMean > 1E-4) == TRUE){
-    basePop <- apply(x[,c(colFid,colMid)]==0,1,all)
+    basePop <- apply(y[-1,c(colFid,colMid)]==0,1,all)
     for (i in 1:length(colBV)) {
       tmp$w[-1,i] <- tmp$w[-1,i] - basePop * EBVMean[i]
-      tmp$pa[-1,i] <-tmp$pa[-1,i] + x[, colBV[i]] * basePop -
+      tmp$pa[-1,i] <-tmp$pa[-1,i] + y[-1, colBV[i]] * basePop -
         tmp$w[-1,i] * basePop
     }
   }
