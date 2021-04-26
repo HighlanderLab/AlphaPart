@@ -1,43 +1,50 @@
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
 # AlphaPart
 
-[![Development](https://img.shields.io/badge/development-active-blue.svg)](https://img.shields.io/badge/development-active-blue.svg)
-[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/AlphaPart)](https://cran.r-project.org/package=AlphaPart)
-[![Build Status](https://travis-ci.com/AlphaGenes/AlphaPart.svg?branch=main)](https://travis-ci.com/github/AlphaGenes/AlphaPart/builds/222967145)
-[![AppVeyor Build
-Status](https://ci.appveyor.com/api/projects/status/9gjgy9ff2i15fa4q?svg=true)](https://ci.appveyor.com/project/Prof-ThiagoOliveira/alphapart)
-[![codecov](https://codecov.io/gh/AlphaGenes/AlphaPart/branch/version-0.8.2/graph/badge.svg?token=WS7YGNSOVL)](https://codecov.io/gh/AlphaGenes/AlphaPart)
-[![downloads](https://cranlogs.r-pkg.org/badges/AlphaPart)](https://cranlogs.r-pkg.org/badges/AlphaPart)
-[![total downloads](https://cranlogs.r-pkg.org/badges/grand-total/AlphaPart)](https://cranlogs.r-pkg.org/badges/grand-total/AlphaPart)
+| Package                                                                                                                                | Status                                                                                                                                                           | Coverage                                                                                                                                                   | GitHub                                                                                                                                                                     | Miscellaneous                                                                                                                                                |
+|----------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/AlphaPart)](https://cran.r-project.org/package=AlphaPart)                  | [![Development](https://img.shields.io/badge/development-active-blue.svg)](https://img.shields.io/badge/development-active-blue.svg)                             | [![codecov](https://codecov.io/gh/AlphaGenes/AlphaPart/branch/version-0.8.2/graph/badge.svg?token=WS7YGNSOVL)](https://codecov.io/gh/AlphaGenes/AlphaPart) | [![GitHub version](https://img.shields.io/badge/GitHub-0.6.8.9000-orange.svg?style=flat-square)](https://github.com/AlphaGenes/AlphaPart/)                                 | [![downloads](https://cranlogs.r-pkg.org/badges/AlphaPart)](https://cranlogs.r-pkg.org/badges/AlphaPart) <!-- line break 1 -->                               |
+| [![CRAN Checks](https://cranchecks.info/badges/summary/AlphaPart)](https://cran.r-project.org/web/checks/check_results_AlphaPart.html) | [![Build Status](https://travis-ci.com/AlphaGenes/AlphaPart.svg?branch=main)](https://travis-ci.com/github/AlphaGenes/AlphaPart/builds/222967145)                | [![lints](https://github.com//AlphaGenes/AlphaPart/workflows/lint/badge.svg)](https://github.com/AlphaGenes/AlphaPart/)                                    | [![Forks](https://img.shields.io/badge/forks-NA-blue.svg)](https://github.com/AlphaGenes/AlphaPart/)                                                                       | [![total downloads](https://cranlogs.r-pkg.org/badges/grand-total/AlphaPart)](https://cranlogs.r-pkg.org/badges/grand-total/AlphaPart) <!-- line break 2 --> |
+| [![minimal R version](https://img.shields.io/badge/R%3E%3D-3.5.0-6666ff.svg)](https://cran.r-project.org/)                             | [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/9gjgy9ff2i15fa4q?svg=true)](https://ci.appveyor.com/project/Prof-ThiagoOliveira/alphapart) |                                                                                                                                                            | [![Github Issues](https://img.shields.io/badge/issues-NA-red.svg)](https://github.com/AlphaGenes/AlphaPart/issues)                                                         | [![Licence](https://img.shields.io/badge/licence-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html) <!-- line break 3 -->                       |
+| [![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html)             | [![R build status](https://github.com/AlphaGenes/AlphaPart/workflows/R-CMD-check/badge.svg)](https://github.com/AlphaGenes/AlphaPart/)                           |                                                                                                                                                            | [![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/AlphaGenes/AlphaPart.svg)](https://github.com/AlphaGenes/AlphaPart/) <!-- line break 4 --> |                                                                                                                                                              |
 
 # Overview
 
-A software that implements a method for **partitioning genetic trends** to quantify the sources of genetic gain in breeding programmes. The partitioning method is described in [Garcia-Cortes et al. (2008)](https://doi.org/10.1017/S175173110800205X). The package includes the main function `AlphaPart` for partitioning breeding values and auxiliary functions for manipulating data and summarizing, visualizing, and saving outputs.
-
+A software that implements a method for **partitioning genetic trends**
+to quantify the sources of genetic gain in breeding programmes. The
+partitioning method is described in [Garcia-Cortes et
+al. (2008)](https://doi.org/10.1017/S175173110800205X). The package
+includes the main function `AlphaPart` for partitioning breeding values
+and auxiliary functions for manipulating data and summarizing,
+visualizing, and saving outputs.
 
 # Instalation
 
-```r
+``` r
 # The easiest way to get AlphaPart
 install.packages("AlphaPart")
 ```
 
 ## Development version
 
-To get a bug fix or to use a feature from the development version, you can install the development version of `AlphaPart` from GitHub.
+To get a bug fix or to use a feature from the development version, you
+can install the development version of `AlphaPart` from GitHub.
 
-```r
+``` r
 install.packages("devtools")
 devtools::install_github("AlphaGenes/AlphaPart")
 ```
 
 # Contributing to AlphaPart
 
-
-Please, follow the contribution guide at [Contributing file](CONTRIBUTING.md) to know how to start contributing to `AlphaPart`.
+Please, follow the contribution guide at [Contributing
+file](CONTRIBUTING.md) to know how to start contributing to `AlphaPart`.
 
 # Usage
 
-```r
+``` r
 library(AlphaPart)
 ## Small pedigree with additive genetic (=breeding) values
 ped <- data.frame(  id=c(  1,   2,   3,   4,   5,   6),
@@ -101,13 +108,14 @@ print(tmp)
 # Plot summary output
 (tmp_p <- plot(tmp_s))
 ```
+
 ![](man/figures/README-example1.png)<!-- -->
 
-```r
+``` r
 # Changing plot layout
 tmp_p$trt1 +
  ylab("Treatment 1") +
  theme_bw() 
 ```
-![](man/figures/README-example2.png)<!-- -->
 
+![](man/figures/README-example2.png)<!-- -->
