@@ -365,7 +365,7 @@ AlphaPart <- function (x, pathNA=FALSE, recode=TRUE, unknown= NA,
       EBVMean <- apply(xF[-1, colBVy],2, mean,  na.rm = TRUE)
       for (i in 1:length(colBV)) {
         y[-1, colBVy[i]] <- y[-1, colBVy[i]] - EBVMean[i]
-        x[,colBV[i]] <- x[,colBV[i]] - EBVMean
+        x[,colBV[i]] <- x[,colBV[i]] - EBVMean[i]
       }
       EBVMean <- 0
     }
