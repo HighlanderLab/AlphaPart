@@ -12,7 +12,7 @@ test_that("Test summary.AlphaPart", {
                      gen=c(  1,   1,   2,   2,   3,   3))
 
   ## Partition additive genetic values
-  tmp <- AlphaPart(x=ped, colBV=c("trt1", "trt2"))
+  tmp <- AlphaPart(x=ped, colBV=c("trt1", "trt2"), center = FALSE)
   ##
   ##  Trait: trt1
   ##
@@ -38,7 +38,7 @@ test_that("Test summary.AlphaPart", {
   expect_error(summary(tmp, by="gen", FUN=range))
   x <- summary(tmp, by="gen")
   ##
-  ## Trait: trt1 
+  ## Trait: trt1
   ##
   ##   gen N   Sum     A    B    C
   ## 1   1 2 110.0 110.0  0.0  0.0
@@ -46,7 +46,7 @@ test_that("Test summary.AlphaPart", {
   ## 3   3 2 125.0  27.5 32.5 65.0
   ##
   ##
-  ##  Trait: trt2 
+  ##  Trait: trt2
   ##
   ##   gen N   Sum      A  B     C
   ## 1   1 2 105.0 105.00  0  0.00
@@ -94,7 +94,7 @@ test_that("Test summary.AlphaPart", {
   ## Test the direct use of by group analysis in the AlphaPart function
   ped$gen <- factor(ped$gen)
   tmp1 <- summary(AlphaPart(x=ped, colBV=c("trt1", "trt2")), by="gen")
-  tmp2 <- AlphaPart(x=ped, colBV=c("trt1", "trt2"), colBy="gen")
+  tmp2 <- AlphaPart(x=ped, colBV=c("trt1", "trt2"), colBy="gen", center=FALSE)
   expect_equal(tmp1, tmp2)
 
 })

@@ -77,7 +77,7 @@ test_that("Test the output of AlphaPart function", {
   ped3$fidI <- match(ped3$fid, ped3$id)
   ped3$midI <- match(ped3$mid, ped3$id)
     ## ... to test recode and unknown argument
-
+  
   ret   <- AlphaPart(x=ped[, c("id", "fid", "mid", "pat", "trt1", "trt2")],  pathNA=TRUE, verbose=0)
   ret2  <- AlphaPart(x=ped,                                                  pathNA=TRUE, verbose=0, colId=1,     colFid=2,      colMid=3,      colPath=6,     colBV=c(7, 9))
   ret3  <- AlphaPart(x=ped,                                                  pathNA=TRUE, verbose=0, colId="id",  colFid="fid",  colMid="mid",  colPath="pat", colBV=c("trt1", "trt2"))
@@ -115,7 +115,7 @@ test_that("Test the output of AlphaPart function", {
 
   ## --- Check the meta info component ---
 
-  expect_equal(as.character(ret$info$path), "pat", checkNames=FALSE)
+  expect_equal(as.character(ret$info$path), "pat", ignore_attr=FALSE)
   expect_equal(ret$info$nP, 4)
   expect_equal(ret$info$lP, c("A", "B", "C", "XXX"))
   expect_equal(ret$info$nT, 2)
@@ -144,7 +144,8 @@ test_that("Test computation", {
       trt2=c(0.10,  0.24, -0.30,  0.17, -0.21,  0.13,     0,     0,     0,     0,  0.20,     0,  0.00))
 
 
-  ret   <- AlphaPart(x=ped[, c("id", "fid", "mid", "pat", "trt1", "trt2")],  pathNA=TRUE, verbose=0)
+  ret   <- AlphaPart(x=ped[, c("id", "fid", "mid", "pat", "trt1", "trt2")],  pathNA=TRUE, verbose=0,
+                     center=FALSE)
 
   ## --- Check computations ---
 
@@ -238,7 +239,7 @@ test_that("Test computation", {
   ##    id  fid  mid   path  trt1 trt1_pa trt1_w trt1_A trt1_B trt1_C trt1_XXX
   ## 1   A <NA> <NA>      A  0.56    0.00   0.56   0.56   0.00    0.0    0.000
   ## --> base animal from path 1 and all AGV is from path A
-  expect_equal(as.vector(unlist(ret$trt1[1, -(1:4)])), c(0.56, 0, 0.56, 0.56, 0, 0, 0), checkNames=FALSE)
+  expect_equal(as.vector(unlist(ret$trt1[1, -(1:4)])), c(0.56, 0, 0.56, 0.56, 0, 0, 0), ignore_attr=FALSE)
 
   ##    id  fid  mid   path  trt1 trt1_pa trt1_w trt1_A trt1_B trt1_C trt1_XXX
   ## 2   B <NA> <NA>      A  0.04    0.00   0.04   0.04   0.00    0.0    0.000
@@ -247,12 +248,12 @@ test_that("Test computation", {
   ##    id  fid  mid   path  trt1 trt1_pa trt1_w trt1_A trt1_B trt1_C trt1_XXX
   ## 3   C <NA> <NA>      B -0.60    0.00  -0.60   0.00  -0.60    0.0    0.000
   ## --> ditto for path B
-  expect_equal(as.vector(unlist(ret$trt1[3, -(1:4)])), c(-0.6, 0, -0.6, 0, -0.6, 0, 0), checkNames=FALSE)
+  expect_equal(as.vector(unlist(ret$trt1[3, -(1:4)])), c(-0.6, 0, -0.6, 0, -0.6, 0, 0), ignore_attr=FALSE)
 
   ##    id  fid  mid   path  trt1 trt1_pa trt1_w trt1_A trt1_B trt1_C trt1_XXX
   ## 4   F    A    B      A  0.47    0.30   0.17   0.47   0.00    0.0    0.000
   ## --> ditto for path 1 and both parents are from path A
-  expect_equal(as.vector(unlist(ret$trt1[4, -(1:4)])), c(0.47, 0.3, 0.17, 0.47, 0, 0, 0), checkNames=FALSE)
+  expect_equal(as.vector(unlist(ret$trt1[4, -(1:4)])), c(0.47, 0.3, 0.17, 0.47, 0, 0, 0), ignore_attr=FALSE)
 
   ##    id  fid  mid   path  trt1 trt1_pa trt1_w trt1_A trt1_B trt1_C trt1_XXX
   ## 5   G    C    B      A -0.31   -0.28  -0.03  -0.01  -0.30    0.0    0.000
@@ -283,7 +284,7 @@ test_that("Test computation", {
   ##       = 1/2w_3
   ##       = 1/2*-0.60
   ##       = -0.30
-  expect_equal(as.vector(unlist(ret$trt1[5, -(1:4)])), c(-0.31, -0.28, -0.03, -0.01, -0.3, 0, 0), checkNames=FALSE)
+  expect_equal(as.vector(unlist(ret$trt1[5, -(1:4)])), c(-0.31, -0.28, -0.03, -0.01, -0.3, 0, 0), ignore_attr=FALSE)
 
   ##    id  fid  mid   path  trt1 trt1_pa trt1_w trt1_A trt1_B trt1_C trt1_XXX
   ## 6   J    F    G      A  0.03    0.08  -0.05   0.18  -0.15    0.0    0.000
@@ -309,35 +310,35 @@ test_that("Test computation", {
   ##       = 1/4w_1 + 1/2w_2 + 0w_3 + 1/2w_4 + 1/2w_5 + w_6
   ##       = 0.18
   ## ...
-  expect_equal(as.vector(unlist(ret$trt1[6, -(1:4)])), c(0.03, 0.08, -0.05, 0.18, -0.15, 0, 0), checkNames=FALSE)
+  expect_equal(as.vector(unlist(ret$trt1[6, -(1:4)])), c(0.03, 0.08, -0.05, 0.18, -0.15, 0, 0), ignore_attr=FALSE)
 
   ##    id  fid  mid   path  trt1 trt1_pa trt1_w trt1_A trt1_B trt1_C trt1_XXX
   ## 7   K    F    G      A     0    0.08  -0.08   0.15  -0.15     0        0
-  expect_equal(as.vector(unlist(ret$trt1[7, -(1:4)])), as.numeric(c(0, 0.08, -0.08, 0.15, -0.15, 0, 0)), checkNames=FALSE)
+  expect_equal(as.vector(unlist(ret$trt1[7, -(1:4)])), as.numeric(c(0, 0.08, -0.08, 0.15, -0.15, 0, 0)), ignore_attr=FALSE)
 
   ##    id  fid  mid   path  trt1 trt1_pa trt1_w trt1_A trt1_B trt1_C trt1_XXX
   ## 8   E    A    B      A  1.00    0.30   0.70   1.00   0.00    0.0    0.000
   ## --> reference for test animals, both parents path 1 and animal path 1 = all OK
-  expect_equal(as.vector(unlist(ret$trt1[8, -(1:4)])), c(1, 0.3, 0.7, 1, 0, 0, 0), checkNames=FALSE)
+  expect_equal(as.vector(unlist(ret$trt1[8, -(1:4)])), c(1, 0.3, 0.7, 1, 0, 0, 0), ignore_attr=FALSE)
 
   ##    id  fid  mid   path  trt1 trt1_pa trt1_w trt1_A trt1_B trt1_C trt1_XXX
   ## 9   D    A    B      B  1.00    0.30   0.70   0.30   0.70    0.0    0.000
   ## --> the same parents as for 8, but different partitioning, due to different claimed path - path 2 was doing "selection" of Mendelian sampling!!!
-  expect_equal(as.vector(unlist(ret$trt1[9, -(1:4)])), c(1, 0.3, 0.7, 0.3, 0.7, 0, 0), checkNames=FALSE)
+  expect_equal(as.vector(unlist(ret$trt1[9, -(1:4)])), c(1, 0.3, 0.7, 0.3, 0.7, 0, 0), ignore_attr=FALSE)
 
   ##    id  fid  mid   path  trt1 trt1_pa trt1_w trt1_A trt1_B trt1_C trt1_XXX
   ## 10  I    A    B      C  1.00    0.30   0.70   0.30   0.00    0.7    0.000
   ## --> ditto
-  expect_equal(as.vector(unlist(ret$trt1[10, -(1:4)])), c(1, 0.3, 0.7, 0.3, 0, 0.7, 0), checkNames=FALSE)
+  expect_equal(as.vector(unlist(ret$trt1[10, -(1:4)])), c(1, 0.3, 0.7, 0.3, 0, 0.7, 0), ignore_attr=FALSE)
 
   ##    id  fid  mid   path  trt1 trt1_pa trt1_w trt1_A trt1_B trt1_C trt1_XXX
   ## 11  H    C    B    XXX  0.10  -0.065  0.165  0.235  -0.30    0.0    0.165
   ## --> argument pathNA=TRUE sets unknown path to dummy path called XXX
-  expect_equal(as.vector(unlist(ret$trt1[11, -(1:4)])), c(0.1, -0.28, 0.38, 0.02, -0.3, 0, 0.38), checkNames=FALSE)
+  expect_equal(as.vector(unlist(ret$trt1[11, -(1:4)])), c(0.1, -0.28, 0.38, 0.02, -0.3, 0, 0.38), ignore_attr=FALSE)
 
   ##    id  fid  mid   path  trt1 trt1_pa trt1_w trt1_A trt1_B trt1_C trt1_XXX
   ## 12  L    K    H      B  0.50    0.05   0.45  0.085  0.225    0.0     0.19
-  expect_equal(as.vector(unlist(ret$trt1[12, -(1:4)])), c(0.5, 0.05, 0.45, 0.085, 0.225, 0.0, 0.19), checkNames=FALSE)
+  expect_equal(as.vector(unlist(ret$trt1[12, -(1:4)])), c(0.5, 0.05, 0.45, 0.085, 0.225, 0.0, 0.19), ignore_attr=FALSE)
 
   ##    id  fid  mid   path  trt1 trt1_pa trt1_w trt1_A trt1_B trt1_C trt1_XXX
   ## 13  M   NA    H      B  0.00    0.05  -0.05   0.01  -0.20      0     0.19
@@ -364,6 +365,23 @@ test_that("Test computation", {
   ##       = 0.01
   ##
   ## ...
-  expect_equal(as.vector(unlist(ret$trt1[13, -(1:4)])), c(0, 0.05, -0.05, 0.01, -0.20, 0, 0.19), checkNames=FALSE)
+  expect_equal(as.vector(unlist(ret$trt1[13, -(1:4)])), c(0, 0.05, -0.05, 0.01, -0.20, 0, 0.19), ignore_attr=FALSE)
 
 })
+
+test_that("Test profile", {
+  ## Small pedigree with additive genetic (=breeding) values
+  ped <- data.frame(  id=c(  1,   2,   3,   4,   5,   6),
+                    fid=c(  0,   0,   2,   0,   4,   0),
+                    mid=c(  0,   0,   1,   0,   3,   3),
+                    loc=c("A", "B", "A", "B", "A", "A"),
+                    gen=c(  1,   1,   2,   2,   3,   3),
+                    trt1=c(100, 120, 115, 130, 125, 125),
+                    trt2=c(100, 110, 105, 100,  85, 110))
+
+  ## Partition additive genetic values
+  tmp1 <- AlphaPart(x=ped, colBV=c("trt1", "trt2"), profile=TRUE,printProfile = "end")
+  tmp2 <- AlphaPart(x=ped, colBV=c("trt1", "trt2"), profile=TRUE,printProfile = "fly")
+  expect_equal(tmp1$info$profile,  tmp2$info$profile)
+})
+

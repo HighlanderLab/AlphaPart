@@ -16,6 +16,8 @@ summary(tmp, by="gen")
 
 \donttest{
 ## There are also two demos
-demo(topic="AlphaPart_deterministic", package="AlphaPart", ask=interactive())
-demo(topic="AlphaPart_stochastic",     package="AlphaPart", ask=interactive())
+  demo(topic="AlphaPart_deterministic", package="AlphaPart",
+       ask=interactive())
+  demo(topic="AlphaPart_stochastic",     package="AlphaPart",
+       ask=interactive())
 }
