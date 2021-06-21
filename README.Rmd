@@ -68,76 +68,78 @@ Please, follow the contribution guide at [Contributing file](CONTRIBUTING.md) to
 
 ```r
 library(AlphaPart)
-## Small pedigree with additive genetic (=breeding) values
-ped <- data.frame(  id=c(  1,   2,   3,   4,   5,   6),
-                   fid=c(  0,   0,   2,   0,   4,   0),
-                   mid=c(  0,   0,   1,   0,   3,   3),
-                   loc=c("A", "B", "A", "B", "A", "A"),
-                   gen=c(  1,   1,   2,   2,   3,   3),
-                  trt1=c(100, 120, 115, 130, 125, 125),
-                  trt2=c(100, 110, 105, 100,  85, 110))
-## Partition additive genetic values
-tmp <- AlphaPart(x=ped, colBV=c("trt1", "trt2"))
-print(tmp)
+
+## Partition additive genetic values by country and sex
+AlphaPart.ped$country.gender <- with(AlphaPart.ped, paste(country, gender, sep="-"))
+(res <- AlphaPart(x=AlphaPart.ped, colPath="country.gender", colBV=c("bv1", "bv2")))
+#> Size:
+#>  - individuals: 8 
+#>  - traits: 2 (bv1, bv2)
+#>  - paths: 4 (domestic-F, domestic-M, import-F, import-M)
+#>  - unknown (missing) values:
+#> bv1 bv2 
+#>   0   0 
+
 
 #>  Partitions of breeding values 
-#>    - individuals: 6 
-#>    - paths: 2 (A, B)
-#>    - traits: 2 (trt1, trt2)
+#>    - individuals: 8 
+#>    - paths: 4 (domestic-F, domestic-M, import-F, import-M)
+#>    - traits: 2 (bv1, bv2)
 
-#>  Trait: trt1 
+#>  Trait: bv1 
 
-#>   id fid mid loc gen trt1  trt1_pa     trt1_w trt1_A trt1_B
-#> 1  1   0   0   A   1  100 116.6667 -16.666667    100      0
-#> 2  2   0   0   B   1  120 116.6667   3.333333      0    120
-#> 3  3   2   1   A   2  115 110.0000   5.000000     55     60
-#> 4  4   0   0   B   2  130 116.6667  13.333333      0    130
-#> 5  5   4   3   A   3  125 122.5000   2.500000     30     95
-#> 6  6   0   3   A   3  125  57.5000  67.500000     95     30
+#>   IId FId MId gen  country gender country.gender bv1 bv1_pa bv1_w bv1_domestic-F bv1_domestic-M bv1_import-F bv1_import-M
+#> 1   A           1 domestic      F     domestic-F 100    0.0 100.0        100.000            0.0          0.0        0.000
+#> 2   B           1   import      M       import-M 105    0.0 105.0          0.000            0.0          0.0      105.000
+#> 3   C   B   A   2 domestic      F     domestic-F 104  102.5   1.5         51.500            0.0          0.0       52.500
+#> 4   T   B       2   import      F       import-F 102   52.5  49.5          0.000            0.0         49.5       52.500
+#> 5   D           2   import      M       import-M 108    0.0 108.0          0.000            0.0          0.0      108.000
+#> 6   E   D   C   3 domestic      M     domestic-M 107  106.0   1.0         25.750            1.0          0.0       80.250
+#> 7   U   D       3   import      F       import-F 107   54.0  53.0          0.000            0.0         53.0       54.000
+#> 8   V   E       4 domestic      F     domestic-F 109   53.5  55.5         68.375            0.5          0.0       40.125
 
-#>  Trait: trt2 
+#>  Trait: bv2 
 
-#>   id fid mid loc gen trt2  trt2_pa     trt2_w trt2_A trt2_B
-#> 1  1   0   0   A   1  100 103.3333  -3.333333  100.0    0.0
-#> 2  2   0   0   B   1  110 103.3333   6.666667    0.0  110.0
-#> 3  3   2   1   A   2  105 105.0000   0.000000   50.0   55.0
-#> 4  4   0   0   B   2  100 103.3333  -3.333333    0.0  100.0
-#> 5  5   4   3   A   3   85 102.5000 -17.500000    7.5   77.5
-#> 6  6   0   3   A   3  110  52.5000  57.500000   82.5   27.5
+#>   IId FId MId gen  country gender country.gender bv2 bv2_pa bv2_w bv2_domestic-F bv2_domestic-M bv2_import-F bv2_import-M
+#> 1   A           1 domestic      F     domestic-F  88    0.0  88.0          88.00           0.00          0.0          0.0
+#> 2   B           1   import      M       import-M 110    0.0 110.0           0.00           0.00          0.0        110.0
+#> 3   C   B   A   2 domestic      F     domestic-F 100   99.0   1.0          45.00           0.00          0.0         55.0
+#> 4   T   B       2   import      F       import-F  97   55.0  42.0           0.00           0.00         42.0         55.0
+#> 5   D           2   import      M       import-M 101    0.0 101.0           0.00           0.00          0.0        101.0
+#> 6   E   D   C   3 domestic      M     domestic-M  80  100.5 -20.5          22.50         -20.50          0.0         78.0
+#> 7   U   D       3   import      F       import-F 102   50.5  51.5           0.00           0.00         51.5         50.5
+#> 8   V   E       4 domestic      F     domestic-F 105   40.0  65.0          76.25         -10.25          0.0         39.0
 
 
-## Summarize by generation
-(tmp_s <- summary(tmp, by="gen"))
+## Summarize population by generation (=trend)
+(ret <- summary(res, by="gen"))
 
-#>  Summary of partitions of breeding values 
-#>    - paths: 2 (A, B)
-#>    - traits: 2 (trt1, trt2)
+#> Summary of partitions of breeding values 
+#>   - paths: 4 (domestic-F, domestic-M, import-F, import-M)
+#>   - traits: 2 (bv1, bv2)
 
-#>  Trait: trt1 
+#> Trait: bv1 
 
-#>   gen N   Sum    A    B
-#> 1   1 2 110.0 50.0 60.0
-#> 2   2 2 122.5 27.5 95.0
-#> 3   3 2 125.0 62.5 62.5
+#>   gen N      Sum domestic-F domestic-M import-F import-M
+#> 1   1 2 102.5000   50.00000        0.0      0.0   52.500
+#> 2   2 3 104.6667   17.16667        0.0     16.5   71.000
+#> 3   3 2 107.0000   12.87500        0.5     26.5   67.125
+#> 4   4 1 109.0000   68.37500        0.5      0.0   40.125
 
-#>  Trait: trt2 
+#> Trait: bv2 
 
-#>   gen N   Sum  A    B
-#> 1   1 2 105.0 50 55.0
-#> 2   2 2 102.5 25 77.5
-#> 3   3 2  97.5 45 52.5
+#>   gen N       Sum domestic-F domestic-M import-F import-M
+#> 1   1 2  99.00000      44.00       0.00     0.00 55.00000
+#> 2   2 3  99.33333      15.00       0.00    14.00 70.33333
+#> 3   3 2  91.00000      11.25     -10.25    25.75 64.25000
+#> 4   4 1 105.00000      76.25     -10.25     0.00 39.00000
 
-# Plot summary output
-(tmp_p <- plot(tmp_s))
+## Plot the partitions
+p <- plot(ret, ylab=c("BV for trait 1", "BV for trait 2"), xlab="Generation")
+print(p)
 ```
 ![](man/figures/README-example1.png)<!-- -->
 
-```r
-# Changing plot layout
-tmp_p$trt1 +
- ylab("Treatment 1") +
- theme_bw() 
-```
-![](man/figures/README-example2.png)<!-- -->
+
 
 
