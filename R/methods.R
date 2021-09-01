@@ -142,7 +142,7 @@ print.AlphaPart <- function (x, n=6, ...) {
 #' @rdname summary.AlphaPart
 #' @method summary AlphaPart
 #' @usage \method{summary}{AlphaPart}(object, by, FUN, labelSum, subset,
-#'   sums, ...)
+#'   sums, cov,  ...)
 #' @description Breedng values of individuals are often summarized,
 #'   either by year of birth or some other classification. Function
 #'   \code{summary.AlphaPart} provides a way to ease the computation of
@@ -164,6 +164,12 @@ print.AlphaPart <- function (x, n=6, ...) {
 #'   \code{object} subsetted by this argument.
 #' @param sums Logical, link between \code{\link[AlphaPart]{AlphaPart}}
 #'   and \code{summary.AlphaPart()} (only for internal use!).
+#' @param cov Logical, if FALSE returns \code{n} variances plus one
+#'   additional column containing two times the sum of all covariances;
+#'   otherwise returns \code{n} variance and \code{n(n-1)/2} covariances
+#'   in the form of \code{2*Cov(., .)}, where \code{n} is the number of
+#'   partitions. This argument only works when \code{FUN = var}. Defaut
+#'   \code{cov = FALSE}.
 #' @param ...  Arguments passed to other functions (not used at the
 #'   moment).
 #'
@@ -193,7 +199,8 @@ print.AlphaPart <- function (x, n=6, ...) {
 #' @export
 
 summary.AlphaPart <- function(object, by=NULL, FUN=mean, labelSum="Sum",
-                              subset=NULL, sums=FALSE, ...) {
+                              subset=NULL, sums=FALSE, cov = FALSE,
+                              ...) {
   #---------------------------------------------------------------------
   ## --- Setup ---
   #---------------------------------------------------------------------
@@ -216,26 +223,6 @@ summary.AlphaPart <- function(object, by=NULL, FUN=mean, labelSum="Sum",
       stop("function FUN must return a single value (scalar)")
     }
   }
-  if (identical(deparse(FUN),deparse(var))) {
-    . <- NULL
-    text <- paste("Please, choose the output summary:",
-                  "\n",
-                  "Digit 1 to get sum of all covariances sum(2Cov(x, y))",
-                  "\n",
-                  "Digit 3 to obtain each covariance as 2Cov(y, x). This method provides n(n-1)/2 covariances, where n is the number of partitions.",
-                  "\n")
-    varType <- readline(prompt = text)
-    varN <- 0
-    while (varType != "1" & varType != "3") {
-      varN  <- varN + 1
-      cat("Choose 1 to get 1 extra component or 3 to get n(n-1)/2 extra components.", "\n")
-      varType <- readline(prompt = text)
-      if (varN > 3) {
-        stop("Aborted: too many attempts.", call.= FALSE)
-      }
-    }
-  }
-
   nC <- ncol(object[[1]]) ## number of columns
   nP <- object$info$nP    ## number of paths
   nC <- 0                 ## number of covariances
@@ -266,13 +253,14 @@ summary.AlphaPart <- function(object, by=NULL, FUN=mean, labelSum="Sum",
 
     ## Summarize Variance Partitioning
     if (identical(deparse(FUN),deparse(var))) {
+      . <- NULL
       if (!groupSummary) {
         if (is.null(by)) {
           #pri length ne sme biti na.rm = TRUE
           tmp <- rep(1, times=nrow(object[[i]]))
           tmpM <- aggregate(x=object[[i]][, cols], by=list(by=tmp),
                             FUN=var,  na.rm=TRUE)
-          if (varType == "3") {
+          if (cov == TRUE) {
             tmpM2 <- object[[i]] %>%
             group_by(object[[i]][, by]) %>%
             do(data.frame(
@@ -289,7 +277,7 @@ summary.AlphaPart <- function(object, by=NULL, FUN=mean, labelSum="Sum",
           tmpM <- aggregate(x=object[[i]][, cols],
                             by=list(by=object[[i]][, by]),
                             FUN=var, na.rm=TRUE)
-          if (varType == "3") {
+          if (cov == TRUE) {
             tmpM2 <- object[[i]] %>%
               group_by(object[[i]][, by]) %>%
               do(data.frame(
@@ -313,7 +301,7 @@ summary.AlphaPart <- function(object, by=NULL, FUN=mean, labelSum="Sum",
       ## Add nice column names
       colnames(tmpN) <- c(by, "N")
       count <- seq(1,length(paths))[-1]
-      if(varType == "3"){
+      if(cov == TRUE){
         for(ii in count[-length(count)]){
           for(jj in (ii+1):max(count)){
             kcount <- length(paths)+1
