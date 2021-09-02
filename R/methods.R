@@ -205,14 +205,32 @@ summary.AlphaPart <- function(object, by=NULL, FUN=mean, labelSum="Sum",
   ## --- Setup ---
   #---------------------------------------------------------------------
   groupSummary <- sums
+  #---------------------------------------------------------------------
+  # Test Alpha Part Class
   test <- !("AlphaPart" %in% class(object))
 
   if (test) {
     stop("'object' must be of a AlphaPart class")
   }
-
+  #---------------------------------------------------------------------
+  # Transforming FUN in a function
+  test <- is.character(FUN)
+  if(test==TRUE){
+    test <- is.function(try(get(FUN),  silent = TRUE))
+    if (test == FALSE) {
+      stop("argument 'FUN' must be a function",  call.= FALSE)
+    }
+    FUN = get(FUN)
+  }
+  #---------------------------------------------------------------------
+  # Test for covariance output
+  test <- is.logical(cov)
+  if (test==FALSE) {
+    stop("argument 'cov' must be logical (TRUE or FALSE)", call. = FALSE)
+  }
+  #---------------------------------------------------------------------
   if (groupSummary) by <- object$by
-
+  #---------------------------------------------------------------------
   if (!groupSummary) {
     test <- !is.null(by) && !(by %in% colnames(object[[1]]))
     if (test) {
@@ -223,6 +241,7 @@ summary.AlphaPart <- function(object, by=NULL, FUN=mean, labelSum="Sum",
       stop("function FUN must return a single value (scalar)")
     }
   }
+  #---------------------------------------------------------------------
   nC <- ncol(object[[1]]) ## number of columns
   nP <- object$info$nP    ## number of paths
   nC <- 0                 ## number of covariances
@@ -334,10 +353,6 @@ summary.AlphaPart <- function(object, by=NULL, FUN=mean, labelSum="Sum",
           tmpN <- aggregate(x=object[[i]][, cols[1]], by=list(by=tmp),
                             FUN=length)
         } else {
-          getCov <- function(x){
-            x. <- cov(x, use="complete.obs")
-            x.[lower.tri(x., diag = FALSE)]
-          }
           tmpM <- aggregate(x=object[[i]][, cols],
                             by=list(by=object[[i]][, by]),
                             FUN=FUN, na.rm=TRUE)
