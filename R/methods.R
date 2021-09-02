@@ -244,7 +244,7 @@ summary.AlphaPart <- function(object, by=NULL, FUN=mean, labelSum="Sum",
   #---------------------------------------------------------------------
   nC <- ncol(object[[1]]) ## number of columns
   nP <- object$info$nP    ## number of paths
-  nC <- 0                 ## number of covariances
+  nCov <- 0               ## number of covariances
   lP <- object$info$lP    ## names  of paths
   nT <- object$info$nT    ## number of traits
   lT <- object$info$lT    ## names  of traits
@@ -256,8 +256,8 @@ summary.AlphaPart <- function(object, by=NULL, FUN=mean, labelSum="Sum",
     object[1:nT] <- lapply(object[1:nT], FUN=function(z) z[subset, ])
   }
 
-  ret$info <- list(path=object$info$path, nP=nP, nC=nC, lP=lP, nT=nT,
-                   lT=lT, by=by, warn=object$info$warn,
+  ret$info <- list(path=object$info$path, nP=nP, nCov=nCov, lP=lP,
+                   nT=nT, lT=lT, by=by, warn=object$info$warn,
                    labelSum=labelSum)
   #---------------------------------------------------------------------
   ## --- Compute ---
@@ -381,7 +381,7 @@ summary.AlphaPart <- function(object, by=NULL, FUN=mean, labelSum="Sum",
   ## --- Update when var ---
   #---------------------------------------------------------------------
   if (identical(deparse(FUN),deparse(var))) {
-    ret$info$nC <- kcount-ret$info$nP-1 # number of covariances
+    ret$info$nCov <- kcount-ret$info$nP-1 # number of covariances
     ret$info$lP <- paths[-1] ## names of paths
   }
   #---------------------------------------------------------------------
@@ -501,7 +501,7 @@ plot.summaryAlphaPart <-
     path  <- x$info$path
     lT    <- x$info$lT
     nT    <- x$info$nT
-    nP    <- x$info$nP + x$info$nC
+    nP    <- x$info$nP + x$info$nCov
     ret   <- vector(mode="list", length=nT)
     names(ret) <- x$info$lT
 
