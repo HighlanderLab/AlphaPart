@@ -267,10 +267,13 @@ summary.AlphaPart <- function(object, by=NULL, FUN=mean, labelSum="Sum",
               cov=2*t(cov(.[,cols[-1]], .[,cols[-1]])[
                 lower.tri(cov(.[,cols[-1]], .[,cols[-1]]),
                           diag = FALSE)])))
+            if(is.null(ncol(tmpM2))==FALSE){
+              tmpM2 <- tmpM2[,-1]
+            }
           }else {
-            tmpM2 <- data.frame(1,"Sum.Cov" = tmpM[,2]-rowSums(tmpM[,-c(1:2)]))
+            tmpM2 <- tmpM[,2]-rowSums(tmpM[,-c(1:2)])
           }
-          tmpM <- cbind(tmpM,tmpM2[,-1])
+          tmpM <- cbind(tmpM,tmpM2)
           tmpN <- aggregate(x=object[[i]][, cols[1]], by=list(by=tmp),
                             FUN=length)
         } else {
@@ -284,10 +287,13 @@ summary.AlphaPart <- function(object, by=NULL, FUN=mean, labelSum="Sum",
                 cov=2*t(cov(.[,cols[-1]], .[,cols[-1]])[
                   lower.tri(cov(.[,cols[-1]], .[,cols[-1]]),
                             diag = FALSE)])))
+            if(is.null(ncol(tmpM2))==FALSE){
+              tmpM2 <- tmpM2[,-1]
+            }
           }else {
-            tmpM2 <- data.frame(1,"Sum.Cov" = tmpM[,2]-rowSums(tmpM[,-c(1:2)]))
+            tmpM2 <- tmpM[,2]-rowSums(tmpM[,-c(1:2)])
           }
-          tmpM <- cbind(tmpM,tmpM2[,-1])
+          tmpM <- cbind(tmpM,tmpM2)
           tmpN <- aggregate(x=object[[i]][, cols[1]],
                             by=list(by=object[[i]][, by]), FUN=length)
         }
