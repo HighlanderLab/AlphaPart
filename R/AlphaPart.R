@@ -4,7 +4,7 @@
 #'   variable. The partition method is described in García-Cortés et
 #'   al., 2008: Partition of the genetic trend to validate multiple
 #'   selection decisions.  Animal : an international journal of animal
-#'   bioscience. DOI: 10.1017/S175173110800205X
+#'   bioscience. DOI: \doi{10.1017/S175173110800205X}
 #'
 #' @usage
 #' AlphaPart(x, pathNA, recode, unknown, sort, verbose, profile,
@@ -49,7 +49,7 @@
 #'
 #' @references Garcia-Cortes, L. A. et al. (2008) Partition of the
 #'   genetic trend to validate multiple selection decisions. Animal,
-#'   2(6):821-824. \url{http://dx.doi.org/10.1017/S175173110800205X}
+#'   2(6):821-824. \doi{10.1017/S175173110800205X}
 #'
 #' @param x data.frame , with (at least) the following columns:
 #'   individual, father, and mother identif ication, and year of birth;

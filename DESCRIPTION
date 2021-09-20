@@ -18,7 +18,6 @@ Authors@R: c(
            email = "thiago.oliveira@ed.ac.uk",
            comment = c(ORCID = "0000-0002-4555-2584"))
     )
-Author: Gregor Gorjanc[aut,cre], Jana Obsteter[aut], Thiago de Paula Oliveira[aut]
 Maintainer: Gregor Gorjanc <gregor.gorjanc@roslin.ed.ac.uk>
 License: GPL (>= 2)
 LazyLoad: yes
@@ -38,11 +37,11 @@ Suggests:
     covr
 LinkingTo: Rcpp
 Version: 0.8.2
-Date: 2021-04-11
+Date: 2021-09-20
 NeedsCompilation: yes
-Packaged: 2019-06-10 05:22:37 UTC
+Packaged: 2021-09-20 13:36:37 UTC
 VignetteBuilder: knitr
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Encoding: UTF-8
 LazyData: true
 Config/testthat/edition: 3
