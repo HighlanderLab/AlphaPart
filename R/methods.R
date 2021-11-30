@@ -142,7 +142,7 @@ print.AlphaPart <- function (x, n=6, ...) {
 #' @rdname summary.AlphaPart
 #' @method summary AlphaPart
 #' @usage \method{summary}{AlphaPart}(object, by, FUN, labelSum, subset,
-#'   sums, ...)
+#'   sums, cov,  ...)
 #' @description Breedng values of individuals are often summarized,
 #'   either by year of birth or some other classification. Function
 #'   \code{summary.AlphaPart} provides a way to ease the computation of
@@ -164,6 +164,12 @@ print.AlphaPart <- function (x, n=6, ...) {
 #'   \code{object} subsetted by this argument.
 #' @param sums Logical, link between \code{\link[AlphaPart]{AlphaPart}}
 #'   and \code{summary.AlphaPart()} (only for internal use!).
+#' @param cov Logical, if FALSE returns \code{n} variances plus one
+#'   additional column containing two times the sum of all covariances;
+#'   otherwise returns \code{n} variance and \code{n(n-1)/2} covariances
+#'   in the form of \code{2*Cov(., .)}, where \code{n} is the number of
+#'   partitions. This argument only works when \code{FUN = var}. Defaut
+#'   \code{cov = FALSE}.
 #' @param ...  Arguments passed to other functions (not used at the
 #'   moment).
 #'
@@ -186,22 +192,45 @@ print.AlphaPart <- function (x, n=6, ...) {
 #'
 #' @useDynLib AlphaPart, .registration = TRUE
 #' @importFrom Rcpp sourceCpp
+#' @importFrom dplyr group_by do
+#' @importFrom magrittr %>%
+#' @importFrom stats cov var
 #'
 #' @export
 
-summary.AlphaPart <- function(object, by=NULL, FUN=mean, labelSum="Sum", subset=NULL, sums=FALSE, ...) {
+summary.AlphaPart <- function(object, by=NULL, FUN=mean, labelSum="Sum",
+                              subset=NULL, sums=FALSE, cov = FALSE,
+                              ...) {
   #---------------------------------------------------------------------
   ## --- Setup ---
   #---------------------------------------------------------------------
   groupSummary <- sums
+  #---------------------------------------------------------------------
+  # Test Alpha Part Class
   test <- !("AlphaPart" %in% class(object))
 
   if (test) {
     stop("'object' must be of a AlphaPart class")
   }
-
+  #---------------------------------------------------------------------
+  # Transforming FUN in a function
+  test <- is.character(FUN)
+  if(test==TRUE){
+    test <- is.function(try(get(FUN),  silent = TRUE))
+    if (test == FALSE) {
+      stop("argument 'FUN' must be a function",  call.= FALSE)
+    }
+    FUN = get(FUN)
+  }
+  #---------------------------------------------------------------------
+  # Test for covariance output
+  test <- is.logical(cov)
+  if (test==FALSE) {
+    stop("argument 'cov' must be logical (TRUE or FALSE)", call. = FALSE)
+  }
+  #---------------------------------------------------------------------
   if (groupSummary) by <- object$by
-
+  #---------------------------------------------------------------------
   if (!groupSummary) {
     test <- !is.null(by) && !(by %in% colnames(object[[1]]))
     if (test) {
@@ -212,9 +241,10 @@ summary.AlphaPart <- function(object, by=NULL, FUN=mean, labelSum="Sum", subset=
       stop("function FUN must return a single value (scalar)")
     }
   }
-
+  #---------------------------------------------------------------------
   nC <- ncol(object[[1]]) ## number of columns
   nP <- object$info$nP    ## number of paths
+  nCov <- 0               ## number of covariances
   lP <- object$info$lP    ## names  of paths
   nT <- object$info$nT    ## number of traits
   lT <- object$info$lT    ## names  of traits
@@ -226,8 +256,9 @@ summary.AlphaPart <- function(object, by=NULL, FUN=mean, labelSum="Sum", subset=
     object[1:nT] <- lapply(object[1:nT], FUN=function(z) z[subset, ])
   }
 
-  ret$info <- list(path=object$info$path, nP=nP, lP=lP, nT=nT, lT=lT,
-                   by=by, warn=object$info$warn, labelSum=labelSum)
+  ret$info <- list(path=object$info$path, nP=nP, nCov=nCov, lP=lP,
+                   nT=nT, lT=lT, by=by, warn=object$info$warn,
+                   labelSum=labelSum)
   #---------------------------------------------------------------------
   ## --- Compute ---
   #---------------------------------------------------------------------
@@ -239,38 +270,119 @@ summary.AlphaPart <- function(object, by=NULL, FUN=mean, labelSum="Sum", subset=
      paths[2:length(paths)] <- ret$info$lP
      paths[1] <- labelSum
 
-     ## Summarize
-     if (!groupSummary) {
-       if (is.null(by)) {
-           #pri length ne sme biti na.rm = TRUE
-         tmp <- rep(1, times=nrow(object[[i]]))
-         tmpM <- aggregate(x=object[[i]][, cols], by=list(by=tmp),
-                           FUN=FUN,  na.rm=TRUE)
-         tmpN <- aggregate(x=object[[i]][, cols[1]], by=list(by=tmp),
-                           FUN=length)
-       } else {
-         tmpM <- aggregate(x=object[[i]][, cols],
-                           by=list(by=object[[i]][, by]),
-                           FUN=FUN, na.rm=TRUE)
-         tmpN <- aggregate(x=object[[i]][, cols[1]],
-                           by=list(by=object[[i]][, by]), FUN=length)
-       }
-     } else {
-       tmpN <- object$N[, c(1, i+1)]
-       tmpM <- object[[i]][, -(1:2)]
-       tmpM <- cbind(rowSums(tmpM), tmpM)
-       tmpM <- tmpM / tmpN[, 2]
-     }
-    #-------------------------------------------------------------------
-    ## Add nice column names
-    colnames(tmpN) <- c(by, "N")
-    colnames(tmpM)[z:ncol(tmpM)] <- paths
-    #-------------------------------------------------------------------
-    ## Combine FUN and number of records
-    tmp <- cbind(tmpN, tmpM[, z:ncol(tmpM)])
-    #-------------------------------------------------------------------
+    ## Summarize Variance Partitioning
+    if (identical(deparse(FUN),deparse(var))) {
+      . <- NULL
+      if (!groupSummary) {
+        if (is.null(by)) {
+          #pri length ne sme biti na.rm = TRUE
+          tmp <- rep(1, times=nrow(object[[i]]))
+          tmpM <- aggregate(x=object[[i]][, cols], by=list(by=tmp),
+                            FUN=var,  na.rm=TRUE)
+          if (cov == TRUE) {
+            tmpM2 <- object[[i]] %>%
+            group_by(object[[i]][, by]) %>%
+            do(data.frame(
+              cov=2*t(cov(.[,cols[-1]], .[,cols[-1]])[
+                lower.tri(cov(.[,cols[-1]], .[,cols[-1]]),
+                          diag = FALSE)])))
+            if(is.null(ncol(tmpM2))==FALSE){
+              tmpM2 <- tmpM2[,-1]
+            }
+          }else {
+            tmpM2 <- tmpM[,2]-rowSums(tmpM[,-c(1:2)])
+          }
+          tmpM <- cbind(tmpM,tmpM2)
+          tmpN <- aggregate(x=object[[i]][, cols[1]], by=list(by=tmp),
+                            FUN=length)
+        } else {
+          tmpM <- aggregate(x=object[[i]][, cols],
+                            by=list(by=object[[i]][, by]),
+                            FUN=var, na.rm=TRUE)
+          if (cov == TRUE) {
+            tmpM2 <- object[[i]] %>%
+              group_by(object[[i]][, by]) %>%
+              do(data.frame(
+                cov=2*t(cov(.[,cols[-1]], .[,cols[-1]])[
+                  lower.tri(cov(.[,cols[-1]], .[,cols[-1]]),
+                            diag = FALSE)])))
+            if(is.null(ncol(tmpM2))==FALSE){
+              tmpM2 <- tmpM2[,-1]
+            }
+          }else {
+            tmpM2 <- tmpM[,2]-rowSums(tmpM[,-c(1:2)])
+          }
+          tmpM <- cbind(tmpM,tmpM2)
+          tmpN <- aggregate(x=object[[i]][, cols[1]],
+                            by=list(by=object[[i]][, by]), FUN=length)
+        }
+      } else {
+        tmpN <- object$N[, c(1, i+1)]
+        tmpM <- object[[i]][, -(1:2)]
+        tmpM <- cbind(rowSums(tmpM), tmpM)
+        tmpM <- tmpM / tmpN[, 2]
+      }
+      #-----------------------------------------------------------------
+      ## Add nice column names
+      colnames(tmpN) <- c(by, "N")
+      count <- seq(1,length(paths))[-1]
+      if(cov == TRUE){
+        for(ii in count[-length(count)]){
+          for(jj in (ii+1):max(count)){
+            kcount <- length(paths)+1
+            paths[kcount] <- paste0(paths[ii],paths[jj])
+          }
+        }
+      }else{
+        kcount <- length(paths)+1
+        paths <- c(paths,"Sum.Cov")
+      }
+      colnames(tmpM)[z:ncol(tmpM)] <- paths
+      #-----------------------------------------------------------------
+      ## Combine FUN and number of records
+      tmp <- cbind(tmpN, tmpM[, z:ncol(tmpM)])
+      #-----------------------------------------------------------------
+    }else {
+      ## Summarize non-variance partitioning
+      if (!groupSummary) {
+        if (is.null(by)) {
+          #pri length ne sme biti na.rm = TRUE
+          tmp <- rep(1, times=nrow(object[[i]]))
+          tmpM <- aggregate(x=object[[i]][, cols], by=list(by=tmp),
+                            FUN=FUN,  na.rm=TRUE)
+          tmpN <- aggregate(x=object[[i]][, cols[1]], by=list(by=tmp),
+                            FUN=length)
+        } else {
+          tmpM <- aggregate(x=object[[i]][, cols],
+                            by=list(by=object[[i]][, by]),
+                            FUN=FUN, na.rm=TRUE)
+          tmpN <- aggregate(x=object[[i]][, cols[1]],
+                            by=list(by=object[[i]][, by]), FUN=length)
+        }
+      } else {
+        tmpN <- object$N[, c(1, i+1)]
+        tmpM <- object[[i]][, -(1:2)]
+        tmpM <- cbind(rowSums(tmpM), tmpM)
+        tmpM <- tmpM / tmpN[, 2]
+      }
+      #-----------------------------------------------------------------
+      ## Add nice column names
+      colnames(tmpN) <- c(by, "N")
+      colnames(tmpM)[z:ncol(tmpM)] <- paths
+      #-----------------------------------------------------------------
+      ## Combine FUN and number of records
+      tmp <- cbind(tmpN, tmpM[, z:ncol(tmpM)])
+      #-----------------------------------------------------------------
+    }
     ## Store
     ret[[i]] <- tmp
+  }
+  #---------------------------------------------------------------------
+  ## --- Update when var ---
+  #---------------------------------------------------------------------
+  if (identical(deparse(FUN),deparse(var))) {
+    ret$info$nCov <- kcount-ret$info$nP-1 # number of covariances
+    ret$info$lP <- paths[-1] ## names of paths
   }
   #---------------------------------------------------------------------
   ## --- Return ---
@@ -389,7 +501,7 @@ plot.summaryAlphaPart <-
     path  <- x$info$path
     lT    <- x$info$lT
     nT    <- x$info$nT
-    nP    <- x$info$nP
+    nP    <- x$info$nP + x$info$nCov
     ret   <- vector(mode="list", length=nT)
     names(ret) <- x$info$lT
 
