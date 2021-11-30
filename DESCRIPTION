@@ -9,7 +9,7 @@ Description: A software that implements a method for partitioning genetic trends
     results.
 Authors@R: c(
     person("Gregor", "Gorjanc", role=c("aut", "cre"), 
-           email = "gregor.gorjanc@roslin.ed.ac.uk",
+           email = "highlander.research.lab@gmail.com",
            comment = c(ORCID = "0000-0001-8008-2787")), 
     person("Jana","Obsteter", role="aut",
            email = "jana.obsteter@kis.si",
@@ -18,7 +18,7 @@ Authors@R: c(
            email = "thiago.oliveira@ed.ac.uk",
            comment = c(ORCID = "0000-0002-4555-2584"))
     )
-Maintainer: Gregor Gorjanc <gregor.gorjanc@roslin.ed.ac.uk>
+Maintainer: Gregor Gorjanc <highlander.research.lab@gmail.com>
 License: GPL (>= 2)
 LazyLoad: yes
 Imports: 
