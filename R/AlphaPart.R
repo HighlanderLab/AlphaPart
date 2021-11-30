@@ -4,7 +4,7 @@
 #'   variable. The partition method is described in García-Cortés et
 #'   al., 2008: Partition of the genetic trend to validate multiple
 #'   selection decisions.  Animal : an international journal of animal
-#'   bioscience. DOI: \doi{10.1017/S175173110800205X}
+#'   bioscience. DOI:  \doi{10.1017/S175173110800205X}
 #'
 #' @usage
 #' AlphaPart(x, pathNA, recode, unknown, sort, verbose, profile,
@@ -232,7 +232,7 @@ AlphaPart <- function (x, pathNA=FALSE, recode=TRUE, unknown= NA,
   #---------------------------------------------------------------------
   ## Recode all ids to 1:n
   if (recode) {
-     y <- cbind( id=1:nrow(x),
+    y <- cbind( id=1:nrow(x),
                fid=match(x[, colFid], x[, colId], nomatch=0),
                mid=match(x[, colMid], x[, colId], nomatch=0))
     colnames(y) <- c(colId,colFid,colMid)

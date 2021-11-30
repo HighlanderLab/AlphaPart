@@ -5,7 +5,7 @@
 \title{A function to summarize AlphaPart object.}
 \usage{
 \method{summary}{AlphaPart}(object, by, FUN, labelSum, subset,
-  sums, ...)
+  sums, cov,  ...)
 }
 \arguments{
 \item{object}{AlphaPart, output object from
@@ -25,6 +25,13 @@ function should return single value per each level of by.}
 
 \item{sums}{Logical, link between \code{\link[AlphaPart]{AlphaPart}}
 and \code{summary.AlphaPart()} (only for internal use!).}
+
+\item{cov}{Logical, if FALSE returns \code{n} variances plus one
+additional column containing two times the sum of all covariances;
+otherwise returns \code{n} variance and \code{n(n-1)/2} covariances
+in the form of \code{2*Cov(., .)}, where \code{n} is the number of
+partitions. This argument only works when \code{FUN = var}. Defaut
+\code{cov = FALSE}.}
 
 \item{...}{Arguments passed to other functions (not used at the
 moment).}
