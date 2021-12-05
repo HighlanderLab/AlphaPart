@@ -589,7 +589,7 @@ plot.summaryAlphaPart <-
             }
             levs2[!levs2 %in% levs2X] <- "def"
             levs1X <- unique(levs1)
-            colorList <- as.list(color[-1][1:length(levs1X)])
+            colorList <- as.list(color[-1][seq_len(length(levs1X))])
             names(colorList) <- levs1X
             colorI <- c("black", unlist(colorList[levs1]))
             names(colorI) <- NULL
@@ -724,10 +724,10 @@ savePlot.plotSummaryAlphaPart <- function(
   if (length(filename) > 1) stop("'filename' argument must be of length one")
   if (!("plotSummaryAlphaPart" %in% class(x))) stop("'x' must be of a 'plotSummaryAlphaPart' class")
   filenameOrig <- sub(pattern=paste(".", type, "$", sep=""), replacement="", x=filename)
-  ret <- c()
+  ret <- NULL
   lT <- names(x)
 
-  for (i in 1:length(x)) {
+  for (i in seq_len(length(x))) {
     if (traitsAsDir) {
       dir.create(path=file.path(dirname(filenameOrig), lT[i]), recursive=TRUE, showWarnings=FALSE)
       filename <- file.path(dirname(filenameOrig), lT[i], basename(filenameOrig))

@@ -150,13 +150,6 @@ AlphaPart <- function (x, pathNA=FALSE, recode=TRUE, unknown= NA,
                        colFid=2, colMid=3, colPath=4, colBV=5:ncol(x),
                        colBy=NULL, center = TRUE, centerEBV = FALSE) {
 
-  # TODO: move BV to another object (to simplif y work with McMC or some
-  # other TODO: sortPedigree: A rabimo tole nujno za to funkcijo ali
-  # samo za summarizing? Hmm, za sortiranje, kajne? Vidis, to nisem lepo
-  # sprogramiral – ena funkcija naj bi pocela samo eno stvar na enkrat –
-  # to poenostavi kodo. Pusti za sedaj. Future work. Lahko das v TODO
-  # file v paketu;)
-
   ## --- Setup ---
 
   test <- (length(colId) > 1 | length(colFid) > 1 | length(colMid) > 1 | length(colPath) > 1 | length(colBy) > 1)
@@ -232,7 +225,7 @@ AlphaPart <- function (x, pathNA=FALSE, recode=TRUE, unknown= NA,
   #---------------------------------------------------------------------
   ## Recode all ids to 1:n
   if (recode) {
-    y <- cbind( id=1:nrow(x),
+    y <- cbind( id=seq_len(nrow(x)),
                fid=match(x[, colFid], x[, colId], nomatch=0),
                mid=match(x[, colMid], x[, colId], nomatch=0))
     colnames(y) <- c(colId,colFid,colMid)
@@ -364,7 +357,7 @@ AlphaPart <- function (x, pathNA=FALSE, recode=TRUE, unknown= NA,
       EBVMean <- 0
     }else{
       EBVMean <- apply(xF[-1, colBVy],2, mean,  na.rm = TRUE)
-      for (i in 1:length(colBV)) {
+      for (i in seq_len(length(colBV))) {
         y[-1, colBVy[i]] <- y[-1, colBVy[i]] - EBVMean[i]
         x[,colBV[i]] <- x[,colBV[i]] - EBVMean[i]
       }
@@ -423,7 +416,7 @@ AlphaPart <- function (x, pathNA=FALSE, recode=TRUE, unknown= NA,
   # Original pa value
   if (center == TRUE && all(EBVMean > 1E-4) == TRUE){
     basePop <- apply(y[-1,c(colFid,colMid)]==0,1,all)
-    for (i in 1:length(colBV)) {
+    for (i in seq_len(length(colBV))) {
       tmp$w[-1,i] <- tmp$w[-1,i] - basePop * EBVMean[i]
       tmp$pa[-1,i] <-tmp$pa[-1,i] + y[-1, colBV[i]] * basePop -
         tmp$w[-1,i] * basePop
@@ -465,7 +458,7 @@ AlphaPart <- function (x, pathNA=FALSE, recode=TRUE, unknown= NA,
   ## methods
   tmp <- colnames(x); names(tmp) <- tmp
   ret[[nT+1]] <- list(path=tmp[colPath], nP=nP, lP=lP, nT=nT, lT=lT,
-                      warn=c())
+                      warn=NULL)
   ## names(ret)[nT+1] <- "info"
   names(ret) <- c(lT, "info")
 

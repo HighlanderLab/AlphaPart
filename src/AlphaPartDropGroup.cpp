@@ -2,7 +2,6 @@
 
 SEXP AlphaPartDropGroup(SEXP c1_, SEXP c2_, SEXP nI_, SEXP nP_, SEXP nT_, SEXP nG_, SEXP y_, SEXP P_, SEXP Px_, SEXP g_)
 {
-
   using namespace Rcpp ;
   //' @export
 
@@ -55,12 +54,10 @@ SEXP AlphaPartDropGroup(SEXP c1_, SEXP c2_, SEXP nI_, SEXP nP_, SEXP nT_, SEXP n
         // Rprintf("Animal: %i, Trait: %i, Path: %i (%i), Group: %i\\n", i, t, p, j, g(i));
         xg(g(i), j) += xa(i, j);
       }
-
     }
   }
   
   // --- Return ---
 
   return xg;
-
 }

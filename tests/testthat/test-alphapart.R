@@ -22,13 +22,13 @@ test_that("Test input for AlphaPart ped", {
 
   ## ... to test recode argument
   ped3 <- ped[order(orderPed(ped=ped[, c("id", "fid", "mid")])), ]
-  ped3$idI  <- 1:nrow(ped3)
+  ped3$idI  <- seq_len(nrow(ped3))
   ped3$fidI <- match(ped3$fid, ped3$id)
   ped3$midI <- match(ped3$mid, ped3$id)
 
   ## ... to test recode and unknown argument
   ped4 <- ped[order(orderPed(ped=ped[, c("id", "fid", "mid")])), ]
-  ped4$idI  <- 1:nrow(ped4)
+  ped4$idI  <- seq_len(nrow(ped4))
   ped4$fidI <- match(ped4$fid, ped3$id, nomatch=99)
   ped4$midI <- match(ped4$mid, ped3$id, nomatch=99)
 
@@ -73,7 +73,7 @@ test_that("Test the output of AlphaPart function", {
 
   ## ... to test recode argument
   ped3 <- ped[order(orderPed(ped=ped[, c("id", "fid", "mid")])), ]
-  ped3$idI  <- 1:nrow(ped3)
+  ped3$idI  <- seq_len(nrow(ped3))
   ped3$fidI <- match(ped3$fid, ped3$id)
   ped3$midI <- match(ped3$mid, ped3$id)
     ## ... to test recode and unknown argument

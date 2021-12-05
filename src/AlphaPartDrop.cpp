@@ -2,7 +2,6 @@
 
 SEXP AlphaPartDrop(SEXP c1_, SEXP c2_, SEXP nI_, SEXP nP_, SEXP nT_, SEXP y_, SEXP P_, SEXP Px_)
 {
-
   using namespace Rcpp ;
   //' @export
 
@@ -58,5 +57,4 @@ SEXP AlphaPartDrop(SEXP c1_, SEXP c2_, SEXP nI_, SEXP nP_, SEXP nT_, SEXP y_, SE
   return Rcpp::List::create(Rcpp::Named("pa", pa),
                             Rcpp::Named("w",  w),
                             Rcpp::Named("xa", xa));
-
 }
