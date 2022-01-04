@@ -9,7 +9,7 @@
 #' @usage
 #' AlphaPart(x, pathNA, recode, unknown, sort, verbose, profile,
 #'   printProfile, pedType, colId, colFid, colMid, colPath, colBV,
-#'   colBy, center, centerEBV)
+#'   colBy, center, scaleEBV)
 #'
 #' @details Pedigree in \code{x} must be valid in a sense that there
 #'   are:\itemize{ \item{no directed loops (the simplest example is that
@@ -96,12 +96,16 @@
 #'   holding group information (see details).
 #' @param center Logical, if \code{center=TRUE} detect a shift in base
 #'   population mean and attributes it as parent average effect rather
-#'   than mendelian sampling effect, otherwise if center=FALSE, the base
-#'   population values are only accounted as mendelian sampling
+#'   than Mendelian sampling effect, otherwise, if center=FALSE, the base
+#'   population values are only accounted as Mendelian sampling
 #'   effect. Default is \code{center = TRUE}.
-#' @param centerEBV Logical, if \code{centerEBV=TRUE} center the EBVs in
-#'   order to the base population has mean of zero. Default is
-#'   \code{center = FALSE}.
+#' @param scaleEBV a list with two arguments defining whether is 
+#' appropriate to center and/or scale the \code{colBV} columns in respect to 
+#' the base population. The list may contain the following components: 
+#' \describe{ \item{\code{center}:}{a logical value} 
+#' \item{\code{scale}:}{a logical value}} If \code{center = TRUE} and 
+#' \code{scale = TRUE} then the base population is set to has zero mean and 
+#' unit variance.
 #'
 #' @example inst/examples/examples_AlphaPart.R
 #' @return An object of class \code{AlphaPart}, which can be used in
@@ -148,7 +152,8 @@ AlphaPart <- function (x, pathNA=FALSE, recode=TRUE, unknown= NA,
                        sort=TRUE, verbose=1, profile=FALSE,
                        printProfile="end", pedType="IPP", colId=1,
                        colFid=2, colMid=3, colPath=4, colBV=5:ncol(x),
-                       colBy=NULL, center = TRUE, centerEBV = FALSE) {
+                       colBy=NULL, center = TRUE, 
+                       scaleEBV = list()) {
 
   ## --- Setup ---
 
@@ -266,6 +271,13 @@ AlphaPart <- function (x, pathNA=FALSE, recode=TRUE, unknown= NA,
     timeRet <- .profilePrint(x=timeRet, task="Sort and/or recode pedigree", printProfile=printProfile,
                              time=Sys.time(), mem=(object.size(x) + object.size(y)))
   }
+  #---------------------------------------------------------------------
+  # Test scaleEBV
+  #---------------------------------------------------------------------
+  controlvals <- getScale()
+  if (!missing(scaleEBV)) {
+    controlvals[names(scaleEBV)] <- scaleEBV
+  }
   #=====================================================================
   ## --- Dimensions and Paths ---
   #=====================================================================
@@ -346,29 +358,13 @@ AlphaPart <- function (x, pathNA=FALSE, recode=TRUE, unknown= NA,
   #===================================================================
   # Centering  to make founders has mean zero
   #===================================================================
-  # Selecting founders and missing pedigree animals
-  xF <- y[c(y[, colFid]==0 & y[,colMid]==0),]
-  colBVy <- (ncol(y)-length(colBV)+1):ncol(y)
-  if (centerEBV == TRUE) {
-    if(length(colBV)==1){
-      EBVMean <- mean(xF[-1, colBVy[1]],  na.rm = TRUE)
-      y[-1,colBVy[1]] <- y[-1, colBVy[1]] - EBVMean
-      x[,colBV[1]] <- x[,colBV[1]] - EBVMean
-      EBVMean <- 0
-    }else{
-      EBVMean <- apply(xF[-1, colBVy],2, mean,  na.rm = TRUE)
-      for (i in seq_len(length(colBV))) {
-        y[-1, colBVy[i]] <- y[-1, colBVy[i]] - EBVMean[i]
-        x[,colBV[i]] <- x[,colBV[i]] - EBVMean[i]
-      }
-      EBVMean <- 0
-    }
-  }else {
-    if(length(colBV)==1){
-      EBVMean <- mean(xF[-1, colBVy[1]],  na.rm = TRUE)
-    }else{
-      EBVMean <- apply(xF[-1, colBVy],2, mean,  na.rm = TRUE)
-    }
+  if(controlvals$center == TRUE | controlvals$scale == TRUE){
+    tmpScale <- sEBV(y, x, colFid, colMid, colBV,  
+                     center = controlvals$center, 
+                     scale = controlvals$scale)
+    x <- tmpScale$x
+    y <- tmpScale$y
+    rm(tmpScale) 
   }
   #---------------------------------------------------------------------
   ## Compute
@@ -410,18 +406,13 @@ AlphaPart <- function (x, pathNA=FALSE, recode=TRUE, unknown= NA,
   colP <- colnames(tmp$pa)
   colW <- colnames(tmp$w)
   colX <- colnames(tmp$xa)
-  #===================================================================
-  # Original Values
-  #===================================================================
-  # Original pa value
-  if (center == TRUE && all(EBVMean > 1E-4) == TRUE){
-    basePop <- apply(y[-1,c(colFid,colMid)]==0,1,all)
-    for (i in seq_len(length(colBV))) {
-      tmp$w[-1,i] <- tmp$w[-1,i] - basePop * EBVMean[i]
-      tmp$pa[-1,i] <-tmp$pa[-1,i] + y[-1, colBV[i]] * basePop -
-        tmp$w[-1,i] * basePop
-    }
+  #=====================================================================
+  # Original Values 
+  #=====================================================================
+  if (center == TRUE){
+    tmp <- centerPop(y, path = tmp, colFid, colMid, colBV)    
   }
+
   #=====================================================================
   for (j in 1:nT) { ## j <- 1
     Py <- seq(t+1, t+nP)

@@ -386,3 +386,4 @@ test_that("Test computation", {
 #                    printProfile = "fly")
 #  expect_equal(tmp1$info$profile,  tmp2$info$profile)
 #})
+

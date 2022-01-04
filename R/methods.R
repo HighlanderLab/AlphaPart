@@ -762,4 +762,118 @@ savePlot.default <- function(...) {
   ##value<< See \code{\link[grDevices]{savePlot}} for details.
 
 }
+
 #=======================================================================
+# center base population
+#=======================================================================
+#' @title Calculate parent average for base population.
+#' @description This is an internally called functions used to calculate 
+#' parent average for base population.
+#' 
+#' @usage NULL
+#' 
+#' @seealso
+#' \code{\link[AlphaPart]{AlphaPart}}
+#'
+#' @author Thiago de Paula Oliveira
+#' 
+#' @keywords internal
+#' 
+#' @export
+
+centerPop <- function(y, path, colFid, colMid, colBV){
+  #---------------------------------------------------------------------
+  # Selecting founders and missing pedigree animals
+  #---------------------------------------------------------------------
+  xF <- y[c(y[, colFid]==0 & y[,colMid]==0),]
+  colBVy <- (ncol(y)-length(colBV)+1):ncol(y)
+  tmp <- as.matrix(xF[-1, colBVy])
+  baseMean <- colMeans(tmp, na.rm = TRUE)
+  
+  #---------------------------------------------------------------------
+  # Parent Avg. 
+  #---------------------------------------------------------------------
+  if(all(baseMean < 1E-4) == TRUE){
+    path$w[-1,] <- path$w[-1,] 
+    path$pa[-1,] <- path$pa[-1,]
+  }else{
+    basePop <- apply(y[-1,c(colFid,colMid)]==0,1,all)
+    path$w[-1,] <- path$w[-1,] - basePop %*% t(baseMean)
+    path$pa[-1,] <- path$pa[-1,] + basePop * y[-1, colBVy] -
+    path$w[-1,] * basePop
+    }
+  return(path)
+}
+
+#=======================================================================
+# Scaling EBVs
+#=======================================================================
+#' @title Scale EBVs for objects of the class summaryAlphaPart.
+#' @description   This is an internally called functions used to Scale 
+#' EBVs in respect to base population for objects of the class 
+#' \code{AlphaPart}.
+#' 
+#' @usage NULL
+#' 
+#' @seealso
+#' \code{\link[AlphaPart]{AlphaPart}}
+#'
+#' @author Thiago de Paula Oliveira
+#' 
+#' @keywords internal
+#' @importFrom stats sd
+#' @export
+
+sEBV <- function(y, x, colFid, colMid, colBV, center, scale){
+  #---------------------------------------------------------------------
+  # Selecting founders and missing pedigree animals
+  #---------------------------------------------------------------------
+  xF <- y[c(y[, colFid]==0 & y[,colMid]==0),]
+  colBVy <- (ncol(y)-length(colBV)+1):ncol(y)
+  tmp <- as.matrix(xF[-1, colBVy])
+  #---------------------------------------------------------------------
+  # Centering
+  #---------------------------------------------------------------------
+  if(is.logical(center)){
+    if(center){
+      center <- colMeans(tmp, na.rm = TRUE)
+      y. <- sweep(as.matrix(y[-1, colBVy]), 2L, center, check.margin = FALSE)
+      x. <- sweep(as.matrix(x[, colBV]), 2L, center, check.margin = FALSE)
+    } else{
+      y. = as.matrix(y[-1, colBVy])
+      x. = as.matrix(x[, colBV])
+    }
+  }
+  #---------------------------------------------------------------------
+  # Scaling
+  #---------------------------------------------------------------------  
+  if(is.logical(scale)){
+    if(scale) {
+      f <- function(x) {
+        sd(x, na.rm = TRUE)
+      }
+      scale <- apply(tmp, 2L, f)
+      y. <- sweep(y., 2L, scale, "/", check.margin = FALSE)
+      x. <- sweep(x., 2L, scale, "/", check.margin = FALSE)
+    }
+  }
+  y[-1, colBVy] <- y. 
+  x[, colBV] <- x.
+  return(list(y = y, x = x))
+}  
+
+#' @title Get scale information
+#' @description   This is an internally called function 
+#' 
+#' @usage NULL
+#' 
+#' @seealso
+#' \code{\link[AlphaPart]{AlphaPart}}
+#'
+#' @author Thiago de Paula Oliveira
+#' 
+#' @keywords internal
+#' @export
+getScale <- function(center = FALSE, scale = FALSE, ...){
+  list(center = center, scale = scale, ...)
+}

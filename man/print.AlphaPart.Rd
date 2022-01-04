@@ -36,8 +36,12 @@ ped <- data.frame(  id=c(  1,   2,   3,   4,   5,   6),
 tmp <- AlphaPart(x=ped, colBV=c("trt1", "trt2"))
 print(tmp)
 
-## Summarize by generation
+## Summarize by generation (genetic mean)
 summary(tmp, by="gen")
+
+## Summarize by generation (genetic variance)
+summary(tmp, by="gen", FUN = var)
+
 
 \donttest{
 ## There are also two demos
