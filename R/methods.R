@@ -279,7 +279,7 @@ summary.AlphaPart <- function(object, by=NULL, FUN=mean, labelSum="Sum",
           tmp <- rep(1, times=nrow(object[[i]]))
           tmpM <- aggregate(x=object[[i]][, cols], by=list(by=tmp),
                             FUN=var,  na.rm=TRUE)
-          if (cov == TRUE) {
+          if (cov) {
             tmpM2 <- object[[i]] %>%
             group_by(object[[i]][, by]) %>%
             do(data.frame(
@@ -299,7 +299,7 @@ summary.AlphaPart <- function(object, by=NULL, FUN=mean, labelSum="Sum",
           tmpM <- aggregate(x=object[[i]][, cols],
                             by=list(by=object[[i]][, by]),
                             FUN=var, na.rm=TRUE)
-          if (cov == TRUE) {
+          if (cov) {
             tmpM2 <- object[[i]] %>%
               group_by(object[[i]][, by]) %>%
               do(data.frame(
@@ -326,7 +326,7 @@ summary.AlphaPart <- function(object, by=NULL, FUN=mean, labelSum="Sum",
       ## Add nice column names
       colnames(tmpN) <- c(by, "N")
       count <- seq(1,length(paths))[-1]
-      if(cov == TRUE){
+      if(cov){
         for(ii in count[-length(count)]){
           for(jj in (ii+1):max(count)){
             kcount <- length(paths)+1
@@ -778,30 +778,31 @@ savePlot.default <- function(...) {
 #' @author Thiago de Paula Oliveira
 #' 
 #' @keywords internal
-#' 
+#' @importFrom stats lm confint
 #' @export
 
 centerPop <- function(y, path, colFid, colMid, colBV){
   #---------------------------------------------------------------------
   # Selecting founders and missing pedigree animals
   #---------------------------------------------------------------------
-  xF <- y[c(y[, colFid]==0 & y[,colMid]==0),]
+  xF <- y[c(y[, colFid]==0 & y[,colMid]==0), ]
   colBVy <- (ncol(y)-length(colBV)+1):ncol(y)
   tmp <- as.matrix(xF[-1, colBVy])
   baseMean <- colMeans(tmp, na.rm = TRUE)
-  
   #---------------------------------------------------------------------
-  # Parent Avg. 
+  # Decision criteria
   #---------------------------------------------------------------------
-  if(all(baseMean < 1E-4) == TRUE){
-    path$w[-1,] <- path$w[-1,] 
-    path$pa[-1,] <- path$pa[-1,]
-  }else{
-    basePop <- apply(y[-1,c(colFid,colMid)]==0,1,all)
-    path$w[-1,] <- path$w[-1,] - basePop %*% t(baseMean)
-    path$pa[-1,] <- path$pa[-1,] + basePop * y[-1, colBVy] -
-    path$w[-1,] * basePop
+  basePop <- apply(y[-1,c(colFid,colMid)]==0,1,all)
+  for (i in seq_len(ncol(tmp))){
+    if(all(confint(lm(tmp[,i] ~ 1), level=0.95)>0)){
+      path$w[-1,i] <- path$w[-1, i] - basePop * baseMean[i]
+      path$pa[-1, i] <- path$pa[-1, i] + basePop * y[-1, colBVy[i]] -
+        path$w[-1, i] * basePop
+    }else {
+      path$w[-1, i] <- path$w[-1, i] 
+      path$pa[-1, i] <- path$pa[-1, i]
     }
+  }
   return(path)
 }
 

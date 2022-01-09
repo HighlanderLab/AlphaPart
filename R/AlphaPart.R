@@ -409,7 +409,7 @@ AlphaPart <- function (x, pathNA=FALSE, recode=TRUE, unknown= NA,
   #=====================================================================
   # Original Values 
   #=====================================================================
-  if (center == TRUE){
+  if (center){
     tmp <- centerPop(y, path = tmp, colFid, colMid, colBV)    
   }
 
