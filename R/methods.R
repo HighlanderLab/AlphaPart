@@ -40,6 +40,7 @@ print.plotSummaryAlphaPart <- function (x, ask=interactive(), ...) {
       }
     }
     k <- k + 1
+   
   }
 }
 
@@ -131,6 +132,7 @@ print.AlphaPart <- function (x, n=6, ...) {
     } else {
       print(x[[trt]], ...)
     }
+   
   }
   cat("\n")
 }
@@ -438,7 +440,6 @@ summary.AlphaPart <- function(object, by=NULL, FUN=mean, labelSum="Sum",
 #'   point out a set of paths (distinguished with line type) within
 #'   upper level of paths (distinguished by, color), e.g.,
 #'   lineTypeList=list("-1"=1, "-2"=2, def=1) will lead to use of line
-#'   type 1 for paths having "-1" at the end of path name and line type
 #'   2, for paths having "-2" at the end of path name, while line type 1
 #'   (default) will, be used for other paths; specification of this
 #'   argument also causes recycling of colors for the upper level of
@@ -525,6 +526,7 @@ plot.summaryAlphaPart <-
           color[j:(j - 1 + palsN[i])] <-
             do.call("brewer.pal", args=list(n=palsN[i], name=pals[i]))
           j <- j + palsN[i]
+         
         }
       color <- unique(color)
       }
@@ -641,6 +643,7 @@ plot.summaryAlphaPart <-
                                      name=ifelse(is.null(labelPath),
                                                  path, labelPath))
       ret[[i]] <- p
+     
     }
     #-------------------------------------------------------------------
     ## --- Return ---
@@ -740,6 +743,7 @@ savePlot.plotSummaryAlphaPart <- function(
     if (!is.null(pre.hook) && is.function(pre.hook)) pre.hook()
     print(x[[i]])
     dev.off()
+   
   }
   #---------------------------------------------------------------------
   ## --- Return ---
@@ -781,26 +785,22 @@ savePlot.default <- function(...) {
 #' @importFrom stats lm confint
 #' @export
 
-centerPop <- function(y, path, colFid, colMid, colBV){
+centerPop <- function(y, colBV, path){
   #---------------------------------------------------------------------
   # Selecting founders and missing pedigree animals
   #---------------------------------------------------------------------
-  xF <- y[c(y[, colFid]==0 & y[,colMid]==0), ]
-  colBVy <- (ncol(y)-length(colBV)+1):ncol(y)
-  tmp <- as.matrix(xF[-1, colBVy])
+  colBV <- (ncol(y)-length(colBV)+1):ncol(y)
+  tmp <- as.matrix(y[c(y[, 2]==0 & y[,3]==0), colBV])
   baseMean <- colMeans(tmp, na.rm = TRUE)
   #---------------------------------------------------------------------
   # Decision criteria
   #---------------------------------------------------------------------
-  basePop <- apply(y[-1,c(colFid,colMid)]==0,1,all)
+  basePop <- apply(y[,c(2,3)]==0,1,all)
   for (i in seq_len(ncol(tmp))){
     if(all(confint(lm(tmp[,i] ~ 1), level=0.95)>0)){
       path$w[-1,i] <- path$w[-1, i] - basePop * baseMean[i]
-      path$pa[-1, i] <- path$pa[-1, i] + basePop * y[-1, colBVy[i]] -
+      path$pa[-1, i] <- path$pa[-1, i] + basePop * y[, colBV[i]] -
         path$w[-1, i] * basePop
-    }else {
-      path$w[-1, i] <- path$w[-1, i] 
-      path$pa[-1, i] <- path$pa[-1, i]
     }
   }
   return(path)
@@ -825,24 +825,19 @@ centerPop <- function(y, path, colFid, colMid, colBV){
 #' @importFrom stats sd
 #' @export
 
-sEBV <- function(y, x, colFid, colMid, colBV, center, scale){
+sEBV <- function(y, center, scale){
   #---------------------------------------------------------------------
   # Selecting founders and missing pedigree animals
   #---------------------------------------------------------------------
-  xF <- y[c(y[, colFid]==0 & y[,colMid]==0),]
-  colBVy <- (ncol(y)-length(colBV)+1):ncol(y)
-  tmp <- as.matrix(xF[-1, colBVy])
+  tmp <- y[c(y[, 1]==0 & y[,2]==0), -c(1,2)]
   #---------------------------------------------------------------------
   # Centering
   #---------------------------------------------------------------------
   if(is.logical(center)){
     if(center){
       center <- colMeans(tmp, na.rm = TRUE)
-      y. <- sweep(as.matrix(y[-1, colBVy]), 2L, center, check.margin = FALSE)
-      x. <- sweep(as.matrix(x[, colBV]), 2L, center, check.margin = FALSE)
-    } else{
-      y. = as.matrix(y[-1, colBVy])
-      x. = as.matrix(x[, colBV])
+      y[, -c(1,2)] <- y[, -c(1,2)] - 
+        rep(center, rep.int(nrow(y[, -c(1,2)]), ncol(y[, -c(1,2)])))
     }
   }
   #---------------------------------------------------------------------
@@ -854,13 +849,11 @@ sEBV <- function(y, x, colFid, colMid, colBV, center, scale){
         sd(x, na.rm = TRUE)
       }
       scale <- apply(tmp, 2L, f)
-      y. <- sweep(y., 2L, scale, "/", check.margin = FALSE)
-      x. <- sweep(x., 2L, scale, "/", check.margin = FALSE)
+      y[, -c(1,2)]  <- y[, -c(1,2)] / 
+        rep(scale, rep.int(nrow(y[, -c(1,2)]), ncol(y[, -c(1,2)])))
     }
   }
-  y[-1, colBVy] <- y. 
-  x[, colBV] <- x.
-  return(list(y = y, x = x))
+  return(y[, -c(1,2)])
 }  
 
 #' @title Get scale information

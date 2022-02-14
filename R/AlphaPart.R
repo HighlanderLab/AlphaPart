@@ -154,9 +154,7 @@ AlphaPart <- function (x, pathNA=FALSE, recode=TRUE, unknown= NA,
                        colFid=2, colMid=3, colPath=4, colBV=5:ncol(x),
                        colBy=NULL, center = TRUE, 
                        scaleEBV = list()) {
-
   ## --- Setup ---
-
   test <- (length(colId) > 1 | length(colFid) > 1 | length(colMid) > 1 | length(colPath) > 1 | length(colBy) > 1)
   if (test) {
     stop("arguments 'colId', 'colFid', 'colMid', 'colPath', and 'colBy' must be of length 1")
@@ -205,7 +203,52 @@ AlphaPart <- function (x, pathNA=FALSE, recode=TRUE, unknown= NA,
       x
     }
   }
-
+  #=======================================================================
+  # -- Test identification
+  #=======================================================================
+  if(!is.numeric(colId)){
+    colId <- which(colnames(x) %in% colId)
+    if (length(colId)==0) {
+      stop("Identification not valid for 'colId' column name", call. = FALSE)
+    } 
+  }
+  if(!is.numeric(colMid)){
+    colMid <- which(colnames(x) %in% colMid)
+    if (length(colMid)==0) {
+      stop("Identification not valid for 'colMid' column name", call. = FALSE)
+    }
+  }
+  if(!is.numeric(colFid)){
+    colFid <- which(colnames(x) %in% colFid)
+    if (length(colFid)==0) {
+      stop("Identification not valid for 'colFid' column name", call. = FALSE)
+    }
+  }
+  if(!is.numeric(colPath)){
+    testN <- length(colPath)
+    colPath <- which(colnames(x) %in% colPath)
+    if (length(colPath)!=testN) {
+      stop("Identification not valid for 'colPath' column name", call. = FALSE)
+    }
+    testN <-  NULL # not needed anymore
+  }
+  if(!is.numeric(colBy)){
+    testN <- length(colBy)
+    colByOriginal <- colBy
+    colBy <- which(colnames(x) %in% colBy)
+    if (length(colBy)!=testN) {
+      stop("Identification not valid for 'colBy' column name", call. = FALSE)
+    }
+    testN <- NULL # not needed anymore
+  }
+  if(!is.numeric(colBV)){
+    testN <- length(colBV)
+    colBV <- which(colnames(x) %in% colBV)
+    if (length(colBV) != testN) {
+      stop("Identification not valid for 'colBV' column(s) name", call. = FALSE)
+    }
+    testN <- NULL # not needed anymore
+  }
   #=====================================================================
   ## --- Sort and recode pedigree ---
   #=====================================================================
@@ -227,10 +270,23 @@ AlphaPart <- function (x, pathNA=FALSE, recode=TRUE, unknown= NA,
     recode <- TRUE
     x <- x[order(orderPed(ped=x[, c(colId, colFid, colMid)])), ]
   }
+  #=======================================================================
+  # Centering  to make founders has mean zero
+  #=======================================================================
+  controlvals <- getScale()
+  if (!missing(scaleEBV)) {
+    controlvals[names(scaleEBV)] <- scaleEBV
+  }
+  if(controlvals$center == TRUE | controlvals$scale == TRUE){
+    x[, colBV] <- sEBV(y =x[,c(colFid, colMid, colBV)], 
+                       center = controlvals$center, 
+                       scale = controlvals$scale)
+  }
+  #=======================================================================
   #---------------------------------------------------------------------
   ## Recode all ids to 1:n
   if (recode) {
-    y <- cbind( id=seq_len(nrow(x)),
+    y <- cbind(id=seq_len(nrow(x)),
                fid=match(x[, colFid], x[, colId], nomatch=0),
                mid=match(x[, colMid], x[, colId], nomatch=0))
     colnames(y) <- c(colId,colFid,colMid)
@@ -271,13 +327,6 @@ AlphaPart <- function (x, pathNA=FALSE, recode=TRUE, unknown= NA,
     timeRet <- .profilePrint(x=timeRet, task="Sort and/or recode pedigree", printProfile=printProfile,
                              time=Sys.time(), mem=(object.size(x) + object.size(y)))
   }
-  #---------------------------------------------------------------------
-  # Test scaleEBV
-  #---------------------------------------------------------------------
-  controlvals <- getScale()
-  if (!missing(scaleEBV)) {
-    controlvals[names(scaleEBV)] <- scaleEBV
-  }
   #=====================================================================
   ## --- Dimensions and Paths ---
   #=====================================================================
@@ -290,7 +339,7 @@ AlphaPart <- function (x, pathNA=FALSE, recode=TRUE, unknown= NA,
   colnames(y)[4:ncol(y)] <- lT
   #---------------------------------------------------------------------
   ## Missing values
-  nNA <- sapply(x[, colBV, drop=FALSE], function(z) sum(is.na(z)))
+  nNA <- apply(x[, colBV, drop=FALSE], 2, function(z) sum(is.na(z)))
   names(nNA) <- lT
   #---------------------------------------------------------------------
   ## Paths - P matrix
@@ -338,7 +387,8 @@ AlphaPart <- function (x, pathNA=FALSE, recode=TRUE, unknown= NA,
   }
 
   if (any(nNA > 0)) stop("unknown (missing) values are propagated through the pedigree and therefore not allowed")
-
+  nNA <- NULL # not needed anymore
+  
   if (profile) {
     timeRet <- .profilePrint(x=timeRet, task="Dimensions and Matrices P", printProfile=printProfile,
                              time=Sys.time(), mem=object.size(P))
@@ -353,26 +403,17 @@ AlphaPart <- function (x, pathNA=FALSE, recode=TRUE, unknown= NA,
   ## Add "zero" row (simplif ies computations with missing parents!)
   y <- rbind(y[1, ], y)
   y[1, ] <- 0
+  rownames(x) <- NULL
   P <- c(0, P)
   if (groupSummary) g <- c(0, g)
-  #===================================================================
-  # Centering  to make founders has mean zero
-  #===================================================================
-  if(controlvals$center == TRUE | controlvals$scale == TRUE){
-    tmpScale <- sEBV(y, x, colFid, colMid, colBV,  
-                     center = controlvals$center, 
-                     scale = controlvals$scale)
-    x <- tmpScale$x
-    y <- tmpScale$y
-    rm(tmpScale) 
-  }
   #---------------------------------------------------------------------
   ## Compute
   if (!groupSummary) {
     tmp <- .Call("AlphaPartDrop",
                  c1_=c1, c2_=c2,
                  nI_=nI, nP_=nP, nT_=nT,
-                 y_=y, P_=P, Px_=cumsum(c(0, rep(nP, nT-1))),
+                 y_=y, 
+                 P_=P, Px_=cumsum(c(0, rep(nP, nT-1))),
                  PACKAGE="AlphaPart")
   } else {
     N <- aggregate(x=y[-1, -c(1:3)], by=list(by=x[, colBy]), FUN=length)
@@ -410,7 +451,7 @@ AlphaPart <- function (x, pathNA=FALSE, recode=TRUE, unknown= NA,
   # Original Values 
   #=====================================================================
   if (center){
-    tmp <- centerPop(y, path = tmp, colFid, colMid, colBV)    
+    tmp <- centerPop(y = y[-1,], colBV = colBV, path = tmp)    
   }
 
   #=====================================================================
@@ -420,6 +461,7 @@ AlphaPart <- function (x, pathNA=FALSE, recode=TRUE, unknown= NA,
     colnames(ret[[j]]) <- c(colP[j], colW[j], colX[Py])
     t <- max(Py)
   }
+  tmp <- NULL # not needed anymore
   #---------------------------------------------------------------------
   if (profile) {
     timeRet <- .profilePrint(x=timeRet, task="Massage results",
@@ -471,7 +513,7 @@ AlphaPart <- function (x, pathNA=FALSE, recode=TRUE, unknown= NA,
   #=====================================================================
   class(ret) <- c("AlphaPart", class(ret))
   if (groupSummary) {
-    ret$by <- colBy
+    ret$by <- colByOriginal
     ret$N <- N
     summary(object=ret, sums=TRUE)
   } else {

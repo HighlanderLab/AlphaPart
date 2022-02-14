@@ -56,7 +56,6 @@ lineTypeList=NULL.}
 point out a set of paths (distinguished with line type) within
 upper level of paths (distinguished by, color), e.g.,
 lineTypeList=list("-1"=1, "-2"=2, def=1) will lead to use of line
-type 1 for paths having "-1" at the end of path name and line type
 2, for paths having "-2" at the end of path name, while line type 1
 (default) will, be used for other paths; specification of this
 argument also causes recycling of colors for the upper level of

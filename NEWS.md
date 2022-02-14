@@ -1,3 +1,9 @@
+# AlphaPart 0.9.1
+
+* Improving performance - memory usage and execution time.
+  * Execution time was improved in approximately 25%
+  * Memory usage was improved in approximately 5%
+
 # AlphaPart 0.9.0
 
 * AlphaPart now  has a method for partitioning trends in genetic mean and variance to understand breeding practices
