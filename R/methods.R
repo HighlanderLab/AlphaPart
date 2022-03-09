@@ -790,7 +790,11 @@ centerPop <- function(y, colBV, path){
   # Selecting founders and missing pedigree animals
   #---------------------------------------------------------------------
   colBV <- (ncol(y)-length(colBV)+1):ncol(y)
-  tmp <- as.matrix(y[c(y[, 2]==0 & y[,3]==0), colBV])
+  if(length(colBV)==1){
+    tmp <- as.matrix(y[c(y[, 2]==0 & y[,3]==0), colBV])
+  }else{
+    tmp <- y[c(y[, 2]==0 & y[,3]==0), colBV]
+  }
   baseMean <- colMeans(tmp, na.rm = TRUE)
   #---------------------------------------------------------------------
   # Decision criteria
@@ -829,8 +833,13 @@ sEBV <- function(y, center, scale){
   #---------------------------------------------------------------------
   # Selecting founders and missing pedigree animals
   #---------------------------------------------------------------------
-  tmp <- as.matrix(y[c(y[, 1]==0 & y[,2]==0), -c(1,2)])
-  y <- as.matrix(y[, -c(1,2)])
+  if(nrow(y)<=3){
+    tmp <- as.matrix(y[c(y[, 1]==0 & y[,2]==0), -c(1,2)])
+    y <- as.matrix(y[, -c(1,2)])    
+  }else{
+    tmp <- y[c(y[, 1]==0 & y[,2]==0), -c(1,2)]
+    y <- y[, -c(1,2)]
+  }
   #---------------------------------------------------------------------
   # Centering
   #---------------------------------------------------------------------
