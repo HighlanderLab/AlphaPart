@@ -827,16 +827,35 @@ centerPop <- function(y, colBV, path){
 #' @importFrom stats sd
 #' @export
 
-sEBV <- function(y, center, scale){
+sEBV <- function(y, center, scale, recode, unknown){
+  id. <- 1
+  fid. <- 2
+  mid. <- 3
+  if (recode) {
+    y[,id.:mid.] <- cbind(id=seq_len(nrow(y)),
+                     fid=match(y[, fid.], y[, id.], nomatch=0),
+                     mid=match(y[, mid.], y[, id.], nomatch=0))
+  } else {
+    ## Make sure we have 0 when recoded data is provided
+    if (is.na(unknown)) {
+      y[, c(fid., mid.)] <- NAToUnknown(x=y[, c(fid., mid.)], unknown=0)
+    } else {
+      if (unknown != 0)  {
+        y[, c(fid., mid.)] <-
+          NAToUnknown(x=unknownToNA(x=y[, c(fid., mid.)],
+                                    unknown=unknown), unknown=0)
+      }
+    }
+  }
   #---------------------------------------------------------------------
   # Selecting founders and missing pedigree animals
   #---------------------------------------------------------------------
-  if(nrow(y)<=3){
-    tmp <- as.matrix(y[c(y[, 1]==0 & y[,2]==0), -c(1,2)])
-    y <- as.matrix(y[, -c(1,2)])    
+  if(ncol(y)==(mid.+1)){
+    tmp <- as.matrix(y[c(y[, fid.]==0 & y[, mid.]==0), -c(id.:mid.)])
+    y <- as.matrix(y[, -c(id.:mid.)])    
   }else{
-    tmp <- y[c(y[, 1]==0 & y[,2]==0), -c(1,2)]
-    y <- y[, -c(1,2)]
+    tmp <- y[c(y[, fid.]==0 & y[, mid.]==0), -c(id.:mid.)]
+    y <- y[, -c(id.:mid.)]
   }
   #---------------------------------------------------------------------
   # Centering

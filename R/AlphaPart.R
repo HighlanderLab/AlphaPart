@@ -278,9 +278,10 @@ AlphaPart <- function (x, pathNA=FALSE, recode=TRUE, unknown= NA,
     controlvals[names(scaleEBV)] <- scaleEBV
   }
   if(controlvals$center == TRUE | controlvals$scale == TRUE){
-    x[, colBV] <- sEBV(y =x[,c(colFid, colMid, colBV)], 
+    x[, colBV] <- sEBV(y = x[,c(colId, colFid, colMid, colBV)], 
                        center = controlvals$center, 
-                       scale = controlvals$scale)
+                       scale = controlvals$scale, 
+                       recode = recode, unknown = unknown)
   }
   #=======================================================================
   #---------------------------------------------------------------------

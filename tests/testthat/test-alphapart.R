@@ -88,11 +88,23 @@ test_that("Test the output of AlphaPart function", {
 
   ## ... to test recode argument
   ret5  <- AlphaPart(x=ped3,                                                 pathNA=TRUE, verbose=0, colId="idI", colFid="fidI", colMid="midI", colPath="pat", colBV=c("trt1", "trt2"))
+  ret5.1  <- AlphaPart(x=ped3,                                               pathNA=TRUE, verbose=0, colId="idI", colFid="fidI", colMid="midI", colPath="pat", colBV=c("trt1", "trt2"),
+                       scaleEBV = list(center = TRUE, scale = TRUE))
+  
   ret6  <- AlphaPart(x=ped3,                                                 pathNA=TRUE, verbose=0, colId="idI", colFid="fidI", colMid="midI", colPath="pat", colBV=c("trt1", "trt2"), recode=FALSE)
+  ret6.1  <- AlphaPart(x=ped3,                                               pathNA=TRUE, verbose=0, colId="idI", colFid="fidI", colMid="midI", colPath="pat", colBV=c("trt1", "trt2"), recode=FALSE,
+                       scaleEBV = list(center = TRUE, scale = TRUE))
+  
   ## ... to test recode and unknown argument
   ret7  <- AlphaPart(x=ped3,                                                 pathNA=TRUE, verbose=0, colId="idI", colFid="fidI", colMid="midI", colPath="pat", colBV=c("trt1", "trt2"), recode=FALSE, unknown=99)
-
-
+  ret7.1  <- AlphaPart(x=ped3,                                               pathNA=TRUE, verbose=0, colId="idI", colFid="fidI", colMid="midI", colPath="pat", colBV=c("trt1", "trt2"), recode=FALSE, unknown=99,
+                       scaleEBV = list(center = TRUE, scale = TRUE))
+  
+  ret8  <- AlphaPart(x=ped3,                                                 pathNA=TRUE, verbose=0, colId="idI", colFid="fidI", colMid="midI", colPath="pat", colBV="trt1", recode=FALSE, unknown=99,
+                       scaleEBV = list(center = TRUE, scale = TRUE))
+  ret8.1  <- AlphaPart(x=ped3,                                               pathNA=TRUE, verbose=0, colId="idI", colFid="fidI", colMid="midI", colPath="pat", colBV=7, recode=FALSE, unknown=99,
+                       scaleEBV = list(center = TRUE, scale = TRUE))
+  
   ## --- Overall result ---
 
   ## List component names
@@ -107,6 +119,9 @@ test_that("Test the output of AlphaPart function", {
   ## Use of argument recode and unknown
   expect_equal(ret5, ret6)
   expect_equal(ret6, ret7)
+  expect_equal(ret5.1, ret6.1)
+  expect_equal(ret6.1, ret7.1)
+  expect_equal(ret8, ret8.1)
 
   ## Use of recode=FALSE
   tmp <- ret6$trt1[order(ret6$trt1$id), ]
