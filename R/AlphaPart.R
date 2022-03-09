@@ -265,7 +265,7 @@ AlphaPart <- function (x, pathNA=FALSE, recode=TRUE, unknown= NA,
     str(x)
   }
   #---------------------------------------------------------------------
-  ## Sort so that parents preceede children
+  ## Sort so that parents precede children
   if (sort) {
     recode <- TRUE
     x <- x[order(orderPed(ped=x[, c(colId, colFid, colMid)])), ]

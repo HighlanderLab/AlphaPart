@@ -38,8 +38,8 @@ Suggests:
     testthat (>= 3.0.0),
     covr
 LinkingTo: Rcpp
-Version: 0.9.1
-Date: 2022-02-12
+Version: 0.9.2
+Date: 2022-03-09
 NeedsCompilation: yes
 Packaged: 2022-02-12 19:36:37 UTC
 VignetteBuilder: knitr

@@ -791,7 +791,7 @@ centerPop <- function(y, colBV, path){
   #---------------------------------------------------------------------
   colBV <- (ncol(y)-length(colBV)+1):ncol(y)
   tmp <- as.matrix(y[c(y[, 2]==0 & y[,3]==0), colBV])
-  baseMean <- colMeans(tmp, na.rm = TRUE)
+  baseMean <- colMeans(as.matrix(tmp), na.rm = TRUE)
   #---------------------------------------------------------------------
   # Decision criteria
   #---------------------------------------------------------------------
@@ -835,7 +835,7 @@ sEBV <- function(y, center, scale){
   #---------------------------------------------------------------------
   if(is.logical(center)){
     if(center){
-      center <- colMeans(tmp, na.rm = TRUE)
+      center <- colMeans(as.matrix(tmp), na.rm = TRUE)
       y[, -c(1,2)] <- y[, -c(1,2)] - 
         rep(center, rep.int(nrow(y[, -c(1,2)]), ncol(y[, -c(1,2)])))
     }
