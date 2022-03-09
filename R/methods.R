@@ -722,8 +722,6 @@ savePlot.plotSummaryAlphaPart <- function(
   traitsAsDir=FALSE,                           ##<<
   ...                                          ##<<
 ) {
-
-
   if (length(filename) > 1) stop("'filename' argument must be of length one")
   if (!("plotSummaryAlphaPart" %in% class(x))) stop("'x' must be of a 'plotSummaryAlphaPart' class")
   filenameOrig <- sub(pattern=paste(".", type, "$", sep=""), replacement="", x=filename)
