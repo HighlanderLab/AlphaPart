@@ -145,6 +145,7 @@
 #' @importFrom gdata unknownToNA
 #' @importFrom gdata object.size
 #' @importFrom stats aggregate
+#' @importFrom tibble is_tibble
 #'
 #' @export
 
@@ -154,6 +155,10 @@ AlphaPart <- function (x, pathNA=FALSE, recode=TRUE, unknown= NA,
                        colFid=2, colMid=3, colPath=4, colBV=5:ncol(x),
                        colBy=NULL, center = TRUE, 
                        scaleEBV = list()) {
+  ## Test if the data is a data.frame
+  if(is_tibble(x)){
+    x <- as.data.frame(x)
+  }
   ## --- Setup ---
   test <- (length(colId) > 1 | length(colFid) > 1 | length(colMid) > 1 | length(colPath) > 1 | length(colBy) > 1)
   if (test) {

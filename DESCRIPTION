@@ -29,7 +29,8 @@ Imports:
     Rcpp (>= 0.9.4),
     reshape,
     dplyr,
-    magrittr
+    magrittr,
+    tibble (>= 3.1.7),
 Suggests:
     RColorBrewer (>= 1.0-2),
     truncnorm (>= 1.0-5),
@@ -38,8 +39,8 @@ Suggests:
     testthat (>= 3.0.0),
     covr
 LinkingTo: Rcpp
-Version: 0.9.3
-Date: 2022-03-09
+Version: 0.9.4
+Date: 2022-06-13
 NeedsCompilation: yes
 Packaged: 2022-02-12 19:36:37 UTC
 VignetteBuilder: knitr

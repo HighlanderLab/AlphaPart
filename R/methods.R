@@ -268,6 +268,7 @@ summary.AlphaPart <- function(object, by=NULL, FUN=mean, labelSum="Sum",
   for(i in 1:nT) { ## for each trait
      ## Setup
      cols <- c(lT[i], paste(lT[i], lP, sep="_"))
+     checkCov <- length(cols[-1])>1 ## do not run cov if path has 1 level
      paths <- cols
      paths[2:length(paths)] <- ret$info$lP
      paths[1] <- labelSum
@@ -281,40 +282,44 @@ summary.AlphaPart <- function(object, by=NULL, FUN=mean, labelSum="Sum",
           tmp <- rep(1, times=nrow(object[[i]]))
           tmpM <- aggregate(x=object[[i]][, cols], by=list(by=tmp),
                             FUN=var,  na.rm=TRUE)
-          if (cov) {
-            tmpM2 <- object[[i]] %>%
-            group_by(object[[i]][, by]) %>%
-            do(data.frame(
-              cov=2*t(cov(.[,cols[-1]], .[,cols[-1]])[
-                lower.tri(cov(.[,cols[-1]], .[,cols[-1]]),
-                          diag = FALSE)])))
-            if(is.null(ncol(tmpM2))==FALSE){
-              tmpM2 <- tmpM2[,-1]
+          if (checkCov){
+            if (cov) {
+              tmpM2 <- object[[i]] %>%
+                group_by(object[[i]][, by]) %>%
+                do(data.frame(
+                  cov=2*t(cov(.[,cols[-1]], .[,cols[-1]])[
+                    lower.tri(cov(.[,cols[-1]], .[,cols[-1]]),
+                              diag = FALSE)])))
+              if(is.null(ncol(tmpM2))==FALSE){
+                tmpM2 <- tmpM2[,-1]
+              }
+            }else {
+              tmpM2 <- tmpM[,2]-rowSums(tmpM[,-c(1:2)])
             }
-          }else {
-            tmpM2 <- tmpM[,2]-rowSums(tmpM[,-c(1:2)])
+            tmpM <- cbind(tmpM,tmpM2)
           }
-          tmpM <- cbind(tmpM,tmpM2)
           tmpN <- aggregate(x=object[[i]][, cols[1]], by=list(by=tmp),
                             FUN=length)
         } else {
           tmpM <- aggregate(x=object[[i]][, cols],
                             by=list(by=object[[i]][, by]),
                             FUN=var, na.rm=TRUE)
-          if (cov) {
-            tmpM2 <- object[[i]] %>%
-              group_by(object[[i]][, by]) %>%
-              do(data.frame(
-                cov=2*t(cov(.[,cols[-1]], .[,cols[-1]])[
-                  lower.tri(cov(.[,cols[-1]], .[,cols[-1]]),
-                            diag = FALSE)])))
-            if(is.null(ncol(tmpM2))==FALSE){
-              tmpM2 <- tmpM2[,-1]
+          if (checkCov){
+            if (cov) {
+              tmpM2 <- object[[i]] %>%
+                group_by(object[[i]][, by]) %>%
+                do(data.frame(
+                  cov=2*t(cov(.[,cols[-1]], .[,cols[-1]])[
+                    lower.tri(cov(.[,cols[-1]], .[,cols[-1]]),
+                              diag = FALSE)])))
+              if(is.null(ncol(tmpM2))==FALSE){
+                tmpM2 <- tmpM2[,-1]
+              }
+            }else {
+              tmpM2 <- tmpM[,2]-rowSums(tmpM[,-c(1:2)])
             }
-          }else {
-            tmpM2 <- tmpM[,2]-rowSums(tmpM[,-c(1:2)])
-          }
           tmpM <- cbind(tmpM,tmpM2)
+          }
           tmpN <- aggregate(x=object[[i]][, cols[1]],
                             by=list(by=object[[i]][, by]), FUN=length)
         }
@@ -328,7 +333,7 @@ summary.AlphaPart <- function(object, by=NULL, FUN=mean, labelSum="Sum",
       ## Add nice column names
       colnames(tmpN) <- c(by, "N")
       count <- seq(1,length(paths))[-1]
-      if(cov){
+      if(cov && checkCov) {
         for(ii in count[-length(count)]){
           for(jj in (ii+1):max(count)){
             kcount <- length(paths)+1
@@ -337,7 +342,9 @@ summary.AlphaPart <- function(object, by=NULL, FUN=mean, labelSum="Sum",
         }
       }else{
         kcount <- length(paths)+1
-        paths <- c(paths,"Sum.Cov")
+        if(checkCov){
+          paths <- c(paths,"Sum.Cov")
+        }
       }
       colnames(tmpM)[z:ncol(tmpM)] <- paths
       #-----------------------------------------------------------------
