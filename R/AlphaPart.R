@@ -140,10 +140,6 @@
 #'
 #' @importFrom utils str
 #' @importFrom pedigree orderPed
-#' @importFrom gdata NAToUnknown
-#' @importFrom gdata NAToUnknown
-#' @importFrom gdata unknownToNA
-#' @importFrom gdata object.size
 #' @importFrom stats aggregate
 #' @importFrom tibble is_tibble
 #'

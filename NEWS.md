@@ -1,3 +1,9 @@
+# AlphaPart 0.9.4
+
+* Internal function to transform tibble data into a data frame (stop crashing)
+* Covariance is only returned when the levels of ```colPath``` is higher than 1. 
+
+
 # AlphaPart 0.9.1
 
 * Improving performance - memory usage and execution time.
