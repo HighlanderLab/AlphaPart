@@ -132,7 +132,7 @@ for(i in (length(g0)+1):nrow(ped)) {
 }
 
 ## Recode identifications to 1:n
-ped$ID  <- 1:nrow(ped)
+ped$ID  <- seq_len(nrow(ped))
 ped$FID <- match(ped$fid, ped$id) 
 ped$MID <- match(ped$mid, ped$id)
 

@@ -555,9 +555,9 @@ mapLevels.factor <- function(x, codes=TRUE, sort=TRUE, drop=FALSE,
   map <- vector(mode="list", length=nlevs)
   names(map) <- levs
   if(codes) {
-    map[1:nlevs] <- 1:nlevs
+    map[seq_len(nlevs)] <- seq_len(nlevs)
   } else {
-    map[1:nlevs] <- levs
+    map[seq_len(nlevs)] <- levs
   }
   class(map) <- "levelsMap"
   map
@@ -604,7 +604,7 @@ mapLevels.data.frame <- function(x, codes=TRUE, sort=TRUE, drop=FALSE,
   len <- sapply(x, FUN=length)
   names(y) <- rep(names(x), times=len)
   if(ind) {
-    return(list(y, rep(1:length(x), times=len), len))
+    return(list(y, rep(seq_len(length(x)), times=len), len))
   } else {
     return(y)
   }

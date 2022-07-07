@@ -1,3 +1,10 @@
+# AlphaPart 0.9.5
+
+* Removed dependency: ```gdata```
+* Added dependency: ```methods```
+* Fixed bugs:
+    * tibble data is converted into data.frame to avoid 
+
 # AlphaPart 0.9.4
 
 * Internal function to transform tibble data into a data frame (stop crashing)
