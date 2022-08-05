@@ -1,4 +1,7 @@
 url: https://alphagenes.github.io/AlphaPart/
 template:
+  package: rbitemplate
   bootstrap: 5
 
+development:
+  mode: auto
