@@ -37,7 +37,8 @@ Suggests:
     knitr,
     rmarkdown,
     testthat (>= 3.0.0),
-    covr
+    covr,
+    ggridges (>= 0.5.3)
 LinkingTo: Rcpp
 Version: 0.9.6
 Date: 2022-08-05

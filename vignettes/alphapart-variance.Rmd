@@ -4,7 +4,7 @@ author: "Gregor Gorjanc, Jana Obsteter, Thiago de Paula Oliveira"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{AlphaPart}
+  %\VignetteIndexEntry{PartitioningVariance}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -24,9 +24,8 @@ In addition to the contribution of paths to changes in genetic mean, breeding pr
 #=======================================================================
 #devtools::install_github("AlphaGenes/AlphaPart")
 library(AlphaPart)
-library(tidyverse)
-library(tidyr)
-library(patchwork)
+library(dplyr)
+library(ggplot2)
 library(ggridges)
 ```
 
@@ -35,7 +34,7 @@ library(ggridges)
 #=======================================================================
 # Reading and organizing Scenario 1
 #=======================================================================
-data <-  readRDS("./../data/AlphaPartCattleSim.rds") %>%
+data <-  readRDS("./../inst/extdata/AlphaPartCattleSim.rds") %>%
   dplyr::mutate(across(generation:mother, as.numeric)) %>%
   dplyr::rename(status = type) %>%
   dplyr::mutate(across(c("sex", "status"), as.factor)) %>%
