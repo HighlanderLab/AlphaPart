@@ -1,6 +1,8 @@
 ---
 title: "AlphaPart - R implementation of the method for partitioning genetic trends"
-author: "Gregor Gorjanc, Jana Obsteter"
+description: >
+  Learn how to get started with the basics of AlphaPart.
+author: "Gregor Gorjanc, Jana Obsteter, Thiago de Paula Oliveira"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >

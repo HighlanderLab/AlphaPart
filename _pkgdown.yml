@@ -1,8 +1,28 @@
 url: https://alphagenes.github.io/AlphaPart/
 
+home:
+  title: AlphaPart - partitioning genetic trends
+
+authors:
+  Gregor Gorjanc:
+    href: https://www.ed.ac.uk/roslin/highlanderlab
+  Jana Obsteter:
+    href: https://www.kis.si/en/Associates_OZ/Jana_Obsteter_1/
+  Thiago de Paula Oliveira:
+    href: https://prof-thiagooliveira.netlify.app/
+
 template:
-  package: rbitemplate
   bootstrap: 5
+  bslib:
+    primary: "#193d63"
+    border-radius: 0.5rem
+    btn-border-radius: 0.25rem
 
 development:
   mode: auto
+
+articles:
+- title: Customise your site
+  navbar: ~
+  contents:
+  - alphapart-vignette
