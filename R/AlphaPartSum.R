@@ -46,8 +46,8 @@
 AlphaPartSum <- function (x, map=NULL, remove=TRUE, zeroPath=TRUE, call="AlphaPartSum") {
   ## --- Setup ---
   
-  test1 <- "AlphaPart"        %in% class(x)
-  test2 <- "summaryAlphaPart" %in% class(x)
+  test1 <- inherits(x, "AlphaPart")
+  test2 <- inherits(x, "summaryAlphaPart")
   if (!any(c(test1, test2))) stop("object 'x' must be of a 'AlphaPart' or 'summaryAlphaPart' class")
   if (!is.list(map)) stop("object 'map' must be of a 'list' class")
 

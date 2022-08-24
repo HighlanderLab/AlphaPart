@@ -4,6 +4,7 @@
 FIXES
 
 * Downgrade for package methods from 4.1.3 to 3.6.2 to support old MAC
+* Using function ```inherits()``` to test the class of an object
 
 ---
 

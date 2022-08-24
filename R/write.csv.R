@@ -59,8 +59,8 @@ write.csv.default <- function (...) {
 write.csv.AlphaPart <- function (x, file, traitsAsDir=FALSE, csv2=TRUE, row.names=FALSE, ...) {
   ## --- Setup ---
 
-  if(length(file) > 1) stop("'file' argument must be of length one")
-  if(!("AlphaPart" %in% class(x))) stop("'x' must be of a 'AlphaPart' class")
+  if (length(file) > 1) stop("'file' argument must be of length one")
+  if (!inherits(x, "AlphaPart")) stop("'x' must be of a 'AlphaPart' class")
   fileOrig <- sub(pattern=".csv$", replacement="", x=file)
   ret <- NULL
 
@@ -96,8 +96,8 @@ write.csv.AlphaPart <- function (x, file, traitsAsDir=FALSE, csv2=TRUE, row.name
 write.csv.summaryAlphaPart <- function (x, file, traitsAsDir=FALSE, csv2=TRUE, row.names=FALSE, ...) {
   ## --- Setup ---
 
-  if(length(file) > 1) stop("'file' argument must be of length one")
-  if(!("summaryAlphaPart" %in% class(x))) stop("'x' must be of a 'summaryAlphaPart' class")
+  if (length(file) > 1) stop("'file' argument must be of length one")
+  if (!inherits(x,"summaryAlphaPart")) stop("'x' must be of a 'summaryAlphaPart' class")
   fileOrig <- sub(pattern=".csv$", replacement="", x=file)
   ret <- NULL
 

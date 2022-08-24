@@ -209,7 +209,7 @@ summary.AlphaPart <- function(object, by=NULL, FUN=mean, labelSum="Sum",
   groupSummary <- sums
   #---------------------------------------------------------------------
   # Test Alpha Part Class
-  test <- !("AlphaPart" %in% class(object))
+  test <- !inherits(object, "AlphaPart")
 
   if (test) {
     stop("'object' must be of a AlphaPart class")
@@ -501,7 +501,7 @@ plot.summaryAlphaPart <-
     #-------------------------------------------------------------------
     ## --- Setup ---
     #-------------------------------------------------------------------
-    if (!("summaryAlphaPart" %in% class(x))) stop("'x' must be of a summaryAlphaPart class")
+    if (!inherits(x, "summaryAlphaPart")) stop("'x' must be of a summaryAlphaPart class")
 
     by    <- x$info$by
     ## by argument
@@ -730,7 +730,7 @@ savePlot.plotSummaryAlphaPart <- function(
   ...                                          ##<<
 ) {
   if (length(filename) > 1) stop("'filename' argument must be of length one")
-  if (!("plotSummaryAlphaPart" %in% class(x))) stop("'x' must be of a 'plotSummaryAlphaPart' class")
+  if (!inherits(x, "plotSummaryAlphaPart")) stop("'x' must be of a 'plotSummaryAlphaPart' class")
   filenameOrig <- sub(pattern=paste(".", type, "$", sep=""), replacement="", x=filename)
   ret <- NULL
   lT <- names(x)
