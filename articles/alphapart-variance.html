@@ -73,9 +73,10 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.svg" class="logo" alt=""><h1>Partitioning genetic trends in mean and variance</h1>
-                        <h4 data-toc-skip class="author">Gregor Gorjanc, Jana Obsteter, Thiago de Paula Oliveira</h4>
+                        <h4 data-toc-skip class="author">Gregor Gorjanc,
+Jana Obsteter, Thiago de Paula Oliveira</h4>
             
-            <h4 data-toc-skip class="date">2022-08-24</h4>
+            <h4 data-toc-skip class="date">2022-11-13</h4>
       
       
       <div class="d-none name"><code>alphapart-variance.Rmd</code></div>
@@ -83,8 +84,15 @@
 
     
     
-<p>In breeding programmes, the observed genetic change is a sum of the contributions of different groups of individuals. Here we show how to partition the genetic mean and variance of breeding values using AlphaPart.</p>
-<p>In addition to the contribution of paths to changes in genetic mean, breeding programmes should also consider analysing changes in genetic variance to understand the drivers of genetic change in a population fully. Managing the change in genetic mean and variance in breeding programmes is essential to ensure long-term genetic gain.</p>
+<p>In breeding programmes, the observed genetic change is a sum of the
+contributions of different groups of individuals. Here we show how to
+partition the genetic mean and variance of breeding values using
+AlphaPart.</p>
+<p>In addition to the contribution of paths to changes in genetic mean,
+breeding programmes should also consider analysing changes in genetic
+variance to understand the drivers of genetic change in a population
+fully. Managing the change in genetic mean and variance in breeding
+programmes is essential to ensure long-term genetic gain.</p>
 <div class="section level2">
 <h2 id="loading-packages">Loading packages<a class="anchor" aria-label="anchor" href="#loading-packages"></a>
 </h2>
@@ -119,6 +127,17 @@
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
+<colgroup>
+<col width="5%">
+<col width="9%">
+<col width="9%">
+<col width="5%">
+<col width="17%">
+<col width="20%">
+<col width="15%">
+<col width="8%">
+<col width="8%">
+</colgroup>
 <thead><tr class="header">
 <th align="right">ind</th>
 <th align="right">father</th>
@@ -207,13 +226,15 @@
 <li>
 <code>ind</code> - individual</li>
 <li>
-<code>father</code> and <code>mother</code> - individual’s parents</li>
+<code>father</code> and <code>mother</code> - individual’s
+parents</li>
 <li>
 <code>sex</code> - individual sex</li>
 <li>
 <code>status</code> - if the individual is or not selected</li>
 <li>
-<code>path</code> - the path variable used to partition the additive genetic mean</li>
+<code>path</code> - the path variable used to partition the additive
+genetic mean</li>
 <li>
 <code>tbv</code> - true breeding value</li>
 <li>
@@ -223,7 +244,10 @@
 <div class="section level2">
 <h2 id="partitioning-trends-in-genetic-mean-and-variance">Partitioning trends in genetic mean and variance<a class="anchor" aria-label="anchor" href="#partitioning-trends-in-genetic-mean-and-variance"></a>
 </h2>
-<p>We use the <code>AlphaPart</code> function to partition the true breeding values <code>(tbv)</code> in the <code>data</code> by the animal sex and status variable combination into females (F) and males (M) non-selected (N) and males selected (S) contributions:</p>
+<p>We use the <code>AlphaPart</code> function to partition the true
+breeding values <code>(tbv)</code> in the <code>data</code> by the
+animal sex and status variable combination into females (F) and males
+(M) non-selected (N) and males selected (S) contributions:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">part</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/AlphaPart.html">AlphaPart</a></span><span class="op">(</span><span class="va">data</span>, colId <span class="op">=</span> <span class="st">"ind"</span>, colFid <span class="op">=</span> <span class="st">"father"</span>, </span>
 <span>                  colMid <span class="op">=</span> <span class="st">"mother"</span>, colBV <span class="op">=</span> <span class="st">"tbv"</span>, colPath <span class="op">=</span> <span class="st">"path"</span><span class="op">)</span></span></code></pre></div>
@@ -370,7 +394,9 @@
 </tr>
 </tbody>
 </table>
-<p>We use the generic <code>summary.AlphaPart</code> function to summarize an <code>AlphaPart</code> object by generation, con*sering:</p>
+<p>We use the generic <code>summary.AlphaPart</code> function to
+summarize an <code>AlphaPart</code> object by generation,
+con*sering:</p>
 <ul>
 <li>the function <strong>mean</strong>
 </li>
@@ -546,7 +572,9 @@
 <div class="section level3">
 <h3 id="example-of-plots-to-analyse-the-results">Example of plots to analyse the results<a class="anchor" aria-label="anchor" href="#example-of-plots-to-analyse-the-results"></a>
 </h3>
-<p>Distribution of breeding value partitions by sex and selection status (selected males (M(S)), non-selected males (M(N)), and females (F)) over generations.</p>
+<p>Distribution of breeding value partitions by sex and selection status
+(selected males (M(S)), non-selected males (M(N)), and females (F)) over
+generations.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">part</span><span class="op">$</span><span class="va">tbv</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="va">generation</span><span class="op">)</span>, <span class="va">`tbv_F:Non-Selected`</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
@@ -581,7 +609,9 @@
 <pre><code><span><span class="co">## Picking joint bandwidth of 0.0357</span></span></code></pre>
 <pre><code><span><span class="co">## Picking joint bandwidth of 0.0918</span></span></code></pre>
 <p><img src="alphapart-variance_files/figure-html/unnamed-chunk-6-1.png" width="864"></p>
-<p>Partitions of genetic mean and variance by sex and selection status (selected males (M(S)), non-selected males (M(N)), and females (F)) using true breeding values:</p>
+<p>Partitions of genetic mean and variance by sex and selection status
+(selected males (M(S)), non-selected males (M(N)), and females (F))
+using true breeding values:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">partMean</span><span class="op">$</span><span class="va">tbv</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">Sum</span>, x <span class="op">=</span> <span class="va">generation</span>, colour <span class="op">=</span> <span class="st">"Sum"</span><span class="op">)</span>,</span>
@@ -626,6 +656,8 @@
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span></span>
 <span>    legend.position <span class="op">=</span> <span class="st">"top"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">ℹ</span> Please use `linewidth` instead.</span></span></code></pre>
 <p><img src="alphapart-variance_files/figure-html/unnamed-chunk-8-1.png" width="576"></p>
 </div>
 </div>

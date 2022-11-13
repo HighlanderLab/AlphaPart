@@ -170,15 +170,10 @@ effect. Default is <code>center = TRUE</code>.</p></dd>
 <dt>scaleEBV</dt>
 <dd><p>a list with two arguments defining whether is
 appropriate to center and/or scale the <code>colBV</code> columns in respect to
-the base population. The list may contain the following components:</p><dl><dt><code>center</code>:</dt>
-<dd><p>a logical value</p></dd>
-
-<dt><code>scale</code>:</dt>
-<dd><p>a logical value</p></dd>
-
-</dl><p>If <code>center = TRUE</code> and
-<code>scale = TRUE</code> then the base population is set to has zero mean and
-unit variance.</p></dd>
+the base population. The list may contain the following components:</p><ul><li><p><code>center</code>: a logical value</p></li>
+<li><p><code>scale</code>: a logical value. If <code>center = TRUE</code> and <code>scale = TRUE</code> then the
+base population is set to has zero mean and unit variance.</p></li>
+</ul></dd>
 
 </dl></div>
     <div class="section level2">
@@ -193,41 +188,19 @@ further analyses - there is a handy summary method
 <code>summaryAlphaPart</code> class).  Class <code>AlphaPart</code> is a
 list. The first <code>length(colBV)</code> components (one for each trait
 and named with trait label, say trt) are data frames. Each
-data.frame contains:</p>
-<dl><dt><code>x</code></dt>
-<dd><p>columns from initial data
-<code>x</code></p></dd>
- <dt>trt_pa</dt>
-<dd><p>parent average</p></dd>
- <dt>trt_w</dt>
-<dd><p>Mendelian
-sampling term</p></dd>
- <dt>trt_path1, trt_path2, ...</dt>
-<dd><p>breeding value
-partitions</p></dd>
-
-
-</dl><p>The last component of returned object is also a list named
+data.frame contains:</p><ul><li><p><code>x</code> columns from initial data <code>x</code></p></li>
+<li><p><code>trt_pa</code> parent average</p></li>
+<li><p><code>trt_w</code>Mendelian sampling term</p></li>
+<li><p><code>trt_path1, trt_path2, ...</code> breeding value partitions</p></li>
+</ul><p>The last component of returned object is also a list named
 <code>info</code> with the following components holding meta information
-about the analysis:</p>
-<dl><dt>path</dt>
-<dd><p>column name holding path information</p></dd>
-
-<dt>nP</dt>
-<dd><p>number of paths</p></dd>
- <dt>lP</dt>
-<dd><p>path labels</p></dd>
- <dt>nT</dt>
-<dd><p>number of
-traits</p></dd>
- <dt>lT</dt>
-<dd><p>trait labels</p></dd>
- <dt>warn</dt>
-<dd><p>potential warning
-messages associated with this object</p></dd>
-
-
-</dl><p>If <code>colBy!=NULL</code> the resulting object is of a class
+about the analysis:</p><ul><li><p><code>path</code> column name holding path information</p></li>
+<li><p><code>nP</code> number of paths</p></li>
+<li><p><code>lP</code> path labels</p></li>
+<li><p><code>nT</code> number of traits</p></li>
+<li><p><code>lT</code> trait labels</p></li>
+<li><p><code>warn</code> potential warning messages associated with this object</p></li>
+</ul><p>If <code>colBy!=NULL</code> the resulting object is of a class
 <code>summaryAlphaPart</code>, see
 <code><a href="summary.AlphaPart.html">summary.AlphaPart</a></code> for details.</p>
 
@@ -238,14 +211,11 @@ any computational bottlenecks.</p>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>Pedigree in <code>x</code> must be valid in a sense that there
-are:</p><ul><li><p>no directed loops (the simplest example is that
-the individual identification is equal to the identification of a
-father or mother)</p></li>
-<li><p>no bisexuality, e.g., fathers most not
-appear as mothers</p></li>
-<li><p>father and/or mother can be unknown
-(missing) - defined with any "code" that is dif ferent from
-existing identif ications</p></li>
+are:</p><ul><li><p>no directed loops (the simplest example is that the individual
+identification is equal to the identification of a father or mother)</p></li>
+<li><p>no bisexuality, e.g., fathers most not appear as mothers</p></li>
+<li><p>father and/or mother can be unknown (missing) - defined with
+any "code" that is different from existing identifications</p></li>
 </ul><p>Unknown (missing) values for breeding values are propagated down the
 pedigree to provide all available values from genetic
 evaluation. Another option is to cut pedigree links - set parents to
