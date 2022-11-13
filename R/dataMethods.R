@@ -484,7 +484,8 @@ c.object_sizes <- function(..., recursive=FALSE)
 #' @aliases mapLevels<-.character
 #' @aliases mapLevels<-.list
 #' @aliases mapLevels<-.data.frame
-#' @param x object whose levels will be mapped, look into details} \item{codes}{boolean, create integer levelsMap (with internal codes) or character levelsMap (with level names)
+#' @param x object whose levels will be mapped, look into details `codes` boolean, 
+#' create integer levelsMap (with internal codes) or character levelsMap (with level names)
 #' @param codes boolean, create integer levelsMap (with internal codes) or character levelsMap (with level names)
 #' @param sort boolean, sort levels of character \code{x}, look into details
 #' @param drop boolean, drop unused levels

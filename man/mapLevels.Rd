@@ -88,7 +88,8 @@ mapLevels(x) <- value
 \method{mapLevels}{data.frame}(x) <- value
 }
 \arguments{
-\item{x}{object whose levels will be mapped, look into details} \item{codes}{boolean, create integer levelsMap (with internal codes) or character levelsMap (with level names)}
+\item{x}{object whose levels will be mapped, look into details \code{codes} boolean,
+create integer levelsMap (with internal codes) or character levelsMap (with level names)}
 
 \item{codes}{boolean, create integer levelsMap (with internal codes) or character levelsMap (with level names)}
 

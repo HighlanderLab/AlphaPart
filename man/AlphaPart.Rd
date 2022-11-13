@@ -76,10 +76,11 @@ effect. Default is \code{center = TRUE}.}
 \item{scaleEBV}{a list with two arguments defining whether is
 appropriate to center and/or scale the \code{colBV} columns in respect to
 the base population. The list may contain the following components:
-\describe{ \item{\code{center}:}{a logical value}
-\item{\code{scale}:}{a logical value}} If \code{center = TRUE} and
-\code{scale = TRUE} then the base population is set to has zero mean and
-unit variance.}
+\itemize{
+\item \code{center}: a logical value
+\item \code{scale}: a logical value. If \code{center = TRUE} and \code{scale = TRUE} then the
+base population is set to has zero mean and unit variance.
+}}
 }
 \value{
 An object of class \code{AlphaPart}, which can be used in
@@ -90,17 +91,25 @@ further analyses - there is a handy summary method
 \code{summaryAlphaPart} class).  Class \code{AlphaPart} is a
 list. The first \code{length(colBV)} components (one for each trait
 and named with trait label, say trt) are data frames. Each
-data.frame contains: \item{\code{x}}{columns from initial data
-\code{x}} \item{trt_pa}{parent average} \item{trt_w}{Mendelian
-sampling term} \item{trt_path1, trt_path2, ...}{breeding value
-partitions}
+data.frame contains:
+\itemize{
+\item \code{x} columns from initial data \code{x}
+\item \code{trt_pa} parent average
+\item \code{trt_w}Mendelian sampling term
+\item \verb{trt_path1, trt_path2, ...} breeding value partitions
+}
 
 The last component of returned object is also a list named
 \code{info} with the following components holding meta information
-about the analysis: \item{path}{column name holding path information}
-\item{nP}{number of paths} \item{lP}{path labels} \item{nT}{number of
-traits} \item{lT}{trait labels} \item{warn}{potential warning
-messages associated with this object}
+about the analysis:
+\itemize{
+\item \code{path} column name holding path information
+\item \code{nP} number of paths
+\item \code{lP} path labels
+\item \code{nT} number of traits
+\item \code{lT} trait labels
+\item \code{warn} potential warning messages associated with this object
+}
 
 If \code{colBy!=NULL} the resulting object is of a class
 \code{summaryAlphaPart}, see
@@ -118,12 +127,14 @@ bioscience. DOI:  \doi{10.1017/S175173110800205X}
 }
 \details{
 Pedigree in \code{x} must be valid in a sense that there
-are:\itemize{ \item{no directed loops (the simplest example is that
-the individual identification is equal to the identification of a
-father or mother)} \item{no bisexuality, e.g., fathers most not
-appear as mothers} \item{father and/or mother can be unknown
-(missing) - defined with any "code" that is dif ferent from
-existing identif ications} }
+are:
+\itemize{
+\item no directed loops (the simplest example is that the individual
+identification is equal to the identification of a father or mother)
+\item no bisexuality, e.g., fathers most not appear as mothers
+\item father and/or mother can be unknown (missing) - defined with
+any "code" that is different from existing identifications
+}
 
 Unknown (missing) values for breeding values are propagated down the
 pedigree to provide all available values from genetic

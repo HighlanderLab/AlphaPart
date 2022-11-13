@@ -42,13 +42,17 @@ of data frames with summary statistics on breeding value
 partitions. For each trait there a dataframe holds summary for the
 "whole/original" breeding value and its partitions.  In addition
 another list is added (named \code{info}) with the following
-components holdinfg meta info: \item{path}{column name holding path
-information} \item{nP}{number of paths} \item{lP}{path labels}
-\item{nT}{number of traits} \item{lT}{trait labels}
-\item{by}{column name of variable by which summary was performed}
-\item{warn}{potential warning messages associated with this object}
-\item{labelSum}{column name of summary for "whole/original"
-breeding values}
+components holdinfg meta info:
+\itemize{
+\item \code{path} column name holding path information
+\item \code{nP} number of paths
+\item \code{lP} path labels
+\item \code{nT} number of traits
+\item \code{lT} trait labels
+\item \code{by} column name of variable by which summary was performed
+\item \code{warn} potential warning messages associated with this object
+\item \code{labelSum} column name of summary for "whole/original" breeding values
+}
 
 There is a handy plot method (\code{\link[AlphaPart]{plot.summaryAlphaPart}}) for output.
 }
