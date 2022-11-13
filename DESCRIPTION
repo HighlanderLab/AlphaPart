@@ -40,8 +40,8 @@ Suggests:
     covr,
     ggridges (>= 0.5.3)
 LinkingTo: Rcpp
-Version: 0.9.7
-Date: 2022-08-24
+Version: 0.9.8
+Date: 2022-11-13
 NeedsCompilation: yes
 Packaged: 2022-07-07 19:36:37 UTC
 VignetteBuilder: knitr
