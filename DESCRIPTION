@@ -31,7 +31,6 @@ Imports:
     dplyr,
     magrittr,
     tibble (>= 3.1.7),
-Suggests:
     RColorBrewer (>= 1.0-2),
     truncnorm (>= 1.0-5),
     knitr,
