@@ -9,15 +9,16 @@
 #' @usage
 #' AlphaPart(x, pathNA, recode, unknown, sort, verbose, profile,
 #'   printProfile, pedType, colId, colFid, colMid, colPath, colBV,
-#'   colBy, center, centerEBV)
+#'   colBy, center, scaleEBV)
 #'
 #' @details Pedigree in \code{x} must be valid in a sense that there
-#'   are:\itemize{ \item{no directed loops (the simplest example is that
-#'   the individual identification is equal to the identification of a
-#'   father or mother)} \item{no bisexuality, e.g., fathers most not
-#'   appear as mothers} \item{father and/or mother can be unknown
-#'   (missing) - defined with any "code" that is dif ferent from
-#'   existing identif ications} }
+#'   are:
+#'   
+#'   * no directed loops (the simplest example is that the individual 
+#'   identification is equal to the identification of a father or mother) 
+#'   * no bisexuality, e.g., fathers most not appear as mothers 
+#'   * father and/or mother can be unknown (missing) - defined with 
+#'   any "code" that is different from existing identifications
 #'
 #' Unknown (missing) values for breeding values are propagated down the
 #' pedigree to provide all available values from genetic
@@ -96,12 +97,16 @@
 #'   holding group information (see details).
 #' @param center Logical, if \code{center=TRUE} detect a shift in base
 #'   population mean and attributes it as parent average effect rather
-#'   than mendelian sampling effect, otherwise if center=FALSE, the base
-#'   population values are only accounted as mendelian sampling
+#'   than Mendelian sampling effect, otherwise, if center=FALSE, the base
+#'   population values are only accounted as Mendelian sampling
 #'   effect. Default is \code{center = TRUE}.
-#' @param centerEBV Logical, if \code{centerEBV=TRUE} center the EBVs in
-#'   order to the base population has mean of zero. Default is
-#'   \code{center = FALSE}.
+#' @param scaleEBV a list with two arguments defining whether is 
+#' appropriate to center and/or scale the \code{colBV} columns in respect to 
+#' the base population. The list may contain the following components:
+#' 
+#' * `center`: a logical value 
+#' * `scale`: a logical value. If `center = TRUE` and `scale = TRUE` then the 
+#'  base population is set to has zero mean and unit variance.
 #'
 #' @example inst/examples/examples_AlphaPart.R
 #' @return An object of class \code{AlphaPart}, which can be used in
@@ -112,17 +117,23 @@
 #'   \code{summaryAlphaPart} class).  Class \code{AlphaPart} is a
 #'   list. The first \code{length(colBV)} components (one for each trait
 #'   and named with trait label, say trt) are data frames. Each
-#'   data.frame contains: \item{\code{x}}{columns from initial data
-#'   \code{x}} \item{trt_pa}{parent average} \item{trt_w}{Mendelian
-#'   sampling term} \item{trt_path1, trt_path2, ...}{breeding value
-#'   partitions}
+#'   data.frame contains: 
+#'   
+#'   * `x` columns from initial data `x` 
+#'   * `trt_pa` parent average 
+#'   * `trt_w`Mendelian sampling term
+#'   * `trt_path1, trt_path2, ...` breeding value partitions
 #'
 #' The last component of returned object is also a list named
 #' \code{info} with the following components holding meta information
-#' about the analysis: \item{path}{column name holding path information}
-#' \item{nP}{number of paths} \item{lP}{path labels} \item{nT}{number of
-#' traits} \item{lT}{trait labels} \item{warn}{potential warning
-#' messages associated with this object}
+#' about the analysis: 
+#' 
+#' * `path` column name holding path information
+#' * `nP` number of paths 
+#' * `lP` path labels
+#' * `nT` number of traits
+#' * `lT` trait labels 
+#' * `warn` potential warning messages associated with this object
 #'
 #' If \code{colBy!=NULL} the resulting object is of a class
 #' \code{summaryAlphaPart}, see
@@ -136,11 +147,8 @@
 #'
 #' @importFrom utils str
 #' @importFrom pedigree orderPed
-#' @importFrom gdata NAToUnknown
-#' @importFrom gdata NAToUnknown
-#' @importFrom gdata unknownToNA
-#' @importFrom gdata object.size
 #' @importFrom stats aggregate
+#' @importFrom tibble is_tibble
 #'
 #' @export
 
@@ -148,17 +156,13 @@ AlphaPart <- function (x, pathNA=FALSE, recode=TRUE, unknown= NA,
                        sort=TRUE, verbose=1, profile=FALSE,
                        printProfile="end", pedType="IPP", colId=1,
                        colFid=2, colMid=3, colPath=4, colBV=5:ncol(x),
-                       colBy=NULL, center = TRUE, centerEBV = FALSE) {
-
-  # TODO: move BV to another object (to simplif y work with McMC or some
-  # other TODO: sortPedigree: A rabimo tole nujno za to funkcijo ali
-  # samo za summarizing? Hmm, za sortiranje, kajne? Vidis, to nisem lepo
-  # sprogramiral – ena funkcija naj bi pocela samo eno stvar na enkrat –
-  # to poenostavi kodo. Pusti za sedaj. Future work. Lahko das v TODO
-  # file v paketu;)
-
+                       colBy=NULL, center = TRUE, 
+                       scaleEBV = list()) {
+  ## Test if the data is a data.frame
+  if(is_tibble(x)){
+    x <- as.data.frame(x)
+  }
   ## --- Setup ---
-
   test <- (length(colId) > 1 | length(colFid) > 1 | length(colMid) > 1 | length(colPath) > 1 | length(colBy) > 1)
   if (test) {
     stop("arguments 'colId', 'colFid', 'colMid', 'colPath', and 'colBy' must be of length 1")
@@ -207,7 +211,52 @@ AlphaPart <- function (x, pathNA=FALSE, recode=TRUE, unknown= NA,
       x
     }
   }
-
+  #=======================================================================
+  # -- Test identification
+  #=======================================================================
+  if(!is.numeric(colId)){
+    colId <- which(colnames(x) %in% colId)
+    if (length(colId)==0) {
+      stop("Identification not valid for 'colId' column name", call. = FALSE)
+    } 
+  }
+  if(!is.numeric(colMid)){
+    colMid <- which(colnames(x) %in% colMid)
+    if (length(colMid)==0) {
+      stop("Identification not valid for 'colMid' column name", call. = FALSE)
+    }
+  }
+  if(!is.numeric(colFid)){
+    colFid <- which(colnames(x) %in% colFid)
+    if (length(colFid)==0) {
+      stop("Identification not valid for 'colFid' column name", call. = FALSE)
+    }
+  }
+  if(!is.numeric(colPath)){
+    testN <- length(colPath)
+    colPath <- which(colnames(x) %in% colPath)
+    if (length(colPath)!=testN) {
+      stop("Identification not valid for 'colPath' column name", call. = FALSE)
+    }
+    testN <-  NULL # not needed anymore
+  }
+  if(!is.numeric(colBy)){
+    testN <- length(colBy)
+    colByOriginal <- colBy
+    colBy <- which(colnames(x) %in% colBy)
+    if (length(colBy)!=testN) {
+      stop("Identification not valid for 'colBy' column name", call. = FALSE)
+    }
+    testN <- NULL # not needed anymore
+  }
+  if(!is.numeric(colBV)){
+    testN <- length(colBV)
+    colBV <- which(colnames(x) %in% colBV)
+    if (length(colBV) != testN) {
+      stop("Identification not valid for 'colBV' column(s) name", call. = FALSE)
+    }
+    testN <- NULL # not needed anymore
+  }
   #=====================================================================
   ## --- Sort and recode pedigree ---
   #=====================================================================
@@ -224,15 +273,29 @@ AlphaPart <- function (x, pathNA=FALSE, recode=TRUE, unknown= NA,
     str(x)
   }
   #---------------------------------------------------------------------
-  ## Sort so that parents preceede children
+  ## Sort so that parents precede children
   if (sort) {
     recode <- TRUE
     x <- x[order(orderPed(ped=x[, c(colId, colFid, colMid)])), ]
   }
+  #=======================================================================
+  # Centering  to make founders has mean zero
+  #=======================================================================
+  controlvals <- getScale()
+  if (!missing(scaleEBV)) {
+    controlvals[names(scaleEBV)] <- scaleEBV
+  }
+  if(controlvals$center == TRUE | controlvals$scale == TRUE){
+    x[, colBV] <- sEBV(y = x[,c(colId, colFid, colMid, colBV)], 
+                       center = controlvals$center, 
+                       scale = controlvals$scale, 
+                       recode = recode, unknown = unknown)
+  }
+  #=======================================================================
   #---------------------------------------------------------------------
   ## Recode all ids to 1:n
   if (recode) {
-    y <- cbind( id=1:nrow(x),
+    y <- cbind(id=seq_len(nrow(x)),
                fid=match(x[, colFid], x[, colId], nomatch=0),
                mid=match(x[, colMid], x[, colId], nomatch=0))
     colnames(y) <- c(colId,colFid,colMid)
@@ -285,7 +348,7 @@ AlphaPart <- function (x, pathNA=FALSE, recode=TRUE, unknown= NA,
   colnames(y)[4:ncol(y)] <- lT
   #---------------------------------------------------------------------
   ## Missing values
-  nNA <- sapply(x[, colBV, drop=FALSE], function(z) sum(is.na(z)))
+  nNA <- apply(x[, colBV, drop=FALSE], 2, function(z) sum(is.na(z)))
   names(nNA) <- lT
   #---------------------------------------------------------------------
   ## Paths - P matrix
@@ -333,7 +396,8 @@ AlphaPart <- function (x, pathNA=FALSE, recode=TRUE, unknown= NA,
   }
 
   if (any(nNA > 0)) stop("unknown (missing) values are propagated through the pedigree and therefore not allowed")
-
+  nNA <- NULL # not needed anymore
+  
   if (profile) {
     timeRet <- .profilePrint(x=timeRet, task="Dimensions and Matrices P", printProfile=printProfile,
                              time=Sys.time(), mem=object.size(P))
@@ -348,42 +412,17 @@ AlphaPart <- function (x, pathNA=FALSE, recode=TRUE, unknown= NA,
   ## Add "zero" row (simplif ies computations with missing parents!)
   y <- rbind(y[1, ], y)
   y[1, ] <- 0
+  rownames(x) <- NULL
   P <- c(0, P)
   if (groupSummary) g <- c(0, g)
-  #===================================================================
-  # Centering  to make founders has mean zero
-  #===================================================================
-  # Selecting founders and missing pedigree animals
-  xF <- y[c(y[, colFid]==0 & y[,colMid]==0),]
-  colBVy <- (ncol(y)-length(colBV)+1):ncol(y)
-  if (centerEBV == TRUE) {
-    if(length(colBV)==1){
-      EBVMean <- mean(xF[-1, colBVy[1]],  na.rm = TRUE)
-      y[-1,colBVy[1]] <- y[-1, colBVy[1]] - EBVMean
-      x[,colBV[1]] <- x[,colBV[1]] - EBVMean
-      EBVMean <- 0
-    }else{
-      EBVMean <- apply(xF[-1, colBVy],2, mean,  na.rm = TRUE)
-      for (i in 1:length(colBV)) {
-        y[-1, colBVy[i]] <- y[-1, colBVy[i]] - EBVMean[i]
-        x[,colBV[i]] <- x[,colBV[i]] - EBVMean[i]
-      }
-      EBVMean <- 0
-    }
-  }else {
-    if(length(colBV)==1){
-      EBVMean <- mean(xF[-1, colBVy[1]],  na.rm = TRUE)
-    }else{
-      EBVMean <- apply(xF[-1, colBVy],2, mean,  na.rm = TRUE)
-    }
-  }
   #---------------------------------------------------------------------
   ## Compute
   if (!groupSummary) {
     tmp <- .Call("AlphaPartDrop",
                  c1_=c1, c2_=c2,
                  nI_=nI, nP_=nP, nT_=nT,
-                 y_=y, P_=P, Px_=cumsum(c(0, rep(nP, nT-1))),
+                 y_=y, 
+                 P_=P, Px_=cumsum(c(0, rep(nP, nT-1))),
                  PACKAGE="AlphaPart")
   } else {
     N <- aggregate(x=y[-1, -c(1:3)], by=list(by=x[, colBy]), FUN=length)
@@ -417,18 +456,13 @@ AlphaPart <- function (x, pathNA=FALSE, recode=TRUE, unknown= NA,
   colP <- colnames(tmp$pa)
   colW <- colnames(tmp$w)
   colX <- colnames(tmp$xa)
-  #===================================================================
-  # Original Values
-  #===================================================================
-  # Original pa value
-  if (center == TRUE && all(EBVMean > 1E-4) == TRUE){
-    basePop <- apply(y[-1,c(colFid,colMid)]==0,1,all)
-    for (i in 1:length(colBV)) {
-      tmp$w[-1,i] <- tmp$w[-1,i] - basePop * EBVMean[i]
-      tmp$pa[-1,i] <-tmp$pa[-1,i] + y[-1, colBV[i]] * basePop -
-        tmp$w[-1,i] * basePop
-    }
+  #=====================================================================
+  # Original Values 
+  #=====================================================================
+  if (center){
+    tmp <- centerPop(y = y[-1,], colBV = colBV, path = tmp)    
   }
+
   #=====================================================================
   for (j in 1:nT) { ## j <- 1
     Py <- seq(t+1, t+nP)
@@ -436,6 +470,7 @@ AlphaPart <- function (x, pathNA=FALSE, recode=TRUE, unknown= NA,
     colnames(ret[[j]]) <- c(colP[j], colW[j], colX[Py])
     t <- max(Py)
   }
+  tmp <- NULL # not needed anymore
   #---------------------------------------------------------------------
   if (profile) {
     timeRet <- .profilePrint(x=timeRet, task="Massage results",
@@ -465,7 +500,7 @@ AlphaPart <- function (x, pathNA=FALSE, recode=TRUE, unknown= NA,
   ## methods
   tmp <- colnames(x); names(tmp) <- tmp
   ret[[nT+1]] <- list(path=tmp[colPath], nP=nP, lP=lP, nT=nT, lT=lT,
-                      warn=c())
+                      warn=NULL)
   ## names(ret)[nT+1] <- "info"
   names(ret) <- c(lT, "info")
 
@@ -487,7 +522,7 @@ AlphaPart <- function (x, pathNA=FALSE, recode=TRUE, unknown= NA,
   #=====================================================================
   class(ret) <- c("AlphaPart", class(ret))
   if (groupSummary) {
-    ret$by <- colBy
+    ret$by <- colByOriginal
     ret$N <- N
     summary(object=ret, sums=TRUE)
   } else {

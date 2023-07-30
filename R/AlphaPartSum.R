@@ -46,8 +46,8 @@
 AlphaPartSum <- function (x, map=NULL, remove=TRUE, zeroPath=TRUE, call="AlphaPartSum") {
   ## --- Setup ---
   
-  test1 <- "AlphaPart"        %in% class(x)
-  test2 <- "summaryAlphaPart" %in% class(x)
+  test1 <- inherits(x, "AlphaPart")
+  test2 <- inherits(x, "summaryAlphaPart")
   if (!any(c(test1, test2))) stop("object 'x' must be of a 'AlphaPart' or 'summaryAlphaPart' class")
   if (!is.list(map)) stop("object 'map' must be of a 'list' class")
 
@@ -58,14 +58,14 @@ AlphaPartSum <- function (x, map=NULL, remove=TRUE, zeroPath=TRUE, call="AlphaPa
 
   ## Any unknown path?
   mapP <- map
-  mapT <- c()
+  mapT <- NULL
   for (i in 1:length(mapP)) {
     ## Targets
     mapT <- c(mapT, mapP[[i]][1])
     ## Components
     mapP[[i]] <- mapP[[i]][2:length(mapP[[i]])]
   }
-  mapM <- c()
+  mapM <- NULL
   mapT <- c("", mapT) ## trick so that code bellow works with i=1
   for (i in 1:length(mapP)) {
     testE <- mapP[[i]] %in% x$info$lP ## path exists in the data?
@@ -116,7 +116,7 @@ AlphaPartSum <- function (x, map=NULL, remove=TRUE, zeroPath=TRUE, call="AlphaPa
 
     ## Remove original partitions (we do this after we go through the whole map!)
     if (remove) {
-      remY <- remN <- c()
+      remY <- remN <- NULL
       for (i in 1:length(map)) { ## i <- 1
         if (length(map[[i]]) > 1) {
           remN <- c(remN, map[[i]][1])

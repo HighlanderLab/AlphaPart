@@ -30,8 +30,8 @@ AlphaPartSubset <- function(x, paths=NULL) {
 
   ## --- Setup ---
 
-  test1 <- "AlphaPart"        %in% class(x)
-  test2 <- "summaryAlphaPart" %in% class(x)
+  test1 <- inherits(x, "AlphaPart")
+  test2 <- inherits(x, "summaryAlphaPart")
   if (!any(c(test1, test2))) stop("object 'x' must be of a 'AlphaPart' or 'summaryAlphaPart' class")
 
   ## Do nothing

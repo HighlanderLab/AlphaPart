@@ -32,14 +32,20 @@ folders are created if they do not exist.}
 \item{row.names}{Logical, export row names as well?}
 }
 \value{
-\item{write.csv}{See \code{\link[utils]{write.csv}} for details.}
-\item{write.csv.AlphaPart}{For each trait (list component in \code{x}) a file is saved on disk with name
-"AlphaPart_trait.csv", where the file will hold original data and breeding value partitions.
-With \code{traitsAsDir=TRUE} files are saved as "trait/file_trait.csv".
-File names are printed on screen during the process of export and at the end invisibly returned.}
-|item{write.csv.summaryAlphaPart}{For each trait (list component in \code{x}) a file partitions named
-With \code{traitsAsDir=TRUE} files are saved as "trait/file_trait_*.csv". File names
-are printed on screen during the process of export and at the end invisibly returned.}
+It contains:
+\itemize{
+\item \code{write.csv} - see \code{\link[utils]{write.csv}} for details.
+\item \code{write.csv.AlphaPart} - for each trait (list component in \code{x}) a file
+is saved on disk with name "AlphaPart_trait.csv", where the file will hold
+original data and breeding value partitions. With \code{traitsAsDir=TRUE}
+files are saved as "trait/file_trait.csv". File names are printed on screen
+during the process of export and at the end invisibly returned.
+\item \code{write.csv.summaryAlphaPart} - for each trait (list component in \code{x})
+a file partitions named "file_trait.csv" is saved on disk. With
+\code{traitsAsDir=TRUE} files are saved as "trait/file_trait_*.csv". File
+names are printed on screen during the process of export and at the end
+invisibly returned.
+}
 }
 \description{
 Save summaries of partitioned breeding values to CSV files on disk for further

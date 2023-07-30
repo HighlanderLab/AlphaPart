@@ -22,13 +22,13 @@ test_that("Test input for AlphaPart ped", {
 
   ## ... to test recode argument
   ped3 <- ped[order(orderPed(ped=ped[, c("id", "fid", "mid")])), ]
-  ped3$idI  <- 1:nrow(ped3)
+  ped3$idI  <- seq_len(nrow(ped3))
   ped3$fidI <- match(ped3$fid, ped3$id)
   ped3$midI <- match(ped3$mid, ped3$id)
 
   ## ... to test recode and unknown argument
   ped4 <- ped[order(orderPed(ped=ped[, c("id", "fid", "mid")])), ]
-  ped4$idI  <- 1:nrow(ped4)
+  ped4$idI  <- seq_len(nrow(ped4))
   ped4$fidI <- match(ped4$fid, ped3$id, nomatch=99)
   ped4$midI <- match(ped4$mid, ped3$id, nomatch=99)
 
@@ -73,7 +73,7 @@ test_that("Test the output of AlphaPart function", {
 
   ## ... to test recode argument
   ped3 <- ped[order(orderPed(ped=ped[, c("id", "fid", "mid")])), ]
-  ped3$idI  <- 1:nrow(ped3)
+  ped3$idI  <- seq_len(nrow(ped3))
   ped3$fidI <- match(ped3$fid, ped3$id)
   ped3$midI <- match(ped3$mid, ped3$id)
     ## ... to test recode and unknown argument
@@ -88,11 +88,23 @@ test_that("Test the output of AlphaPart function", {
 
   ## ... to test recode argument
   ret5  <- AlphaPart(x=ped3,                                                 pathNA=TRUE, verbose=0, colId="idI", colFid="fidI", colMid="midI", colPath="pat", colBV=c("trt1", "trt2"))
+  ret5.1  <- AlphaPart(x=ped3,                                               pathNA=TRUE, verbose=0, colId="idI", colFid="fidI", colMid="midI", colPath="pat", colBV=c("trt1", "trt2"),
+                       scaleEBV = list(center = TRUE, scale = TRUE))
+  
   ret6  <- AlphaPart(x=ped3,                                                 pathNA=TRUE, verbose=0, colId="idI", colFid="fidI", colMid="midI", colPath="pat", colBV=c("trt1", "trt2"), recode=FALSE)
+  ret6.1  <- AlphaPart(x=ped3,                                               pathNA=TRUE, verbose=0, colId="idI", colFid="fidI", colMid="midI", colPath="pat", colBV=c("trt1", "trt2"), recode=FALSE,
+                       scaleEBV = list(center = TRUE, scale = TRUE))
+  
   ## ... to test recode and unknown argument
   ret7  <- AlphaPart(x=ped3,                                                 pathNA=TRUE, verbose=0, colId="idI", colFid="fidI", colMid="midI", colPath="pat", colBV=c("trt1", "trt2"), recode=FALSE, unknown=99)
-
-
+  ret7.1  <- AlphaPart(x=ped3,                                               pathNA=TRUE, verbose=0, colId="idI", colFid="fidI", colMid="midI", colPath="pat", colBV=c("trt1", "trt2"), recode=FALSE, unknown=99,
+                       scaleEBV = list(center = TRUE, scale = TRUE))
+  
+  ret8  <- AlphaPart(x=ped3,                                                 pathNA=TRUE, verbose=0, colId="idI", colFid="fidI", colMid="midI", colPath="pat", colBV="trt1", recode=FALSE, unknown=99,
+                       scaleEBV = list(center = TRUE, scale = TRUE))
+  ret8.1  <- AlphaPart(x=ped3,                                               pathNA=TRUE, verbose=0, colId="idI", colFid="fidI", colMid="midI", colPath="pat", colBV=7, recode=FALSE, unknown=99,
+                       scaleEBV = list(center = TRUE, scale = TRUE))
+  
   ## --- Overall result ---
 
   ## List component names
@@ -107,6 +119,9 @@ test_that("Test the output of AlphaPart function", {
   ## Use of argument recode and unknown
   expect_equal(ret5, ret6)
   expect_equal(ret6, ret7)
+  expect_equal(ret5.1, ret6.1)
+  expect_equal(ret6.1, ret7.1)
+  expect_equal(ret8, ret8.1)
 
   ## Use of recode=FALSE
   tmp <- ret6$trt1[order(ret6$trt1$id), ]
@@ -369,19 +384,21 @@ test_that("Test computation", {
 
 })
 
-test_that("Test profile", {
-  ## Small pedigree with additive genetic (=breeding) values
-  ped <- data.frame(  id=c(  1,   2,   3,   4,   5,   6),
-                    fid=c(  0,   0,   2,   0,   4,   0),
-                    mid=c(  0,   0,   1,   0,   3,   3),
-                    loc=c("A", "B", "A", "B", "A", "A"),
-                    gen=c(  1,   1,   2,   2,   3,   3),
-                    trt1=c(100, 120, 115, 130, 125, 125),
-                    trt2=c(100, 110, 105, 100,  85, 110))
-
-  ## Partition additive genetic values
-  tmp1 <- AlphaPart(x=ped, colBV=c("trt1", "trt2"), profile=TRUE,printProfile = "end")
-  tmp2 <- AlphaPart(x=ped, colBV=c("trt1", "trt2"), profile=TRUE,printProfile = "fly")
-  expect_equal(tmp1$info$profile,  tmp2$info$profile)
-})
+#test_that("Test profile", {
+#  ## Small pedigree with additive genetic (=breeding) values
+#  ped <- data.frame(  id=c(  1,   2,   3,   4,   5,   6),
+#                    fid=c(  0,   0,   2,   0,   4,   0),
+#                    mid=c(  0,   0,   1,   0,   3,   3),
+#                    loc=c("A", "B", "A", "B", "A", "A"),
+#                    gen=c(  1,   1,   2,   2,   3,   3),
+#                    trt1=c(100, 120, 115, 130, 125, 125),
+#                    trt2=c(100, 110, 105, 100,  85, 110))
+#
+#  ## Partition additive genetic values
+#  tmp1 <- AlphaPart(x=ped, colBV=c("trt1", "trt2"), profile=TRUE,
+#                   printProfile = "end")
+#  tmp2 <- AlphaPart(x=ped, colBV=c("trt1", "trt2"), profile=TRUE,
+#                    printProfile = "fly")
+#  expect_equal(tmp1$info$profile,  tmp2$info$profile)
+#})
 

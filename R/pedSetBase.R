@@ -35,10 +35,6 @@
 #' @importFrom Rcpp sourceCpp
 #'
 #' @export
-#' @importFrom gdata unknownToNA
-#' @importFrom gdata isUnknown
-
-
 pedSetBase <- function (x, keep=NULL, unknown=NA, report=TRUE, colId=1, colFid=2,  colMid=3) {
 
   ## --- Setup ---

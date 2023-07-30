@@ -26,15 +26,19 @@
 #'
 #' @example inst/examples/examples_write.csv.R
 #'
-#' @return  \item{write.csv}{See \code{\link[utils]{write.csv}} for details.}
-#'          \item{write.csv.AlphaPart}{For each trait (list component in \code{x}) a file is saved on disk with name
-#' "AlphaPart_trait.csv", where the file will hold original data and breeding value partitions.
-#' With \code{traitsAsDir=TRUE} files are saved as "trait/file_trait.csv".
-#' File names are printed on screen during the process of export and at the end invisibly returned.}
-#'          |item{write.csv.summaryAlphaPart}{For each trait (list component in \code{x}) a file partitions named
-# "file_trait.csv" is saved on disk.
-#' With \code{traitsAsDir=TRUE} files are saved as "trait/file_trait_*.csv". File names
-#' are printed on screen during the process of export and at the end invisibly returned.}
+#' @return  It contains: 
+#' 
+#' * `write.csv` - see \code{\link[utils]{write.csv}} for details.
+#' * `write.csv.AlphaPart` - for each trait (list component in \code{x}) a file 
+#' is saved on disk with name "AlphaPart_trait.csv", where the file will hold 
+#' original data and breeding value partitions. With \code{traitsAsDir=TRUE} 
+#' files are saved as "trait/file_trait.csv". File names are printed on screen 
+#' during the process of export and at the end invisibly returned.
+#' * `write.csv.summaryAlphaPart` - for each trait (list component in \code{x}) 
+#' a file partitions named "file_trait.csv" is saved on disk. With 
+#' \code{traitsAsDir=TRUE} files are saved as "trait/file_trait_*.csv". File 
+#' names are printed on screen during the process of export and at the end 
+#' invisibly returned.
 #'
 #' @useDynLib AlphaPart, .registration = TRUE
 #' @importFrom Rcpp sourceCpp
@@ -59,10 +63,10 @@ write.csv.default <- function (...) {
 write.csv.AlphaPart <- function (x, file, traitsAsDir=FALSE, csv2=TRUE, row.names=FALSE, ...) {
   ## --- Setup ---
 
-  if(length(file) > 1) stop("'file' argument must be of length one")
-  if(!("AlphaPart" %in% class(x))) stop("'x' must be of a 'AlphaPart' class")
+  if (length(file) > 1) stop("'file' argument must be of length one")
+  if (!inherits(x, "AlphaPart")) stop("'x' must be of a 'AlphaPart' class")
   fileOrig <- sub(pattern=".csv$", replacement="", x=file)
-  ret <- c()
+  ret <- NULL
 
   ## --- Code ---
 
@@ -96,10 +100,10 @@ write.csv.AlphaPart <- function (x, file, traitsAsDir=FALSE, csv2=TRUE, row.name
 write.csv.summaryAlphaPart <- function (x, file, traitsAsDir=FALSE, csv2=TRUE, row.names=FALSE, ...) {
   ## --- Setup ---
 
-  if(length(file) > 1) stop("'file' argument must be of length one")
-  if(!("summaryAlphaPart" %in% class(x))) stop("'x' must be of a 'summaryAlphaPart' class")
+  if (length(file) > 1) stop("'file' argument must be of length one")
+  if (!inherits(x,"summaryAlphaPart")) stop("'x' must be of a 'summaryAlphaPart' class")
   fileOrig <- sub(pattern=".csv$", replacement="", x=file)
-  ret <- c()
+  ret <- NULL
 
   ## --- Code ---
 
