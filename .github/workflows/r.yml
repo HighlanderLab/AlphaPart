@@ -43,7 +43,7 @@ jobs:
         with:
           extra-packages: rcmdcheck
 
-      - uses: r-lib/actions/check-r-package@v1
+      - uses: r-lib/actions/check-r-package@v2 # Updated to v2 for potential improvements
 
       - name: Show testthat output
         if: always()
@@ -52,7 +52,7 @@ jobs:
 
       - name: Upload check results
         if: failure()
-        uses: actions/upload-artifact@main
+        uses: actions/upload-artifact@v2 # Updated to v2 for the latest features
         with:
           name: ${{ runner.os }}-r${{ matrix.config.r }}-results
           path: check
