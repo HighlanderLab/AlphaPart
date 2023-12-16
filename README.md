@@ -11,14 +11,21 @@
 | [![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html)             |                                                                                                                                                                  | [![CodeFactor](https://www.codefactor.io/repository/github/alphagenes/alphapart/badge)](https://www.codefactor.io/repository/github/alphagenes/alphapart)  | [![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/AlphaGenes/AlphaPart.svg)](https://github.com/AlphaGenes/AlphaPart/) <!-- line break 4 --> |                                                                                                                                                              |
 
 # Overview
+AlphaPart is a sophisticated R package for partitioning genetic trends ([Obšteter et al. 2021](https://doi.org/10.1186/s12711-021-00600-x)), facilitating a deeper understanding of genetic gain in breeding programs. This method, rooted in the innovative works by [Garcia-Cortes et
+al. (2008)](https://doi.org/10.1017/S175173110800205X) and recent advancements, allows breeders and researchers to dissect the contributions of various selection paths to overall genetic progress.
 
-A software that implements a method for **partitioning genetic trends**
-to quantify the sources of genetic gain in breeding programmes. The
-partitioning method is described in [Garcia-Cortes et
-al. (2008)](https://doi.org/10.1017/S175173110800205X). The package
-includes the main function `AlphaPart` for partitioning breeding values
-and auxiliary functions for manipulating data and summarizing,
-visualizing, and saving outputs.
+# Features
+
+* Implements cutting-edge methods for partitioning both genetic means and variances.
+* Includes functions for data manipulation, ensuring compatibility with diverse data sets.
+* Offers advanced tools for visualizing genetic trends and partitioning results.
+* Provides robust summarizing capabilities to interpret complex genetic data.
+
+# New in This Version
+
+* Incorporates recent methods for partitioning genetic variance, providing a more holistic view of breeding values ([Oliveira et al. 2022](https://doi.org/10.1186/s12711-023-00804-3)).
+* Improved algorithms for more accurate and insightful analysis of breeding programs.
+* New visualization features for a more intuitive understanding of genetic trends.
 
 # Instalation
 
