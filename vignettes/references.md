@@ -28,7 +28,7 @@ Here is a list of some:
 * Škorput et al. (2015) Partition of genetic trends by origin in Landrace and Large-White pigs. Animal, 9(10):1605-1609.
 https://doi.org/10.1017/S1751731115001056 (Partitioned genetic trend by domestic and import contributions. Used samples from posterior distribution to quantify uncertainty in the total and partitioned genetic trends.)
 
-* Obšteter et al. (2021) AlphaPart—R implementation of the method for partitioning genetic trends. Genetics Selection Evolution, 53:30. https://doi.org/10.1186/s12711-021-00600-x (R implementation of the partitioning method with a two-stage selection example.)
+* Obšteter et al. (2021) AlphaPart — R implementation of the method for partitioning genetic trends. Genetics Selection Evolution, 53:30. https://doi.org/10.1186/s12711-021-00600-x (R implementation of the partitioning method with a two-stage selection example.)
 
 * Oliveira et al. (2023) A method for partitioning trends in genetic mean and variance to understand breeding practices. Genetics Selection Evolution 55:36. https://doi.org/10.1186/s12711-023-00804-3 (Extends the partitioning method to use any function in addition to the mean of breeding values, say variance. Provided implementation in the AlphaPart R package.)
 
@@ -37,11 +37,13 @@ https://doi.org/10.1017/S1751731115001056 (Partitioned genetic trend by domestic
 
 * Gorjanc et al. (2011) Partitioning of international genetic trends by origin in Brown Swiss bulls. Interbull Bulletin, 44:81-86. https://journal.interbull.org/index.php/ib/article/view/1689 (Partitioned international/world-wide genetic trend by country of origin, showing a significant contribution from USA on increasing protein yield, initially increasing and later improving somatic cell score, increasing calving to conception, and initially decreasing and later improving longevity.)
 
+* Spehar et al. (2011) Partitioning of Genetic Trends by Origin in Croatian Simmental Cattle. Agriculturae Conspectus Scientificus, 76(4):301-304. https://hrcak.srce.hr/72103 (Partitioned genetic trend into local and import contributions for different traits and showed significant contribution from both sources. These contributions change as the asssumed based population changes.)
+
 * Gorjanc et al. (2012) Partitioning international genetic trends by origin in Holstein bulls. ICAR. https://www.icar.org/Cork_2012/Presentations/T1%20Gorjanc_PPT.pdf (Partitioned international/world-wide and national genetic trends for total merit index (TMI) by country of origin. Four TMI defined in four countries were analysed. The results showed dominating positive and negative
 effect of USA on the global TMI trends, while local TMI trends can deviate considerably
 from global trends due to country specific breeding practices.)
 
-* Spehar et al. (2011) Partitioning of Genetic Trends by Origin in Croatian Simmental Cattle. Agriculturae Conspectus Scientificus, 76(4):301-304. https://hrcak.srce.hr/72103 (Partitioned genetic trend into local and import contributions for different traits and showed significant contribution from both sources. These contributions change as the asssumed based population changes.)
+* See also Škorput et al. (2015) above for application in pig genetic trends.
 
 * Skorput et al. (2018) Partition of genetic trend for daily gain by sex in Landrace, Large White, Pietrain, and Duroc pigs. Journal of Central European Agriculture, 19(3):648-657. https://doi.org/10.5513/JCEA01/19.3.2130 (Partitioned genetic trends by sex, showing larger contribution of males.)
 
@@ -56,3 +58,4 @@ Journal of Dairy Science, 106(9):6275-6287. https://doi.org/10.3168/jds.2022-230
 
 * Pardo et al. (2023) An insight into population structure and genetic progress of Argentinean Holstein cattle. Journal of Animal Breeding and Genetics; 140(4):376–389. https://doi.org/10.1111/jbg.12766 (Partitioned genetic trends for several traits by sex and country of origin over a long period  (1936 to 2019). Observed that import had a significant contribution to genetic gain in the population.)
 
+* See also Lopez-Carbonell et al. (2024) above for application in beef genetic trends.
