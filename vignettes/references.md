@@ -1,7 +1,10 @@
 Here is a list of some:
 * classic references for genetic trend estimation,
+* references for the partitioning method,
 * methodological and software references for the partitioning method, and 
-* some cases of using the partitioning method
+* some cases of using the partitioning method.
+
+Please send us any additional references we should list here!
 
 ## Classic references for genetic trend estimation
 
@@ -11,10 +14,12 @@ Here is a list of some:
 
 * Sorensen and Kennedy (1984) Estimation of Response to Selection Using Least-Squares and Mixed Model Methodology. Journal of Animal Science, 58(5):1097–1106. https://doi.org/10.2527/jas1984.5851097x
 
-* Sorensen et al. (1994) Bayesian analysis of genetic change due to selection using Gibbs sampling. Genetics Selection Evolution, 26:333. https://doi.org/10.1186/1297-9686-26-4-333 (Full probablistic analysis of the mean of breeding values over time - providing a full posterior distribution.)
+* Sorensen et al. (1994) Bayesian analysis of genetic change due to selection using Gibbs sampling. Genetics Selection Evolution, 26:333. https://doi.org/10.1186/1297-9686-26-4-333 (Full probabilistic analysis of the mean of breeding values over time - providing a full posterior distribution.)
 
-* TODO: Add other key classic references 
+* Ugarte et al. (1996) Genetic Parameters and Trends for Milk Production of Blond-Faced Latxa Sheep Using Bayesian Analysis. Journal of Dairy Science, 79(12):2268-2277. https://doi.org/10.3168/jds.S0022-0302(96)76604-3 (Example for the full probabilistic analysis of the mean of breeding values over time with unknown parent (genetic) groups.)
+
 ## References for the partitioning method
+
 * 	Woolliams et al. (1999) Expected Genetic Contributions and Their Impact on Gene Flow and Genetic Gain. Genetics, 153(2): 1009–1020. https://doi.org/10.1093/genetics/153.2.1009 (Describes the flow of the genes through the pedigree by decomposing pedigree relationship matrix.)
 
 * García-Cortés et al. (2006) Multibreed analysis by splitting the breeding values. Genetics Selection Evolution, 38(6):601-615. https://doi.org/10.1051/gse:2006024 (Developed a quantitative genetics model with additive genetic values that are split into several independent parts depending on their genetic origin.)
@@ -32,24 +37,25 @@ https://doi.org/10.1017/S1751731115001056 (Partitioned genetic trend by domestic
 
 * Oliveira et al. (2023) A method for partitioning trends in genetic mean and variance to understand breeding practices. Genetics Selection Evolution 55:36. https://doi.org/10.1186/s12711-023-00804-3 (Extends the partitioning method to use any function in addition to the mean of breeding values, say variance. Provided implementation in the AlphaPart R package.)
 
-* Lopez-Carbonell et al. (2024) Multiple Trait Bayesian Analysis of Partitioned Genetic Trends Accounting for Uncertainty in Genetic Parameters. An Example With the Pirenaica and Rubia Gallega Beef Cattle Breeds. Journal of Animal Breeding and Genetics, TODO. https://doi.org/10.1111/jbg.12918 (Partitioned genetics trends for five traits in two breeds by six categories of animals: non-reproductive individuals, dams of females and non-reproductive individuals, dams of sires, sires with fewer than 20 progeny, sires between 20 and 50 progeny, and sires with more than 50 progeny. Sires with more than 50 progenies and dams of males were the key drivers. They also show posterior probability of the global and partitioned genetic response between two time points, and the calculation of the posterior probability of positive (or negative) genetic progress. Provided software TM_TRENDS (extension of TM) to estimate breeding values, variance components, and partitions in one joint analysis.)
+* Lopez-Carbonell et al. (2024) Multiple Trait Bayesian Analysis of Partitioned Genetic Trends Accounting for Uncertainty in Genetic Parameters. An Example With the Pirenaica and Rubia Gallega Beef Cattle Breeds. Journal of Animal Breeding and Genetics, TODO. https://doi.org/10.1111/jbg.12918 (Partitioned genetics trends for five traits in two breeds by six categories of animals: non-reproductive individuals, dams of females and non-reproductive individuals, dams of sires, sires with fewer than 20 progeny, sires between 20 and 50 progeny, and sires with more than 50 progeny. Sires with more than 50 progenies and dams of males were the key drivers. They also show the posterior probability of the global and partitioned genetic response between two time points, and the calculation of the posterior probability of positive (or negative) genetic progress. Provided software TM_TRENDS (extension of TM) to estimate breeding values, variance components, and partitions in one joint analysis.)
+
 ## Some use cases of the partitioning method
 
-* Gorjanc et al. (2011) Partitioning of international genetic trends by origin in Brown Swiss bulls. Interbull Bulletin, 44:81-86. https://journal.interbull.org/index.php/ib/article/view/1689 (Partitioned international/world-wide genetic trend by country of origin, showing a significant contribution from USA on increasing protein yield, initially increasing and later improving somatic cell score, increasing calving to conception, and initially decreasing and later improving longevity.)
+* Gorjanc et al. (2011) Partitioning of international genetic trends by origin in Brown Swiss bulls. Interbull Bulletin, 44:81-86. https://journal.interbull.org/index.php/ib/article/view/1689 (Partitioned international/worldwide genetic trend by country of origin, showing a significant contribution from the USA on increasing protein yield, initially increasing and later improving somatic cell score, increasing calving to conception, and initially decreasing and later improving longevity.)
 
-* Spehar et al. (2011) Partitioning of Genetic Trends by Origin in Croatian Simmental Cattle. Agriculturae Conspectus Scientificus, 76(4):301-304. https://hrcak.srce.hr/72103 (Partitioned genetic trend into local and import contributions for different traits and showed significant contribution from both sources. These contributions change as the asssumed based population changes.)
+* Spehar et al. (2011) Partitioning of Genetic Trends by Origin in Croatian Simmental Cattle. Agriculturae Conspectus Scientificus, 76(4):301-304. https://hrcak.srce.hr/72103 (Partitioned genetic trend into local and import contributions for different traits and showed significant contribution from both sources. These contributions change as the assumed base population changes.)
 
-* Gorjanc et al. (2012) Partitioning international genetic trends by origin in Holstein bulls. ICAR. https://www.icar.org/Cork_2012/Presentations/T1%20Gorjanc_PPT.pdf (Partitioned international/world-wide and national genetic trends for total merit index (TMI) by country of origin. Four TMI defined in four countries were analysed. The results showed dominating positive and negative
-effect of USA on the global TMI trends, while local TMI trends can deviate considerably
-from global trends due to country specific breeding practices.)
+* Gorjanc et al. (2012) Partitioning international genetic trends by origin in Holstein bulls. ICAR. https://www.icar.org/Cork_2012/Presentations/T1%20Gorjanc_PPT.pdf (Partitioned international/worldwide and national genetic trends for total merit index (TMI) by country of origin. Four TMI defined in four countries were analysed. The results showed dominating positive and negative
+effect of the USA on global TMI trends, while local TMI trends can deviate considerably
+from global trends due to country-specific breeding practices.)
 
 * See also Škorput et al. (2015) above for application in pig genetic trends.
 
-* Skorput et al. (2018) Partition of genetic trend for daily gain by sex in Landrace, Large White, Pietrain, and Duroc pigs. Journal of Central European Agriculture, 19(3):648-657. https://doi.org/10.5513/JCEA01/19.3.2130 (Partitioned genetic trends by sex, showing larger contribution of males.)
+* Skorput et al. (2018) Partition of genetic trend for daily gain by sex in Landrace, Large White, Pietrain, and Duroc pigs. Journal of Central European Agriculture, 19(3):648-657. https://doi.org/10.5513/JCEA01/19.3.2130 (Partitioned genetic trends by sex, showing a larger contribution of males.)
 
 * Abdollahi-Arpanahi et al. (2021) Dissecting genetic trends to understand breeding practices in livestock: a maternal pig line example. Genetics Selection Evolution: 53, 89. https://doi.org/10.1186/s12711-021-00683-6 (Partitioning genetic trends of pedigree-based and genome-based estimated breeding values by genotyped and non-genotyped individuals. This analysis enabled them to indicate when genomic selection has been introduced into a breeding programme.)
 
-* Spehar et al. (2022) Partitioning of genetic trends by flock and gender in Istrian sheep breed. Proceedings of 12th World Congress on Genetics Applied to Livestock Production (WCGALP): 2968-2971. https://doi.org/10.3920/978-90-8686-940-4_720 (Partitioned genetic trends by sex and flock, showing larger contribution of males and no significant differences between flock contributions.)
+* Spehar et al. (2022) Partitioning of genetic trends by flock and gender in Istrian sheep breed. Proceedings of 12th World Congress on Genetics Applied to Livestock Production (WCGALP): 2968-2971. https://doi.org/10.3920/978-90-8686-940-4_720 (Partitioned genetic trends by sex and flock, showing a larger contribution of males and no significant differences between flock contributions.)
 
 * Obšteter et al. (2023) Investigating the benefits and perils of importing genetic material in small cattle breeding programs via simulation. Journal of Dairy Science, 106(8):5593-5605. https://doi.org/10.3168/jds.2022-23132 (Partitioned genetic trends by national and import contribution to evaluate positive and negative effects of import under different genetic correlations.)
 
